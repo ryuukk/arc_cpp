@@ -197,7 +197,7 @@ int arc::ShaderProgram::getAttributeLocation(std::string& name)
 
 void arc::ShaderProgram::setVertexAttribute(int location, int size, int type, bool normalize, int stride, int offset) {
     checkManaged();
-    glVertexAttribPointer(location, size, type, normalize ? GL_TRUE : GL_FALSE, stride, &offset);
+    glVertexAttribPointer(location, size, type, normalize ? GL_TRUE : GL_FALSE, stride, (void*) offset);
 }
 
 void arc::ShaderProgram::begin() {

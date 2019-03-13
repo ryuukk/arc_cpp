@@ -10,13 +10,13 @@ namespace arc
     public:
         VertexAttribute(int usage, int numComponents, int type, bool normalized, std::string aliass, int unit = 0);
         VertexAttribute(int usage, int numComponents, std::string aliass, int unit = 0);
-        int usage;
-        int numComponents;
-        bool normalized;
-        int type;
+        int usage = 0;
+        int numComponents = 0;
+        bool normalized = false;
+        int type = 0;
         int offset = 0;
         std::string aliass;
-        int unit;
+        int unit = 0;
 
         int getKey();
         int getSizeInBytes();
@@ -36,6 +36,6 @@ namespace arc
         int calculateOffsets();
 
         std::vector<VertexAttribute> _attributes;
-        unsigned long _mask;
+        unsigned long _mask = 0;
     };
 }
