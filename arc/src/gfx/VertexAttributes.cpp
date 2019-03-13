@@ -16,7 +16,7 @@ int arc::VertexAttributes::size()
     return _attributes.size();
 }
 
-arc::VertexAttribute arc::VertexAttributes::get(int index)
+arc::VertexAttribute& arc::VertexAttributes::get(int index)
 {
     return _attributes[index];
 }

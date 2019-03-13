@@ -29,7 +29,7 @@ namespace arc
     public:
         VertexAttributes(const std::vector<VertexAttribute>& attributes);
         int size();
-        VertexAttribute get(int index);
+        VertexAttribute& get(int index);
 
         int vertexSize;
     private:
