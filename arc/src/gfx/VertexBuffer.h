@@ -24,6 +24,12 @@ namespace arc
     {
     public:
         VertexBuffer(bool isStatic, int numVertices, VertexAttributes& attributes);
+        ~VertexBuffer()
+        {
+            glBindBuffer(GL_ARRAY_BUFFER, 0);
+            glDeleteBuffers(1, &_bufferHandle);
+            glDeleteVertexArrays(1, &_vaoHandle);
+        }
         int getNumVertices();
         int getNumMaxVertices();
         void setVertices(std::vector<float> vertices, int offset, int count);
