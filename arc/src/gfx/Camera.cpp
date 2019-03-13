@@ -38,7 +38,7 @@ void arc::Camera::rotate(Vec3 axis, float angle) {
 void arc::PerspectiveCamera::update(bool updateFrustrum) {
 
     float aspect = viewportWidth / viewportHeight;
-    Mat4 test = mat4_createProjection(std::fabs(near), std::fabs(far), fieldOfView, aspect);
-    view = mat4_createLookAt(position, position + direction, up);
+    projection = Mat4::createProjection(std::fabs(nearr), std::fabs(farr), fieldOfView, aspect);
+    view = Mat4::createLookAt(position, position + direction, up);
     combined = projection * view;
 }

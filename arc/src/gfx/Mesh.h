@@ -11,8 +11,7 @@ namespace arc
     class Mesh
     {
     public:
-        Mesh(bool isStatic, int maxVertices, int maxIndices, VertexAttributes& attributes);
-        Mesh(bool isStatic, int maxVertices, int maxIndices, VertexAttribute& attributes...);
+        Mesh(bool isStatic, int maxVertices, int maxIndices,const VertexAttributes& attributes);
         ~Mesh()
         {
             delete _vertices;

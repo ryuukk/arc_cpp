@@ -1,18 +1,24 @@
 #pragma once
+
 #include <glad/glad.h>
+
 #define GLFW_INCLUDE_NONE
+
 #include <GLFW/glfw3.h>
 #include "Configuration.h"
 #include "Core.h"
 
 namespace arc {
-    enum HdpiMode {
+    enum HdpiMode
+    {
         Logical,
         Pixels
     };
 
     class IApp;
-    class Graphics {
+
+    class Graphics
+    {
     public:
         Graphics(IApp *app, Configuration &configuration) : _app(app), _config(configuration) {
         }
@@ -23,14 +29,14 @@ namespace arc {
 
         void updateBackbufferInfo();
 
-        bool isInitialized()
-        {
+        bool isInitialized() {
             return _initialized;
         }
-        bool isIconified()
-        {
+
+        bool isIconified() {
             return _iconified;
         }
+
         bool shouldClose() {
 
             return glfwWindowShouldClose(_window) == 1;
@@ -42,6 +48,22 @@ namespace arc {
 
         int fps() {
             return _fps;
+        }
+
+        float getWidth() {
+            if (_hdpiMode == arc::HdpiMode::Pixels) {
+                return _backBufferWidth;
+            } else {
+                return _logicalWidth;
+            }
+        }
+
+        float getHeight() {
+            if (_hdpiMode == arc::HdpiMode::Pixels) {
+                return _backBufferHeight;
+            } else {
+                return _logicalHeight;
+            }
         }
 
         GLFWwindow *windowHandle() {

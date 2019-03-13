@@ -5,8 +5,8 @@
 #include "VertexBuffer.h"
 
 
-arc::VertexAttributes::VertexAttributes(VertexAttribute &attribute...) {
-    _attributes = {attribute};
+arc::VertexAttributes::VertexAttributes(const std::vector<VertexAttribute>& attributes) {
+    _attributes = attributes;
 
     vertexSize = calculateOffsets();
 }
@@ -25,7 +25,7 @@ int arc::VertexAttributes::calculateOffsets() {
 
     int count = 0;
     for (int i = 0; i < _attributes.size(); i++) {
-        auto attribute = _attributes[i];
+        auto& attribute = _attributes[i];
         attribute.offset = count;
         count += attribute.getSizeInBytes();
     }

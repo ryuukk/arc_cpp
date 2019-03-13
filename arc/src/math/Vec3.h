@@ -1,5 +1,3 @@
-#include <cmath>
-
 #pragma once
 
 #include <cmath>

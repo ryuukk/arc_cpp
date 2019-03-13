@@ -2,9 +2,13 @@
 
 namespace arc
 {
-    float FLOAT_ROUNDING_ERROR = 0.000001f;
-    float PI = 3.1415927f;
-    float PI2 = PI * 2;
-    float DEG2RAD = PI / 180.0f;
-    float RAD2DEG = 180.0f / PI;
+    class Mathf
+    {
+    public:
+        static float FLOAT_ROUNDING_ERROR() { return  0.000001f;}
+        static float PI() { return  3.1415927f;}
+        static float PI2() { return  PI() * 2;}
+        static float DEG2RAD() { return  PI() / 180.0f;}
+        static float RAD2DEG() { return  180.0f / PI();}
+    };
 }

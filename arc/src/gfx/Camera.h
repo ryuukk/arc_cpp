@@ -17,8 +17,8 @@ namespace arc
         Mat4 combined = {};
         Mat4 invProjectionView = {};
 
-        float near = 1.0f;
-        float far = 100.0f;
+        float nearr = 1.0f;
+        float farr = 100.0f;
 
         float viewportWidth = 0.0f;
         float viewportHeight = 0.0f;

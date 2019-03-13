@@ -211,3 +211,27 @@ void arc::ShaderProgram::end() {
 }
 
 
+int arc::ShaderProgram::fetchUniformLocation(const std::string &name, bool pedantic)
+{
+    int location = -2;
+
+    if (_uniforms.find(name) == _uniforms.end()) {
+        location = -2;
+    } else {
+        location =  glGetUniformLocation(_program, name.c_str());
+        if(location == -1 && pedantic)
+            throw std::runtime_error("no uniform with name %s in shader"); // todo: figure out exceptions in c++
+            _uniforms[name] = location;
+    }
+    return location;
+}
+
+void arc::ShaderProgram::setUniformMat4(const std::string &name, arc::Mat4 value, bool transpose)
+{
+    checkManaged();
+    int location = fetchUniformLocation(name, true); // todo: change once static pedantic bool added
+
+    glUniformMatrix4fv(location, 1, transpose, value.data);
+}
+
+

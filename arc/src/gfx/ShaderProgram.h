@@ -3,6 +3,7 @@
 #include <string>
 #include <unordered_map>
 #include <vector>
+#include "../math/Mat4.h"
 
 namespace arc {
     enum ShaderType
@@ -21,6 +22,11 @@ namespace arc {
         void setVertexAttribute(int location, int size, int type, bool normalize, int stride, int offset);
         void begin();
         void end();
+
+        int fetchUniformLocation(const std::string& name, bool pedantic);
+
+        void setUniformMat4(const std::string &name, Mat4 value, bool transpose = false);
+
         std::string log;
     private:
         bool _isCompiled = false;

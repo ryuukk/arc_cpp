@@ -27,7 +27,7 @@ namespace arc
     class VertexAttributes
     {
     public:
-        VertexAttributes(VertexAttribute &attribute...);
+        VertexAttributes(const std::vector<VertexAttribute>& attributes);
         int size();
         VertexAttribute get(int index);
 
