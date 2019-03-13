@@ -3,6 +3,7 @@
 #include <cmath>
 #include "Mathf.h"
 #include "Vec3.h"
+#include "Quat.h"
 
 namespace arc
 {
@@ -85,6 +86,63 @@ namespace arc
             data[M31] = 0.f;
             data[M32] = 0.f;
             data[M33] = 1.f;
+        }
+
+        void set(float translationX, float translationY, float translationZ, float quaternionX, float quaternionY, float quaternionZ,
+                 float quaternionW)
+        {
+            float xs = quaternionX * 2.0f, ys = quaternionY * 2.0f, zs = quaternionZ * 2.0f;
+            float wx = quaternionW * xs, wy = quaternionW * ys, wz = quaternionW * zs;
+            float xx = quaternionX * xs, xy = quaternionX * ys, xz = quaternionX * zs;
+            float yy = quaternionY * ys, yz = quaternionY * zs, zz = quaternionZ * zs;
+
+            data[M00] = (1.0f - (yy + zz));
+            data[M01] = (xy - wz);
+            data[M02] = (xz + wy);
+            data[M03] = translationX;
+
+            data[M10] = (xy + wz);
+            data[M11] = (1.0f - (xx + zz));
+            data[M12] = (yz - wx);
+            data[M13] = translationY;
+
+            data[M20] = (xz - wy);
+            data[M21] = (yz + wx);
+            data[M22] = (1.0f - (xx + yy));
+            data[M23] = translationZ;
+
+            data[M30] = 0.0f;
+            data[M31] = 0.0f;
+            data[M32] = 0.0f;
+            data[M33] = 1.0f;
+        }
+
+        void set(Vec3 translation, Quat quat)
+        {
+            float xs = quat.x * 2.0f, ys = quat.y * 2.0f, zs = quat.z * 2.0f;
+            float wx = quat.w * xs, wy = quat.w * ys, wz = quat.w * zs;
+            float xx = quat.x * xs, xy = quat.x * ys, xz = quat.x * zs;
+            float yy = quat.y * ys, yz = quat.y * zs, zz = quat.z * zs;
+
+            data[M00] = (1.0f - (yy + zz));
+            data[M01] = (xy - wz);
+            data[M02] = (xz + wy);
+            data[M03] = translation.x();
+
+            data[M10] = (xy + wz);
+            data[M11] = (1.0f - (xx + zz));
+            data[M12] = (yz - wx);
+            data[M13] = translation.y();
+
+            data[M20] = (xz - wy);
+            data[M21] = (yz + wx);
+            data[M22] = (1.0f - (xx + yy));
+            data[M23] = translation.z();
+
+            data[M30] = 0.0f;
+            data[M31] = 0.0f;
+            data[M32] = 0.0f;
+            data[M33] = 1.0f;
         }
 
         static Mat4 identity()
