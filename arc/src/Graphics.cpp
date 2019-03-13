@@ -2,6 +2,23 @@
 #include <chrono>
 #include "Graphics.h"
 
+
+// GLFWwindow*,int,int
+void onFrameBufferResize(GLFWwindow *window, int width, int height)
+{
+    arc::Core::graphics->updateBackbufferInfo();
+    if (!arc::Core::graphics->isInitialized())
+    {
+        return;
+    }
+    glViewport(0, 0, width, height);
+
+    arc::Core::app->resize(width, height);
+
+    glfwSwapBuffers(window);
+}
+
+
 bool arc::Graphics::createContext()
 {
     if (!glfwInit())
@@ -51,18 +68,37 @@ bool arc::Graphics::createContext()
     glfwShowWindow(_window);
 
 
-    printf("Vendor:    %s", glGetString(GL_VENDOR));
-    printf("Renderer:  %s", glGetString(GL_RENDERER));
-    printf("Version:   %s", glGetString(GL_VERSION));
-    printf("GLSL:      %s", glGetString(GL_SHADING_LANGUAGE_VERSION));
-
     printf("Created window with size: %d %d\n", _config.windowWidth, _config.windowHeight);
 
-    return false;
+    printf("Vendor:    %s\n", glGetString(GL_VENDOR));
+    printf("Renderer:  %s\n", glGetString(GL_RENDERER));
+    printf("Version:   %s\n", glGetString(GL_VERSION));
+    printf("GLSL:      %s\n", glGetString(GL_SHADE_MODEL));
+
+
+    glViewport(0, 0, _width, _height);
+    glfwSetFramebufferSizeCallback(_window, &onFrameBufferResize);
+
+    // cbs
+
+    return true;
 }
 
 void arc::Graphics::update() {
+    if(!_initialized)
+    {
+        _initialized = true;
+        _app->create();
+        _app->resize(_backBufferWidth, _backBufferHeight);
+    }
+    glfwMakeContextCurrent(_window);
 
+    track();
+    _app->render(_deltaTime);
+    _app->update(_deltaTime);
+
+
+    glfwSwapBuffers(_window);
 }
 
 void arc::Graphics::updateBackbufferInfo() {

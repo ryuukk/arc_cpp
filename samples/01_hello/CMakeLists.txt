@@ -1,9 +1,13 @@
 cmake_minimum_required(VERSION 3.13)
 project(hello)
 
+set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/../bin)
+set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/../bin)
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/../bin)
 
 include_directories("../../arc/src")
-include_directories("../../libs/glad/src")
+include_directories("../../libs/glad/include")
+include_directories("../../libs/glfw/include")
 
 
 #Bring the headers, such as Student.h into the project
@@ -17,4 +21,4 @@ file(GLOB SOURCES "src/*.cpp")
 
 add_executable(hello ${SOURCES})
 
-target_link_libraries(hello glad arc)
+target_link_libraries(hello opengl32 glad glfw arc)

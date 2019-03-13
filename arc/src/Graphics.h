@@ -10,16 +10,47 @@ namespace arc {
         Pixels
     };
 
+    class IApp;
     class Graphics {
     public:
-        Graphics(arc::IApp app, arc::Configuration configuration)
-        {
-            _app = app;
-            _config = configuration;
+        Graphics(IApp *app, Configuration &configuration) : _app(app), _config(configuration) {
         }
 
         bool createContext();
+
         void update();
+
+        void updateBackbufferInfo();
+
+        bool isInitialized()
+        {
+            return _initialized;
+        }
+        bool isIconified()
+        {
+            return _iconified;
+        }
+        bool shouldClose() {
+
+            return glfwWindowShouldClose(_window) == 1;
+        }
+
+        float deltaTime() {
+            return _deltaTime;
+        }
+
+        int fps() {
+            return _fps;
+        }
+
+        GLFWwindow *windowHandle() {
+            return _window;
+        }
+
+        IApp *getApp() {
+            return _app;
+        }
+
     private:
         GLFWwindow *_window;
         int _width = 1280;
@@ -29,7 +60,7 @@ namespace arc {
         int _logicalWidth;
         int _logicalHeight;
 
-        HdpiMode _hdpiMode = arc::HdpiMode::Logical;
+        HdpiMode _hdpiMode = HdpiMode::Logical;
 
         bool _iconified = false;
         long _lastFrameTime = -1;
@@ -39,12 +70,14 @@ namespace arc {
         int _frames = 0;
         int _fps = 0;
 
-        arc::IApp _app;
-        arc::Configuration _config;
+        IApp *_app;
+        Configuration _config;
 
         bool _initialized;
 
-        void updateBackbufferInfo();
+
         void track();
+
+        //void onFrameBufferResize(GLFWwindow* window, int width, int height);
     };
 }
