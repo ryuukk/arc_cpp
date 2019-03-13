@@ -1,5 +1,6 @@
 
 #include <chrono>
+#include <glad/glad.h>
 #include "Graphics.h"
 
 
@@ -39,7 +40,6 @@ bool arc::Graphics::createContext()
         glfwTerminate();
         return false;
     }
-    printf("Created window with size: %d %d\n", _config.windowWidth, _config.windowHeight);
 
     if (_config.windowX == -1 && _config.windowY == -1)
     {
@@ -61,6 +61,12 @@ bool arc::Graphics::createContext()
     glfwSwapInterval(_config.vsync ? 1 : 0);
 
     updateBackbufferInfo();
+
+    if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
+    {
+        printf("Failed to initialize GLAD\n");
+        return false;
+    }
 
     // delay window opening to avoid positioning glitch and white window
     glClearColor(0.0f,0.0f,0.0f,1.0f);

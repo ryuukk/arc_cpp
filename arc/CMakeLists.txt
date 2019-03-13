@@ -1,7 +1,5 @@
 cmake_minimum_required(VERSION 3.13)
 project(arc)
-set(CMAKE_BUILD_TYPE Release)
-
 
 include_directories("../../arc/src")
 include_directories("../../libs/glad/include/")
@@ -14,7 +12,7 @@ include_directories(include)
 file(GLOB SOURCES "src/*")
 
 #Generate the shared library from the sources
-add_library(arc STATIC ${SOURCES} src/Input.cpp src/Input.h)
+add_library(arc STATIC ${SOURCES})
 
 target_link_libraries(arc opengl32 glad glfw)
 
