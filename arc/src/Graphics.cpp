@@ -1,6 +1,4 @@
-
 #include <chrono>
-#include <glad/glad.h>
 #include "Graphics.h"
 
 

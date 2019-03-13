@@ -9,10 +9,10 @@ include_directories("../../libs/glfw/include/")
 include_directories(include)
 
 #However, the file(GLOB...) allows for wildcard additions:
-file(GLOB SOURCES "src/*")
+file(GLOB_RECURSE SOURCES src/*.cpp src/*.h)
 
 #Generate the shared library from the sources
-add_library(arc STATIC ${SOURCES})
+add_library(arc STATIC ${SOURCES} src/gfx/VertexBuffer.cpp src/gfx/VertexBuffer.h)
 
 target_link_libraries(arc opengl32 glad glfw)
 

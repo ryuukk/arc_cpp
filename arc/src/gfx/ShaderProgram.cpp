@@ -55,8 +55,8 @@ int arc::ShaderProgram::loadShader(arc::ShaderType shaderType, std::string &sour
         auto *msgBuffer = new char[logLen];
         glGetShaderInfoLog(shader, logLen, NULL, &msgBuffer[0]);
 
-        _log.append(shaderType == ShaderType::Vertex ? "Vertex Shader\n" : "Fragment Shader\n");
-        _log.append(std::string(msgBuffer));
+        log.append(shaderType == ShaderType::Vertex ? "Vertex Shader\n" : "Fragment Shader\n");
+        log.append(std::string(msgBuffer));
 
         delete[] msgBuffer;
 
@@ -87,7 +87,7 @@ int arc::ShaderProgram::linkProgram(int program) {
         GLchar *msgBuffer = new char[logLen];
         glGetProgramInfoLog(program, logLen, NULL, &msgBuffer[0]);
 
-        _log.append(msgBuffer);
+        log.append(msgBuffer);
 
         delete[] msgBuffer;
 
@@ -174,4 +174,40 @@ void arc::ShaderProgram::checkManaged() {
         _invalidated = false;
     }
 }
+
+void arc::ShaderProgram::disableVertexAttribute(int location)
+{
+    checkManaged();
+    glDisableVertexAttribArray(location);
+}
+void arc::ShaderProgram::enableVertexAttribute(int location)
+{
+    checkManaged();
+    glEnableVertexAttribArray(location);
+}
+
+int arc::ShaderProgram::getAttributeLocation(std::string& name)
+{
+    if (_attributes.find(name) == _attributes.end()) {
+        return -1;
+    } else {
+        return _attributes[name];
+    }
+}
+
+void arc::ShaderProgram::setVertexAttribute(int location, int size, int type, bool normalize, int stride, int offset) {
+    checkManaged();
+    glVertexAttribPointer(location, size, type, normalize ? GL_TRUE : GL_FALSE, stride, &offset);
+}
+
+void arc::ShaderProgram::begin() {
+    checkManaged();
+
+    glUseProgram(_program);
+}
+
+void arc::ShaderProgram::end() {
+    glUseProgram(0);
+}
+
 

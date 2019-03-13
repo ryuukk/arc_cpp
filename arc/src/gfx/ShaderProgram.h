@@ -15,10 +15,15 @@ namespace arc {
     {
     public:
         ShaderProgram(std::string &vs, std::string &fs);
-
+        void disableVertexAttribute(int location);
+        void enableVertexAttribute(int location);
+        int getAttributeLocation(std::string& name);
+        void setVertexAttribute(int location, int size, int type, bool normalize, int stride, int offset);
+        void begin();
+        void end();
+        std::string log;
     private:
-        std::string _log;
-        bool _isCompiled;
+        bool _isCompiled = false;
 
         std::unordered_map<std::string, int> _uniforms;
         std::unordered_map<std::string, int> _uniformTypes;
@@ -36,8 +41,8 @@ namespace arc {
         std::string _vertexShaderSource;
         std::string _fragmentShaderSource;
 
-        bool _invalidated;
-        int _refCount;
+        bool _invalidated = false;
+        int _refCount = 0;
 
         void compileShaders(std::string &vertexShader, std::string &fragmentShader);
 

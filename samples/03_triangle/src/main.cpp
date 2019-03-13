@@ -4,7 +4,8 @@
 #include <Configuration.h>
 #include <Engine.h>
 
-#include <ShaderProgram.h>
+#include <gfx/ShaderProgram.h>
+#include <gfx/Mesh.h>
 
 class MyGame : public arc::IApp
 {
@@ -31,10 +32,31 @@ void main()
 }
 )";
 
-    arc::ShaderProgram *shader;
+    arc::ShaderProgram *_shader;
+    arc::Mesh *_mesh;
 
     void create() override {
-        shader = new arc::ShaderProgram(vs, fs);
+
+        auto attributes = arc::VertexAttribute(arc::VertexUsage::Position, 3, "a_position");
+        _mesh = new arc::Mesh(true, 3, 3, attributes);
+
+        std::vector<float> vertices = {
+                -1.0f, -1.0f, 0.0f,
+                1.0f, -1.0f, 0.0f,
+                0.0f,  1.0f, 0.0f,
+        };
+
+        std::vector<short> indices = {
+                0, 1, 2,
+        };
+
+        _mesh->setVertices(vertices);
+        _mesh->setIndices(indices);
+
+
+        _shader = new arc::ShaderProgram(vs, fs);
+
+        printf("Shader Log: %s\n", _shader->log.c_str());
     }
 
     void update(float dt) override {
@@ -44,6 +66,12 @@ void main()
     void render(float dt) override {
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
+
+        _shader->begin();
+
+        _mesh->render(_shader, GL_TRIANGLES);
+
+        _shader->end();
     }
 
     void resize(int width, int height) override {
@@ -51,7 +79,8 @@ void main()
     }
 
     void dispose() override {
-        delete shader;
+        delete _mesh;
+        delete _shader;
     }
 
 };
