@@ -9,7 +9,7 @@ include_directories("../../libs/glfw/include/")
 include_directories(include)
 
 #However, the file(GLOB...) allows for wildcard additions:
-file(GLOB_RECURSE SOURCES src/*.cpp src/*.h)
+file(GLOB_RECURSE SOURCES src/*.cpp src/*.c src/*.h)
 
 #Generate the shared library from the sources
 add_library(arc STATIC ${SOURCES} src/gfx/VertexBuffer.cpp src/gfx/VertexBuffer.h)
