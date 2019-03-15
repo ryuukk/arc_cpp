@@ -22,7 +22,7 @@ namespace arc
         std::vector<ModelNode*> nodes;
         std::vector<ModelAnimation*> animations;
 
-        static ModelData load(std::string& path);
+        static ModelData load(const std::string& path);
 
         static void parseMeshes(ModelData& data, json11::Json& json);
 

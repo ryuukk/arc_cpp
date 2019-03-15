@@ -4,7 +4,7 @@
 #include "../../utils/json11.hpp"
 #include "../../utils/DirUtils.h"
 
-arc::ModelData arc::ModelData::load(std::string& path) {
+arc::ModelData arc::ModelData::load(const std::string& path) {
 
     std::ifstream file(path);
     std::string str;
