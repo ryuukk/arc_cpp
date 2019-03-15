@@ -18,9 +18,9 @@ namespace arc
     public:
         std::string id;
         std::vector<ModelMesh> meshes;
-        std::vector<ModelMaterial*> materials;
-        std::vector<ModelNode*> nodes;
-        std::vector<ModelAnimation*> animations;
+        std::vector<ModelMaterial> materials;
+        std::vector<ModelNode> nodes;
+        std::vector<ModelAnimation> animations;
 
         static ModelData load(const std::string& path);
 
@@ -30,7 +30,7 @@ namespace arc
 
         static void parseNodes(ModelData& data, json11::Json& json);
 
-        static ModelNode* parseNodesRecursively(json11::Json& json);
+        static ModelNode parseNodesRecursively(json11::Json& json);
 
         static void parseMaterials(ModelData& data, json11::Json& json, const std::string& matPath);
 

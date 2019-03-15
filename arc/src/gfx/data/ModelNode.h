@@ -16,8 +16,8 @@ namespace arc
         Quat rotation = Quat::identity();
         Vec3 scale = Vec3(1, 1, 1);
         std::string meshId;
-        std::vector<ModelNodePart*> parts;
-        std::vector<ModelNode*> children;
+        std::vector<ModelNodePart> parts;
+        std::vector<ModelNode> children;
     };
 }
 

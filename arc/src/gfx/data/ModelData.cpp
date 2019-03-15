@@ -85,29 +85,29 @@ void arc::ModelData::parseNodes(arc::ModelData& data, json11::Json& json) {
     }
 }
 
-arc::ModelNode* arc::ModelData::parseNodesRecursively(json11::Json& json) {
-    ModelNode* jsonNode = new ModelNode();
-    jsonNode->id = json["id"].string_value();
+arc::ModelNode arc::ModelData::parseNodesRecursively(json11::Json& json) {
+    ModelNode jsonNode;
+    jsonNode.id = json["id"].string_value();
 
-    jsonNode->translation = json["translation"].is_null() ? Vec3{0, 0, 0} : parseVec3(json["translation"]);
-    jsonNode->scale = json["scale"].is_null() ? Vec3{1, 1, 1} : parseVec3(json["scale"]);
-    jsonNode->rotation = json["rotation"].is_null() ? Quat::identity() : parseQuat(json["rotation"]);
+    jsonNode.translation = json["translation"].is_null() ? Vec3{0, 0, 0} : parseVec3(json["translation"]);
+    jsonNode.scale = json["scale"].is_null() ? Vec3{1, 1, 1} : parseVec3(json["scale"]);
+    jsonNode.rotation = json["rotation"].is_null() ? Quat::identity() : parseQuat(json["rotation"]);
 
-    jsonNode->meshId = json["mesh"].string_value();
+    jsonNode.meshId = json["mesh"].string_value();
 
     if (!json["parts"].is_null()) {
         auto parts = json["parts"].array_items();
-        jsonNode->parts.resize(parts.size());
+        jsonNode.parts.resize(parts.size());
         for (int i = 0; i < parts.size(); ++i) {
             auto material = parts[i];
-            ModelNodePart* nodePart = new ModelNodePart();
+            ModelNodePart nodePart;
 
-            nodePart->meshPartId = material["meshpartid"].string_value();
-            nodePart->materialId = material["materialid"].string_value();
+            nodePart.meshPartId = material["meshpartid"].string_value();
+            nodePart.materialId = material["materialid"].string_value();
 
             if (!material["bones"].is_null()) {
                 auto bones = material["bones"].array_items();
-                nodePart->bones.resize(bones.size());
+                nodePart.bones.resize(bones.size());
                 for (int j = 0; j < bones.size(); ++j) {
                     auto bone = bones[j];
                     std::string nodeId = bone["node"].string_value();
@@ -120,21 +120,21 @@ arc::ModelNode* arc::ModelData::parseNodesRecursively(json11::Json& json) {
 
                     transform.set(translation, rotation, scale);
 
-                    nodePart->bones[j] = {nodeId, transform};
+                    nodePart.bones[j] = {nodeId, transform};
                     //nodePart->bones[j] = std::pair(nodeId, transform);
                     //nodePart->bones.emplace_back(std::pair(nodeId, transform));
                 }
             }
 
-            jsonNode->parts[i] = nodePart;
+            jsonNode.parts[i] = nodePart;
         }
     }
 
     if (!json["children"].is_null()) {
         auto children = json["children"].array_items();
-        jsonNode->children.resize(children.size());
+        jsonNode.children.resize(children.size());
         for (int i = 0; i < children.size(); ++i) {
-            jsonNode->children[i] = parseNodesRecursively(children[i]);
+            jsonNode.children[i] = parseNodesRecursively(children[i]);
         }
     }
 
