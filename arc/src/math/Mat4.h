@@ -145,9 +145,37 @@ namespace arc
             data[M33] = 1.0f;
         }
 
+        Mat4& set(Vec3 translation, Quat rotation, Vec3 scale) {
+            float xs = rotation.x * 2.0f, ys = rotation.y * 2.0f, zs = rotation.z * 2.0f;
+            float wx = rotation.w * xs, wy = rotation.w * ys, wz = rotation.w * zs;
+            float xx = rotation.x * xs, xy = rotation.x * ys, xz = rotation.x * zs;
+            float yy = rotation.y * ys, yz = rotation.y * zs, zz = rotation.z * zs;
+
+            data[M00] = scale.x() * (1.0f - (yy + zz));
+            data[M01] = scale.y() * (xy - wz);
+            data[M02] = scale.z() * (xz + wy);
+            data[M03] = translation.x();
+
+            data[M10] = scale.x() * (xy + wz);
+            data[M11] = scale.y() * (1.0f - (xx + zz));
+            data[M12] = scale.z() * (yz - wx);
+            data[M13] = translation.y();
+
+            data[M20] = scale.x() * (xz - wy);
+            data[M21] = scale.y() * (yz + wx);
+            data[M22] = scale.z() * (1.0f - (xx + yy));
+            data[M23] = translation.z();
+
+            data[M30] = 0.0f;
+            data[M31] = 0.0f;
+            data[M32] = 0.0f;
+            data[M33] = 1.0f;
+            return *this;
+        }
+
         static Mat4 identity()
         {
-            auto ret = Mat4();
+            Mat4 ret = Mat4();
             ret.data[M00] = 1.f;
             ret.data[M01] = 0.f;
             ret.data[M02] = 0.f;

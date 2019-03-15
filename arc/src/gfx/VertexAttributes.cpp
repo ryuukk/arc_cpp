@@ -92,3 +92,38 @@ arc::VertexAttribute::VertexAttribute(int usage, int numComponents, std::string 
     this->offset = 0;
     this->_usageIndex = numberOfTrailingZeros(usage);
 }
+
+
+arc::VertexAttribute arc::VertexAttribute::position() {
+    return {VertexUsage::Position, 3, "a_position"};
+}
+
+arc::VertexAttribute arc::VertexAttribute::normal() {
+    return {VertexUsage::Normal, 3, "a_normal"};
+}
+
+arc::VertexAttribute arc::VertexAttribute::colorPacked() {
+    return {VertexUsage::ColorPacked, 4, "a_color"};
+}
+
+arc::VertexAttribute arc::VertexAttribute::colorUnpacked() {
+    return {VertexUsage::ColorUnpacked, 4, "a_color"};
+}
+
+arc::VertexAttribute arc::VertexAttribute::tangent() {
+    return {VertexUsage::Tangent, 3, "a_tangent"};
+}
+
+arc::VertexAttribute arc::VertexAttribute::binormal() {
+    return {VertexUsage::BiNormal, 3, "a_binormal"};
+}
+
+
+arc::VertexAttribute arc::VertexAttribute::texCoords(int unit) {
+    return {VertexUsage::TextureCoordinates, 2, std::string("a_texCoord").append(std::to_string(unit)), unit};
+}
+
+
+arc::VertexAttribute arc::VertexAttribute::boneWeight(int unit) {
+    return {VertexUsage::BoneWeight, 2, std::string("a_boneWeight").append(std::to_string(unit)), unit};
+}

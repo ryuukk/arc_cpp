@@ -4,21 +4,16 @@
 
 #include "Camera.h"
 
-void arc::Camera::lookAt(float x, float y, float z)
-{
+void arc::Camera::lookAt(float x, float y, float z) {
     Vec3 a(x, y, z);
     Vec3 tmp = (a - position).nor();
 
-    if(!tmp.isZero())
-    {
+    if (!tmp.isZero()) {
         float dot = tmp.dot(up);
 
-        if(std::fabs(dot - 1.0f) < 0.000000001f)
-        {
+        if (std::fabs(dot - 1.0f) < 0.000000001f) {
             up = direction * -1;
-        }
-        else if(std::fabs(dot + 1) <0.000000001f)
-        {
+        } else if (std::fabs(dot + 1) < 0.000000001f) {
             up = direction;
         }
         direction = tmp;

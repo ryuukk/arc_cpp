@@ -9,8 +9,8 @@ namespace arc
     {
     public:
         Vec3 position = {};
-        Vec3 direction = {0,0,-1};
-        Vec3 up = {0,1,0};
+        Vec3 direction = {0, 0, -1};
+        Vec3 up = {0, 1, 0};
 
         Mat4 projection = {};
         Mat4 view = {};
@@ -26,15 +26,16 @@ namespace arc
         virtual void update(bool updateFrustrum = true) = 0;
 
         void lookAt(float x, float y, float z);
+
         void normalizeUp();
+
         void rotate(Vec3 axis, float angle);
     };
 
     class PerspectiveCamera : public Camera
     {
     public:
-        PerspectiveCamera(float fov, float vw, float vh)
-        {
+        PerspectiveCamera(float fov, float vw, float vh) {
             fieldOfView = fov;
             viewportWidth = vw;
             viewportHeight = vh;
