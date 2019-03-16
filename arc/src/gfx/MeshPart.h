@@ -14,8 +14,8 @@ namespace arc
         int size{};
         Mesh* mesh = nullptr;
 
-        Vec3 center{};
-        Vec3 halfExtents{};
+        Vec3 center{0,0,0};
+        Vec3 halfExtents{0,0,0};
         float radius = 1.0f;
     };
 }

@@ -63,9 +63,9 @@ namespace arc
 
         void setToTranslation(Vec3 position)
         {
-            data[M03] = position.x();
-            data[M13] = position.y();
-            data[M23] = position.z();
+            data[M03] = position.x;
+            data[M13] = position.y;
+            data[M23] = position.z;
         }
 
         void idt()
@@ -127,17 +127,17 @@ namespace arc
             data[M00] = (1.0f - (yy + zz));
             data[M01] = (xy - wz);
             data[M02] = (xz + wy);
-            data[M03] = translation.x();
+            data[M03] = translation.x;
 
             data[M10] = (xy + wz);
             data[M11] = (1.0f - (xx + zz));
             data[M12] = (yz - wx);
-            data[M13] = translation.y();
+            data[M13] = translation.y;
 
             data[M20] = (xz - wy);
             data[M21] = (yz + wx);
             data[M22] = (1.0f - (xx + yy));
-            data[M23] = translation.z();
+            data[M23] = translation.z;
 
             data[M30] = 0.0f;
             data[M31] = 0.0f;
@@ -151,20 +151,20 @@ namespace arc
             float xx = rotation.x * xs, xy = rotation.x * ys, xz = rotation.x * zs;
             float yy = rotation.y * ys, yz = rotation.y * zs, zz = rotation.z * zs;
 
-            data[M00] = scale.x() * (1.0f - (yy + zz));
-            data[M01] = scale.y() * (xy - wz);
-            data[M02] = scale.z() * (xz + wy);
-            data[M03] = translation.x();
+            data[M00] = scale.x * (1.0f - (yy + zz));
+            data[M01] = scale.y * (xy - wz);
+            data[M02] = scale.z * (xz + wy);
+            data[M03] = translation.x;
 
-            data[M10] = scale.x() * (xy + wz);
-            data[M11] = scale.y() * (1.0f - (xx + zz));
-            data[M12] = scale.z() * (yz - wx);
-            data[M13] = translation.y();
+            data[M10] = scale.x * (xy + wz);
+            data[M11] = scale.y * (1.0f - (xx + zz));
+            data[M12] = scale.z * (yz - wx);
+            data[M13] = translation.y;
 
-            data[M20] = scale.x() * (xz - wy);
-            data[M21] = scale.y() * (yz + wx);
-            data[M22] = scale.z() * (1.0f - (xx + yy));
-            data[M23] = translation.z();
+            data[M20] = scale.x * (xz - wy);
+            data[M21] = scale.y * (yz + wx);
+            data[M22] = scale.z * (1.0f - (xx + yy));
+            data[M23] = translation.z;
 
             data[M30] = 0.0f;
             data[M31] = 0.0f;
@@ -225,9 +225,9 @@ namespace arc
         static Mat4 createTranslation(Vec3 position)
         {
             auto ret = identity();
-            ret.data[M03] = position.x();
-            ret.data[M13] = position.y();
-            ret.data[M23] = position.z();
+            ret.data[M03] = position.x;
+            ret.data[M13] = position.y;
+            ret.data[M23] = position.z;
             return ret;
 
         }
@@ -240,15 +240,15 @@ namespace arc
             auto l_vey = l_vex.crs(l_vez).nor();
 
             auto ret = identity();
-            ret.data[M00] = l_vex.x();
-            ret.data[M01] = l_vex.y();
-            ret.data[M02] = l_vex.z();
-            ret.data[M10] = l_vey.x();
-            ret.data[M11] = l_vey.y();
-            ret.data[M12] = l_vey.z();
-            ret.data[M20] = -l_vez.x();
-            ret.data[M21] = -l_vez.y();
-            ret.data[M22] = -l_vez.z();
+            ret.data[M00] = l_vex.x;
+            ret.data[M01] = l_vex.y;
+            ret.data[M02] = l_vex.z;
+            ret.data[M10] = l_vey.x;
+            ret.data[M11] = l_vey.y;
+            ret.data[M12] = l_vey.z;
+            ret.data[M20] = -l_vez.x;
+            ret.data[M21] = -l_vez.y;
+            ret.data[M22] = -l_vez.z;
 
             return ret;
         }

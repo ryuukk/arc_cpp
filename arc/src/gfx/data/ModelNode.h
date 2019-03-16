@@ -12,9 +12,9 @@ namespace arc
     {
     public:
         std::string id;
-        Vec3 translation = Vec3();
+        Vec3 translation{0,0,0};
         Quat rotation = Quat::identity();
-        Vec3 scale = Vec3(1, 1, 1);
+        Vec3 scale{1, 1, 1};
         std::string meshId;
         std::vector<ModelNodePart> parts;
         std::vector<ModelNode> children;

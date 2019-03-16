@@ -8,7 +8,7 @@ namespace arc
     class Camera
     {
     public:
-        Vec3 position = {};
+        Vec3 position = {0,0,0};
         Vec3 direction = {0, 0, -1};
         Vec3 up = {0, 1, 0};
 

@@ -53,7 +53,7 @@ namespace arc {
             float l_sin = std::sin(l_ang / 2);
             float l_cos = std::cos(l_ang / 2);
 
-            return Quat(d * axis.x() * l_sin, d * axis.y() * l_sin, d * axis.z() * l_sin, l_cos).nor();
+            return Quat(d * axis.x * l_sin, d * axis.y * l_sin, d * axis.z * l_sin, l_cos).nor();
         }
 
     };
