@@ -15,8 +15,8 @@ namespace arc
         std::vector<Material> materials;
         std::vector<Node> nodes;
         std::vector<Animation> animations;
-        std::vector<Mesh> meshes;
-        std::vector<MeshPart> meshParts;
+        std::vector<Mesh*> meshes;
+        std::vector<MeshPart*> meshParts;
 
         Model(ModelData& data);
         void calculateTransforms();

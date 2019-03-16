@@ -49,8 +49,9 @@ out vec4 f_color;
 
 void main()
 {
-    vec3 color = texture2D(u_texture, v_texCoord).rgb;
-    f_color = vec4(color, 1.0) * v_color;
+    //vec3 color = texture2D(u_texture, v_texCoord).rgb;
+    //f_color = vec4(color, 1.0) * v_color;
+    f_color = v_color;
 }
 )";
 
@@ -80,7 +81,7 @@ void main()
     void update(float dt) override {
 
         _a += 0.016f;
-        _transform.set({0, 0, 0}, arc::Quat::fromAxis({0.5, 1, 0.5}, _a));
+        _transform.set({0, 0, 0}, arc::Quat::fromAxis({0, 1, 0}, _a));
         _cam->update();
     }
 
@@ -95,9 +96,9 @@ void main()
         _shader->setUniformMat4("u_view", _cam->view);
         _shader->setUniformMat4("u_world", _transform);
 
-        for(auto& mesh : _model->meshes)
+        for(auto* mesh : _model->meshes)
         {
-            mesh.render(_shader, GL_TRIANGLES);
+            mesh->render(_shader, GL_TRIANGLES);
         }
 
 

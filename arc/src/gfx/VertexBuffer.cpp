@@ -1,10 +1,10 @@
 #include "VertexBuffer.h"
 
-arc::VertexBuffer::VertexBuffer(bool isStatic, int numVertices, const VertexAttributes& attributes)
+arc::VertexBuffer::VertexBuffer(bool isStatic, int numVertices, VertexAttributes* attributes)
 {
     _attributes = attributes;
     _isStatic = isStatic;
-    _vertices.resize(numVertices * (attributes.vertexSize / 4));
+    _vertices.resize(numVertices * (_attributes->vertexSize / 4));
 
     glGenBuffers(1, &_bufferHandle);
 
@@ -14,11 +14,11 @@ arc::VertexBuffer::VertexBuffer(bool isStatic, int numVertices, const VertexAttr
 }
 
 int arc::VertexBuffer::getNumVertices() {
-    return _vertices.size() / (_attributes.vertexSize / 4);
+    return _vertices.size() / (_attributes->vertexSize / 4);
 }
 
 int arc::VertexBuffer::getNumMaxVertices() {
-    return _vertices.size() / (_attributes.vertexSize / 4);
+    return _vertices.size() / (_attributes->vertexSize / 4);
 }
 
 void arc::VertexBuffer::setVertices(std::vector<float> vertices, int offset, int count) {
@@ -64,7 +64,7 @@ void arc::VertexBuffer::bufferChanged() {
 void arc::VertexBuffer::bindAttributes(ShaderProgram *shader, std::vector<int> *locations) {
 
     bool stillValid = !_cachedLocations.empty();
-    int numAttributes = _attributes.size();
+    int numAttributes = _attributes->size();
 
     if (stillValid)
     {
@@ -72,7 +72,7 @@ void arc::VertexBuffer::bindAttributes(ShaderProgram *shader, std::vector<int> *
         {
             for (int i = 0; stillValid && i < numAttributes; i++)
             {
-                VertexAttribute attribute = _attributes.get(i);
+                VertexAttribute attribute = _attributes->get(i);
                 int location = shader->getAttributeLocation(attribute.aliass);
                 stillValid = location == _cachedLocations[i];
             }
@@ -99,7 +99,7 @@ void arc::VertexBuffer::bindAttributes(ShaderProgram *shader, std::vector<int> *
 
         for (int i = 0; i < numAttributes; i++)
         {
-            VertexAttribute attribute = _attributes.get(i);
+            VertexAttribute attribute = _attributes->get(i);
             if (locations == nullptr)
             {
                 int l = shader->getAttributeLocation(attribute.aliass);
@@ -123,7 +123,7 @@ void arc::VertexBuffer::bindAttributes(ShaderProgram *shader, std::vector<int> *
             }
 
             shader->enableVertexAttribute(location);
-            shader->setVertexAttribute(location, attribute.numComponents, attribute.type, attribute.normalized, _attributes.vertexSize, attribute.offset);
+            shader->setVertexAttribute(location, attribute.numComponents, attribute.type, attribute.normalized, _attributes->vertexSize, attribute.offset);
         }
     }
 }
@@ -135,7 +135,7 @@ void arc::VertexBuffer::unbindAttributes(ShaderProgram* shader) {
         return;
     }
 
-    int numAttributes = _attributes.size();
+    int numAttributes = _attributes->size();
     for (int i = 0; i < numAttributes; i++)
     {
         int location = _cachedLocations[i];

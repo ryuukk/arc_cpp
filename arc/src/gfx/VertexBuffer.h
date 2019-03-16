@@ -23,7 +23,7 @@ namespace arc
     class VertexBuffer
     {
     public:
-        VertexBuffer(bool isStatic, int numVertices, const VertexAttributes& attributes);
+        VertexBuffer(bool isStatic, int numVertices, VertexAttributes* attributes);
         ~VertexBuffer()
         {
             glBindBuffer(GL_ARRAY_BUFFER, 0);
@@ -43,7 +43,7 @@ namespace arc
         void bindData();
         void createVAO();
     private:
-        VertexAttributes _attributes;
+        VertexAttributes* _attributes;
         GLuint _bufferHandle;
         bool _isStatic = false;
         int _usage = 0;

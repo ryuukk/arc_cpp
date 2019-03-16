@@ -21,13 +21,13 @@ void arc::Model::convertMesh(arc::ModelMesh& modelMesh) {
 
     bool hasIndices = numIndices > 0;
 
-    VertexAttributes attributes = VertexAttributes(modelMesh.attributes);
-    int numVertices = (int) modelMesh.vertices.size() / (attributes.vertexSize / 4);
+    auto* attributes = new VertexAttributes(modelMesh.attributes);
+    int numVertices = (int) modelMesh.vertices.size() / (attributes->vertexSize / 4);
 
-    Mesh mesh = Mesh(true, numVertices, numIndices, attributes);
+    auto* mesh = new Mesh(true, numVertices, numIndices, attributes);
     meshes.emplace_back(mesh);
 
-    mesh.setVertices(modelMesh.vertices);
+    mesh->setVertices(modelMesh.vertices);
 
     std::vector<short> indices;
     int offset = 0;
@@ -36,22 +36,22 @@ void arc::Model::convertMesh(arc::ModelMesh& modelMesh) {
     for (int i = 0; i < modelMesh.parts.size(); ++i) {
         ModelMeshPart part = modelMesh.parts[i];
 
-        MeshPart meshPart;
-        meshPart.id = part.id;
-        meshPart.primitiveType = part.primitiveType;
-        meshPart.offset = offset;
-        meshPart.size = hasIndices ? part.indices.size() : numVertices;
-        meshPart.mesh = &mesh;
+        auto* meshPart = new MeshPart;
+        meshPart->id = part.id;
+        meshPart->primitiveType = part.primitiveType;
+        meshPart->offset = offset;
+        meshPart->size = hasIndices ? part.indices.size() : numVertices;
+        meshPart->mesh = mesh;
         if(hasIndices)
             indices.insert(std::end(indices), std::begin(part.indices), std::end(part.indices));
 
 
-        offset += meshPart.size;
+        offset += meshPart->size;
 
         meshParts[i] = meshPart;
     }
 
-    mesh.setIndices(indices);
+    mesh->setIndices(indices);
     for(auto& part : meshParts)
     {
         // todo: update bounding box

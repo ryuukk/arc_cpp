@@ -12,11 +12,12 @@ namespace arc
     class Mesh
     {
     public:
-        Mesh(bool isStatic, int maxVertices, int maxIndices, const VertexAttributes& attributes);
+        Mesh(bool isStatic, int maxVertices, int maxIndices, VertexAttributes* attributes);
 
         ~Mesh() {
             delete _vertices;
             delete _indices;
+            delete _attributes;
         }
 
         void bind(ShaderProgram* shader, std::vector<int>* locations);
@@ -35,6 +36,6 @@ namespace arc
     private:
         VertexBuffer* _vertices;
         IndexBuffer* _indices;
-        VertexAttributes _attributes;
+        VertexAttributes* _attributes;
     };
 }
