@@ -3,16 +3,11 @@
 #include "ModelData.h"
 #include "../../utils/json11.hpp"
 #include "../../utils/DirUtils.h"
+#include "../../utils/FileUtils.h"
 
 arc::ModelData arc::ModelData::load(const std::string& path) {
 
-    std::ifstream file(path);
-    std::string str;
-    std::string file_contents;
-    while (std::getline(file, str)) {
-        file_contents += str;
-        file_contents.push_back('\n');
-    }
+    std::string file_contents = arc::readFile(path);
 
     std::string error;
     auto json = json11::Json::parse(file_contents, error, json11::JsonParse::COMMENTS);
