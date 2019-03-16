@@ -18,31 +18,39 @@ class MyGame : public arc::IApp
 
 in vec3 a_position;
 in vec3 a_normal;
+in vec4 a_color;
+in vec2 a_texCoord0;
 
 uniform mat4 u_proj;
 uniform mat4 u_view;
 uniform mat4 u_world;
 
-out vec3 v_normal;
+out vec4 v_color;
+out vec2 v_texCoord;
 
 void main()
 {
     gl_Position = u_proj * u_view * u_world * vec4(a_position, 1.0);
 
-    v_normal = a_normal;
+    v_color = a_color;
+    v_texCoord = a_texCoord0;
 }
 )";
 
     std::string fs = R"(
 #version 330
 
-in vec3 v_normal;
+in vec4 v_color;
+in vec2 v_texCoord;
+
+uniform sampler2D u_texture;
 
 out vec4 f_color;
 
 void main()
 {
-	f_color = vec4(1.0, 1.0, 1.0, 1.0) * vec4(v_normal, 1.0);
+    vec3 color = texture2D(u_texture, v_texCoord).rgb;
+    f_color = vec4(color, 1.0) * v_color;
 }
 )";
 
@@ -86,6 +94,11 @@ void main()
         _shader->setUniformMat4("u_proj", _cam->projection);
         _shader->setUniformMat4("u_view", _cam->view);
         _shader->setUniformMat4("u_world", _transform);
+
+        for(auto& mesh : _model->meshes)
+        {
+            mesh.render(_shader, GL_TRIANGLES);
+        }
 
 
         _shader->end();

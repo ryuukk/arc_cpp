@@ -19,6 +19,12 @@ namespace arc
         std::vector<MeshPart> meshParts;
 
         Model(ModelData& data);
+        void calculateTransforms();
+    private:
+        void loadMeshes(std::vector<ModelMesh>& meshes);
+        void convertMesh(ModelMesh& modelMesh);
+        void loadNodes(std::vector<ModelNode>& nodes);
+        Node loadNode(ModelNode& modelNode);
     };
 }
 

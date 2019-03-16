@@ -1,6 +1,7 @@
 #include "Mesh.h"
 
-arc::Mesh::Mesh(bool isStatic, int maxVertices, int maxIndices,const arc::VertexAttributes& attributes): _attributes(attributes) {
+arc::Mesh::Mesh(bool isStatic, int maxVertices, int maxIndices, const arc::VertexAttributes& attributes)
+{
     _attributes = attributes;
     _vertices = new VertexBuffer(isStatic, maxVertices, _attributes);
     _indices = new IndexBuffer(isStatic, maxIndices);

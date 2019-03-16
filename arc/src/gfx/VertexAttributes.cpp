@@ -5,7 +5,7 @@
 #include "VertexBuffer.h"
 
 
-arc::VertexAttributes::VertexAttributes(const std::vector<VertexAttribute>& attributes) {
+arc::VertexAttributes::VertexAttributes(const std::vector<VertexAttribute> attributes) {
     _attributes = attributes;
 
     vertexSize = calculateOffsets();

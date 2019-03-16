@@ -1,7 +1,8 @@
 #include "VertexBuffer.h"
 
-arc::VertexBuffer::VertexBuffer(bool isStatic, int numVertices, VertexAttributes& attributes):_attributes(attributes)
+arc::VertexBuffer::VertexBuffer(bool isStatic, int numVertices, const VertexAttributes& attributes)
 {
+    _attributes = attributes;
     _isStatic = isStatic;
     _vertices.resize(numVertices * (attributes.vertexSize / 4));
 

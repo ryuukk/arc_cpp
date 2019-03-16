@@ -45,7 +45,8 @@ namespace arc
     class VertexAttributes
     {
     public:
-        VertexAttributes(const std::vector<VertexAttribute>& attributes);
+        VertexAttributes(){};
+        VertexAttributes(const std::vector<VertexAttribute> attributes);
         int size();
         VertexAttribute& get(int index);
 
