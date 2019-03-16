@@ -12,13 +12,26 @@ namespace arc
     {
     public:
         std::string id;
-        std::vector<Material> materials;
-        std::vector<Node> nodes;
-        std::vector<Animation> animations;
+        std::vector<Material*> materials;
+        std::vector<Node*> nodes;
+        std::vector<Animation*> animations;
         std::vector<Mesh*> meshes;
         std::vector<MeshPart*> meshParts;
 
         Model(ModelData& data);
+        ~Model()
+        {
+            for (auto* mat : materials)
+                delete mat;
+            for (auto* node : nodes)
+                delete node;
+            for (auto* anim : animations)
+                delete anim;
+            for (auto* mesh : meshes)
+                delete mesh;
+            for (auto* part : meshParts)
+                delete part;
+        }
         void calculateTransforms();
     private:
         void loadMeshes(std::vector<ModelMesh>& meshes);
