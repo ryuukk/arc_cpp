@@ -39,7 +39,7 @@ namespace arc
             data[8] = m08; data[9] = m09;  data[10]= m10;  data[11]= m11;
             data[12]= m12; data[13]= m13;  data[14]= m14;  data[15]= m15;
         }
-        float data[16];
+        float data[16]{};
 
 
         Mat4 operator*(const Mat4 &n) const {

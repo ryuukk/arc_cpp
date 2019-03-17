@@ -53,7 +53,7 @@ void main()
 
         auto attrPos = arc::VertexAttribute(arc::VertexUsage::Position, 3, "a_position");
         auto attrNormal = arc::VertexAttribute(arc::VertexUsage::Normal, 3, "a_normal");
-        _mesh = new arc::Mesh(true, 24, 36, arc::VertexAttributes({attrPos, attrNormal}));
+        _mesh = new arc::Mesh(true, 24, 36, new arc::VertexAttributes({attrPos, attrNormal}));
 
         std::vector<float> positions = {
                 -0.5f, -0.5f, -0.5f, -0.5f, -0.5f, 0.5f, 0.5f, -0.5f, 0.5f, 0.5f, -0.5f, -0.5f, -0.5f, 0.5f, -0.5f,

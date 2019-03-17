@@ -16,6 +16,34 @@ namespace arc
     class Node
     {
     public:
+        static Node* getNode(std::vector<Node*>& nodes, std::string& id, bool recursive = true, bool ignoreCase = false)
+        {
+            auto n = nodes.size();
+            Node* node = nullptr;
+
+            if(ignoreCase)
+            {
+                for (int i = 0; i < n; ++i) {
+                    if((node = nodes[i])->id == id) return node;
+                }
+            } else
+            {
+                for (int i = 0; i < n; ++i) {
+                    if((node = nodes[i])->id == id) return node;
+                }
+            }
+
+            if(recursive)
+            {
+                for (int i = 0; i < n; ++i) {
+                    if ((node = getNode(nodes[i]->children, id, true, ignoreCase)) != nullptr) return node;
+                }
+            }
+
+            printf("Unable to find node: %s\n", id.c_str());
+            return nullptr;
+        }
+    public:
         std::string id;
         bool inheritTransform = true;
         bool isAnimated = false;
@@ -29,7 +57,7 @@ namespace arc
 
         std::vector<NodePart*> parts;
 
-        Node* parent;
+        Node* parent = nullptr;
         std::vector<Node*> children;
 
         void calculateLocalTransform() {
@@ -48,9 +76,28 @@ namespace arc
             calculateLocalTransform();
             calculateWorldTransform();
             if (recursive) {
-                for (auto& i : children) {
+                for (auto* i : children) {
                     i->calculateTransforms(true);
                 }
+            }
+        }
+
+        void calculateBoneTransforms(bool recursive)
+        {
+            for(auto* part : parts)
+            {
+                if(part->invBoneTransforms.empty() || part->bones.empty() || part->invBoneTransforms.size() != part->bones.size())
+                    continue;
+                auto n = part->invBoneTransforms.size();
+                for (int i = 0; i < n; ++i) {
+                    part->bones[i] = part->invBoneTransforms[i].first->globalTransform * part->invBoneTransforms[i].second;
+                }
+            }
+
+            if(recursive)
+            {
+                for(auto* node : children)
+                    node->calculateBoneTransforms(true);
             }
         }
 
@@ -91,14 +138,13 @@ namespace arc
             localTransform = other->localTransform;
             globalTransform = other->globalTransform;
 
-            parts.reserve(other->parts.size());
+            parts.resize(other->parts.size());
             for (int i = 0; i < other->parts.size(); ++i) {
                 NodePart* nodePart = other->parts[i];
                 NodePart* copy = nodePart->copy();
                 parts[i] = copy;
             }
 
-            children.reserve(other->children.size());
             for (int i = 0; i < other->children.size(); ++i) {
                 Node* child = other->children[i];
                 addChild(child->copy());

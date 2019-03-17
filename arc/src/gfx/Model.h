@@ -37,7 +37,9 @@ namespace arc
         void loadMeshes(std::vector<ModelMesh>& meshes);
         void convertMesh(ModelMesh& modelMesh);
         void loadNodes(std::vector<ModelNode>& nodes);
-        Node loadNode(ModelNode& modelNode);
+        void loadAnimations(std::vector<ModelAnimation>& animations);
+        void loadMaterials(std::vector<ModelMaterial>& materials);
+        Node* loadNode(ModelNode& modelNode);
     };
 }
 

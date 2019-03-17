@@ -60,7 +60,7 @@ void main()
     arc::Model* _model;
     arc::ModelInstance* _instance;
     arc::Mat4 _transform;
-    float _a = 0.0f;
+    float _a = 5.0f;
 
     void create() override {
 
@@ -71,11 +71,12 @@ void main()
         _cam->lookAt(0, 0, 0);
         _cam->update();
 
-        printf("Shader Log: %s\n", _shader->log.c_str());
+        printf("Shader Log  : %s\n", _shader->log.c_str());
 
 
-        auto modelData = arc::ModelData::load("data/character_male_0.g3dj");
+        auto modelData = arc::ModelData::load("data/knight.g3dj");
         _model = new arc::Model(modelData);
+        _instance = new arc::ModelInstance(*_model);
     }
 
     void update(float dt) override {
@@ -94,11 +95,15 @@ void main()
         _shader->begin();
         _shader->setUniformMat4("u_proj", _cam->projection);
         _shader->setUniformMat4("u_view", _cam->view);
-        _shader->setUniformMat4("u_world", _transform);
 
-        for(auto* mesh : _model->meshes)
+        for(auto& node : _instance->nodes)
         {
-            mesh->render(_shader, GL_TRIANGLES);
+            auto transform = _transform * node->globalTransform;
+            _shader->setUniformMat4("u_world", transform);
+            for(auto& part : node->parts)
+            {
+                part->meshPart->mesh->render(_shader, GL_TRIANGLES);
+            }
         }
 
 

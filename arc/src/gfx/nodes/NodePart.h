@@ -12,15 +12,31 @@ namespace arc
     class NodePart
     {
     public:
-        MeshPart* meshPart;
-        Material* material;
+        MeshPart* meshPart = nullptr;
+        Material* material = nullptr;
 
         std::vector<std::pair<Node*, Mat4>> invBoneTransforms;
         std::vector<Mat4> bones;
         bool enabled = true;
 
         void set(NodePart* other) {
+            meshPart = new MeshPart(other->meshPart);
+            material = other->material;
+            enabled = other->enabled;
 
+            if(!other->invBoneTransforms.empty())
+            {
+                invBoneTransforms.resize(other->invBoneTransforms.size());
+                bones.resize(other->bones.size());
+                for (int i = 0; i < other->invBoneTransforms.size(); ++i) {
+                    auto& entry = other->invBoneTransforms[i];
+                    invBoneTransforms[i] = {entry.first, entry.second};
+                }
+
+                for (int j = 0; j < bones.size(); ++j) {
+                    bones[j] = Mat4::identity();
+                }
+            }
         }
 
         NodePart* copy() {

@@ -138,7 +138,22 @@ arc::ModelNode arc::ModelData::parseNodesRecursively(json11::Json& json) {
 
 void arc::ModelData::parseMaterials(arc::ModelData& data, json11::Json& json, const std::string& matPath) {
     // todo: finish
+    if(json["materials"].is_null())
+    {
+        // todo: create default material
+    } else {
 
+        auto array = json["materials"].array_items();
+        data.materials.resize(array.size());
+
+        for (int i = 0; i < array.size(); ++i) {
+            auto material = array[i];
+            auto jsonMaterial = ModelMaterial();
+            jsonMaterial.id = material["id"].string_value();
+
+            data.materials[i] = jsonMaterial;
+        }
+    }
 }
 
 void arc::ModelData::parseAnimations(arc::ModelData& data, json11::Json& json) {
