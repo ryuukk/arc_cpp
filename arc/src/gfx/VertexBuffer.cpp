@@ -72,7 +72,7 @@ void arc::VertexBuffer::bindAttributes(ShaderProgram *shader, std::vector<int> *
         {
             for (int i = 0; stillValid && i < numAttributes; i++)
             {
-                VertexAttribute attribute = _attributes->get(i);
+                auto& attribute = _attributes->get(i);
                 int location = shader->getAttributeLocation(attribute.aliass);
                 stillValid = location == _cachedLocations[i];
             }
@@ -99,7 +99,7 @@ void arc::VertexBuffer::bindAttributes(ShaderProgram *shader, std::vector<int> *
 
         for (int i = 0; i < numAttributes; i++)
         {
-            VertexAttribute attribute = _attributes->get(i);
+            auto& attribute = _attributes->get(i);
             if (locations == nullptr)
             {
                 int l = shader->getAttributeLocation(attribute.aliass);
