@@ -110,7 +110,7 @@ void main()
 
     void update(float dt) override {
 
-        _a += 0.016f;
+        _a += dt;
         _transform.set({0,0,0}, arc::Quat::fromAxis({0.5,1,0.5}, _a));
         _cam->update();
     }

@@ -1,5 +1,6 @@
 #include <chrono>
 #include "Graphics.h"
+#include "utils/TimeUtils.h"
 
 
 // GLFWwindow*,int,int
@@ -112,19 +113,15 @@ void arc::Graphics::updateBackbufferInfo() {
 
 void arc::Graphics::track() {
 
-    // auto curr = MonoTime.currTime;
-    // auto time = curr.ticks;
-
-    auto t0 = std::chrono::high_resolution_clock::now();
-    auto time = t0.time_since_epoch().count();
+    auto time = glfwGetTime();
 
     if (_lastFrameTime == -1)
         _lastFrameTime = time;
 
-    _deltaTime = (time - _lastFrameTime) / 1000000000.0f;
+    _deltaTime = (float) (time - _lastFrameTime);
     _lastFrameTime = time;
 
-    if (time - _frameCounterStart >= 1000000000)
+    if (time - _frameCounterStart >= 1)
     {
         _fps = _frames;
         _frames = 0;

@@ -86,10 +86,10 @@ namespace arc {
         HdpiMode _hdpiMode = HdpiMode::Logical;
 
         bool _iconified = false;
-        long _lastFrameTime = -1;
+        double _lastFrameTime = -1;
         float _deltaTime = 0;
         long _frameId = 0;
-        long _frameCounterStart = 0;
+        double _frameCounterStart = 0;
         int _frames = 0;
         int _fps = 0;
 
