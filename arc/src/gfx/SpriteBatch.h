@@ -11,7 +11,7 @@ namespace arc
     class SpriteBatch
     {
     public:
-        SpriteBatch(uint32_t size, ShaderProgram* defaultShader = nullptr);
+        SpriteBatch(uint32_t size = 1000, ShaderProgram* defaultShader = nullptr);
         ~SpriteBatch()
         {
             delete _mesh;
@@ -23,7 +23,7 @@ namespace arc
         void end();
         void flush();
 
-        void draw(Texture2D* textire, Vec2 position, Vec2 size);
+        void draw(Texture2D* texture, Vec2 position, Vec2 size);
         void draw(Texture2D* texture, std::vector<float>& v, uint32_t offset, uint32_t count);
         bool isBlendingEnabled();
 
@@ -55,7 +55,7 @@ namespace arc
 
         ShaderProgram* _shader = nullptr;
         ShaderProgram* _customShader = nullptr;
-        bool _ownsShader;
+        bool _ownsShader{};
 
         Color _color = Color::WHITE;
 

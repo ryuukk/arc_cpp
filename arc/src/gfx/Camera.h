@@ -45,6 +45,25 @@ namespace arc
 
         float fieldOfView = 67.0f;
     };
+
+    class OrthographicCamera : public Camera
+    {
+    public:
+        OrthographicCamera()
+        {
+            nearr = 0.0f;
+        }
+        OrthographicCamera(float vw, float vh)
+        {
+            viewportWidth = vw;
+            viewportHeight = vh;
+            nearr = 0.0f;
+        }
+
+        void update(bool updateFrustrum = true) override;
+        void setToOrtho(float vw, float vh, bool yDown = false);
+        float zoom = 1.0f;
+    };
 }
 
 

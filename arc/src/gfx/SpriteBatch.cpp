@@ -11,8 +11,7 @@ arc::SpriteBatch::SpriteBatch(uint32_t size, arc::ShaderProgram* defaultShader) 
 
     _mesh = new Mesh(false, size * 4, size * 6, new VertexAttributes({ap, ac, at}));
 
-    _projectionMatrix = Mat4::createOrthographicOffCenter(0.0, 0.0, Core::graphics->getWidth(),
-                                                          Core::graphics->getHeight());
+    _projectionMatrix = Mat4::createOrthographicOffCenter(0.0, 0.0, Core::graphics->getWidth(), Core::graphics->getHeight());
 
     _vertices.resize(size * 20);
 
@@ -106,12 +105,54 @@ void arc::SpriteBatch::flush() {
     _idx = 0;
 }
 
-void arc::SpriteBatch::draw(arc::Texture2D* textire, arc::Vec2 position, arc::Vec2 size) {
+void arc::SpriteBatch::draw(arc::Texture2D* texture, arc::Vec2 position, arc::Vec2 size) {
 
+    assert(_drawing && "must call begin");
+
+    if (texture != _lastTexture)
+        switchTexture(texture);
+    else if (_idx == _vertices.size()) //
+        flush();
+
+    float fx2 = position.x + size.x;
+    float fy2 = position.y + size.y;
+    float u = 0;
+    float v = 1;
+    float u2 = 1;
+    float v2 = 0;
+
+    float color = _color.toFloatBits();
+
+    int idx = _idx;
+    _vertices[idx] = position.x;
+    _vertices[idx + 1] = position.y;
+    _vertices[idx + 2] = color;
+    _vertices[idx + 3] = u;
+    _vertices[idx + 4] = v;
+
+    _vertices[idx + 5] = position.x;
+    _vertices[idx + 6] = fy2;
+    _vertices[idx + 7] = color;
+    _vertices[idx + 8] = u;
+    _vertices[idx + 9] = v2;
+
+    _vertices[idx + 10] = fx2;
+    _vertices[idx + 11] = fy2;
+    _vertices[idx + 12] = color;
+    _vertices[idx + 13] = u2;
+    _vertices[idx + 14] = v2;
+
+    _vertices[idx + 15] = fx2;
+    _vertices[idx + 16] = position.y;
+    _vertices[idx + 17] = color;
+    _vertices[idx + 18] = u2;
+    _vertices[idx + 19] = v;
+
+    _idx = idx + 20;
 }
 
 void arc::SpriteBatch::draw(arc::Texture2D* texture, std::vector<float>& v, uint32_t offset, uint32_t count) {
-
+    // todol finish
 }
 
 bool arc::SpriteBatch::isBlendingEnabled() {

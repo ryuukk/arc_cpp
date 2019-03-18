@@ -37,3 +37,35 @@ void arc::PerspectiveCamera::update(bool updateFrustrum) {
     view = Mat4::createLookAt(position, position + direction, up);
     combined = projection * view;
 }
+
+void arc::OrthographicCamera::update(bool updateFrustrum) {
+
+    projection = Mat4::createOrthographic(zoom * -viewportWidth / 2, zoom * (viewportWidth / 2), zoom * -(viewportHeight / 2),
+                                         zoom * viewportHeight / 2, nearr, farr);
+
+    view = Mat4::createLookAt(position, position + direction, up);
+
+    combined = projection * view;
+
+    if (updateFrustrum)
+    {
+        // todo: finish
+    }
+}
+
+void arc::OrthographicCamera::setToOrtho(float vw, float vh, bool yDown) {
+    if (yDown)
+    {
+        up = {0, -1, 0};
+        direction = {0, 0, 1};
+    }
+    else
+    {
+        up = {0, 1, 0};
+        direction = {0, 0, -1};
+    }
+    position = Vec3(zoom * vw / 2.0f, zoom * vh / 2.0f, 0);
+    viewportWidth = vw;
+    viewportHeight = vh;
+    update();
+}
