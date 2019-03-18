@@ -19,7 +19,7 @@ void arc::ModelInstance::calculateTransforms() {
     }
 }
 
-arc::Animation* arc::ModelInstance::getAnimation(const std::string id){
+arc::Animation* arc::ModelInstance::getAnimation(const std::string& id){
     for(auto* anim : animations)
         if(anim->id == id) return anim;
 
