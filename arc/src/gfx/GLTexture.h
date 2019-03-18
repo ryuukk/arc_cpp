@@ -22,45 +22,6 @@ namespace arc
         Repeat, // GL20.GL_REPEAT
     };
 
-    bool isMipMap(arc::TextureFilter filter)
-    {
-        return filter != arc::TextureFilter::Nearest && filter != arc::TextureFilter::Linear;
-    }
-
-    int getGLEnumFromTextureFilter(arc::TextureFilter filter)
-    {
-        switch (filter)
-        {
-            case arc::TextureFilter::Nearest:
-                return GL_NEAREST;
-            case arc::TextureFilter::Linear:
-                return GL_LINEAR;
-            case arc::TextureFilter::MipMap:
-                return GL_LINEAR_MIPMAP_LINEAR;
-            case arc::TextureFilter::MipMapNearestNearest:
-                return GL_NEAREST_MIPMAP_NEAREST;
-            case arc::TextureFilter::MipMapLinearNearest:
-                return GL_LINEAR_MIPMAP_NEAREST;
-            case arc::TextureFilter::MipMapNearestLinear:
-                return GL_NEAREST_MIPMAP_LINEAR;
-            case arc::TextureFilter::MipMapLinearLinear:
-                return GL_LINEAR_MIPMAP_LINEAR;
-        }
-    }
-
-    int getGLEnumFromTextureWrap(arc::TextureWrap wrap)
-    {
-        switch (wrap)
-        {
-            case arc::TextureWrap::MirroredRepeat:
-                return GL_MIRRORED_REPEAT;
-            case arc::TextureWrap::ClampToEdge:
-                return GL_CLAMP_TO_EDGE;
-            case arc::TextureWrap::Repeat:
-                return GL_CLAMP_TO_EDGE;
-        }
-    }
-
     class GLTexture
     {
     public:
@@ -102,6 +63,45 @@ namespace arc
         TextureWrap uWrap = TextureWrap::ClampToEdge;
         TextureWrap vWrap = TextureWrap::ClampToEdge;
     };
+
+    inline bool isMipMap(arc::TextureFilter filter)
+    {
+        return filter != arc::TextureFilter::Nearest && filter != arc::TextureFilter::Linear;
+    }
+
+    inline int getGLEnumFromTextureFilter(arc::TextureFilter filter)
+    {
+        switch (filter)
+        {
+            case arc::TextureFilter::Nearest:
+                return GL_NEAREST;
+            case arc::TextureFilter::Linear:
+                return GL_LINEAR;
+            case arc::TextureFilter::MipMap:
+                return GL_LINEAR_MIPMAP_LINEAR;
+            case arc::TextureFilter::MipMapNearestNearest:
+                return GL_NEAREST_MIPMAP_NEAREST;
+            case arc::TextureFilter::MipMapLinearNearest:
+                return GL_LINEAR_MIPMAP_NEAREST;
+            case arc::TextureFilter::MipMapNearestLinear:
+                return GL_NEAREST_MIPMAP_LINEAR;
+            case arc::TextureFilter::MipMapLinearLinear:
+                return GL_LINEAR_MIPMAP_LINEAR;
+        }
+    }
+
+    inline int getGLEnumFromTextureWrap(arc::TextureWrap wrap)
+    {
+        switch (wrap)
+        {
+            case arc::TextureWrap::MirroredRepeat:
+                return GL_MIRRORED_REPEAT;
+            case arc::TextureWrap::ClampToEdge:
+                return GL_CLAMP_TO_EDGE;
+            case arc::TextureWrap::Repeat:
+                return GL_CLAMP_TO_EDGE;
+        }
+    }
 }
 
 
