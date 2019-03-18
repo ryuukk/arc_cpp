@@ -76,15 +76,6 @@ void arc::Model::loadNodes(std::vector<arc::ModelNode>& nodes) {
         Node* n = loadNode(node);
         this->nodes.emplace_back(n);
     }
-/*
- *
-		for (Entry<NodePart, ArrayMap<String, Matrix4>> e : nodePartBones.entries()) {
-			e.key.invBoneBindTransforms.clear();
-			for (Entry<String, Matrix4> b : e.value.entries())
-				e.key.invBoneBindTransforms.put(getNode(b.key), new Matrix4(b.value).inv());
-		}
- *
- */
 
     for(auto& e : nodePartBones)
     {
@@ -96,7 +87,6 @@ void arc::Model::loadNodes(std::vector<arc::ModelNode>& nodes) {
             auto invTransform = Mat4::inv(pair.second);
 
             e.first->invBoneTransforms.emplace_back(std::pair(node, invTransform));
-            printf("YYOYOYOYOOY: %s\n", pair.first.c_str());
         }
     }
 }
@@ -125,7 +115,6 @@ arc::Node* arc::Model::loadNode(arc::ModelNode& modelNode) {
                 }
             }
         }
-
 
         if(!modelNodePart.materialId.empty())
         {
@@ -184,6 +173,7 @@ void arc::Model::loadAnimations(std::vector<arc::ModelAnimation>& animations)
             auto* nodeAnim = new NodeAnimation;
             nodeAnim->node = node;
 
+            // todo: should figure out why i can't resize the vectors.. i should avoid emplace_back if i already know the final size
             if(!nanim.translation.empty())
             {
                 //nodeAnim->translation.resize(nanim.translation.size());

@@ -78,7 +78,9 @@ void main()
     arc::AnimationController* _animController;
     arc::Mat4 _transform;
 
-    float _a = 5.0f;
+    float _a = 0.0f;
+    float _timerChangeAnim = 2.0f;
+    bool _flag = false;
 
     void create() override {
 
@@ -100,10 +102,18 @@ void main()
     }
 
     void update(float dt) override {
+        _cam->update();
 
         _a += dt;
         _transform.set({0, 0, 0}, arc::Quat::fromAxis({0, 1, 0}, _a));
-        _cam->update();
+
+        _timerChangeAnim -=dt;
+        if(_timerChangeAnim < 0.0f)
+        {
+            _animController->animate(!_flag ?  "idle_1h" : "run_1h");
+            _flag = !_flag;
+            _timerChangeAnim = 2.0;
+        }
 
         _animController->update(dt);
         _instance->calculateTransforms();

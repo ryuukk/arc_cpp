@@ -50,12 +50,13 @@ void arc::ModelInstance::copyAnimations(std::vector<arc::Animation*>& animations
            nodeAnim->node = node;
            if(shareKeyframes)
            {
+               // todo: fix sharing keyframes, reference should be copied correctly
                nodeAnim->translation = nanim->translation;
                nodeAnim->rotation = nanim->rotation;
                nodeAnim->scaling = nanim->scaling;
            } else
            {
-
+               // todo: should figure out why i can't resize the vectors.. i should avoid emplace_back if i already know the final size
                if(!nanim->translation.empty())
                {
                    //nodeAnim->translation.resize(nanim->translation.size());
