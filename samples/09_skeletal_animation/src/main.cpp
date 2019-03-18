@@ -9,6 +9,7 @@
 #include <gfx/Camera.h>
 #include <gfx/Model.h>
 #include <gfx/ModelInstance.h>
+#include <gfx/animation/AnimationController.h>
 #include <gfx/data/ModelData.h>
 
 class MyGame : public arc::IApp
@@ -20,17 +21,32 @@ in vec3 a_position;
 in vec3 a_normal;
 in vec4 a_color;
 in vec2 a_texCoord0;
+in vec2 a_boneWeight0;
+in vec2 a_boneWeight1;
+in vec2 a_boneWeight2;
+in vec2 a_boneWeight3;
 
 uniform mat4 u_proj;
 uniform mat4 u_view;
 uniform mat4 u_world;
+
+uniform mat4 u_bones[20];
 
 out vec4 v_color;
 out vec2 v_texCoord;
 
 void main()
 {
-    gl_Position = u_proj * u_view * u_world * vec4(a_position, 1.0);
+
+	mat4 skinning = mat4(0.0);
+	skinning += (a_boneWeight0.y) * u_bones[int(a_boneWeight0.x)];
+	skinning += (a_boneWeight1.y) * u_bones[int(a_boneWeight1.x)];
+	skinning += (a_boneWeight2.y) * u_bones[int(a_boneWeight2.x)];
+	skinning += (a_boneWeight3.y) * u_bones[int(a_boneWeight3.x)];
+
+
+    vec4 pos = u_world * skinning * vec4(a_position, 1.0);
+    gl_Position = u_proj * u_view * pos;
 
     v_color = a_color;
     v_texCoord = a_texCoord0;
@@ -59,7 +75,9 @@ void main()
     arc::PerspectiveCamera* _cam;
     arc::Model* _model;
     arc::ModelInstance* _instance;
+    arc::AnimationController* _animController;
     arc::Mat4 _transform;
+
     float _a = 5.0f;
 
     void create() override {
@@ -74,9 +92,11 @@ void main()
         printf("Shader Log  : %s\n", _shader->log.c_str());
 
 
-        auto modelData = arc::ModelData::load("data/knight.g3dj");
+        auto modelData = arc::ModelData::load("data/character_male_0.g3dj");
         _model = new arc::Model(modelData);
         _instance = new arc::ModelInstance(*_model);
+        _animController = new arc::AnimationController(*_instance);
+        auto* desc = _animController->animate("run_1h");
     }
 
     void update(float dt) override {
@@ -84,6 +104,9 @@ void main()
         _a += dt;
         _transform.set({0, 0, 0}, arc::Quat::fromAxis({0, 1, 0}, _a));
         _cam->update();
+
+        _animController->update(dt);
+        _instance->calculateTransforms();
     }
 
     void render(float dt) override {
@@ -98,16 +121,24 @@ void main()
 
         for(auto& node : _instance->nodes)
         {
-            auto transform = _transform * node->globalTransform;
-            _shader->setUniformMat4("u_world", transform);
-            for(auto& part : node->parts)
-            {
-                part->meshPart->mesh->render(_shader, GL_TRIANGLES);
-            }
+           renderNode(node);
         }
 
-
         _shader->end();
+    }
+
+    void renderNode(arc::Node* node)
+    {
+        auto transform = _transform * node->globalTransform;
+        _shader->setUniformMat4("u_world", transform);
+        for(auto& part : node->parts)
+        {
+            _shader->setUniformMat4Array("u_bones", part->bones);
+            part->meshPart->mesh->render(_shader, GL_TRIANGLES);
+        }
+
+        for(auto& child : node->children)
+            renderNode(child);
     }
 
     void resize(int width, int height) override {
@@ -122,7 +153,7 @@ void main()
 
 int main(int argc, char** argv) {
     auto config = arc::Configuration();
-    config.windowTitle = "Sample 07 - Model";
+    config.windowTitle = "Sample 09 - Skeletal Animation";
     auto myGame = new MyGame();
     auto engine = new arc::Engine(myGame, config);
     engine->run();

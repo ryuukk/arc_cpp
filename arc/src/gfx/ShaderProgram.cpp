@@ -131,11 +131,11 @@ void arc::ShaderProgram::fetchUniforms() {
 
     _uniformNames.resize(numUniforms);
     for (int i = 0; i < numUniforms; i++) {
-        GLchar *buffer = new char[96];
+        GLchar *buffer = new char[64];
         GLenum type;
         int size;
         int length;
-        glGetActiveUniform(_program, i, 96, &length, &size, &type, buffer);
+        glGetActiveUniform(_program, i, 64, &length, &size, &type, buffer);
 
         std::string name((char *) &buffer[0], length);
         int location = glGetUniformLocation(_program, buffer);
@@ -156,13 +156,13 @@ int arc::ShaderProgram::fetchAttributeLocation(std::string &name) {
     // -2 == not yet cached
     // -1 == cached but not found
     auto search = _attributes.find(name);
+    int location = -2;
     if (search != _attributes.end()) {
-        int location = glGetAttribLocation(_program, name.c_str());
+        location = glGetAttribLocation(_program, name.c_str());
         _attributes[name] = location;
-
-    } else {
-        return -2;
+        printf("Found attrib: %s : %d", name.c_str(), location);
     }
+    return location;
 }
 
 void arc::ShaderProgram::checkManaged() {
@@ -215,14 +215,21 @@ int arc::ShaderProgram::fetchUniformLocation(const std::string &name, bool pedan
 {
     int location = -2;
 
-    if (_uniforms.find(name) == _uniforms.end()) {
+    auto it = _uniforms.find(name);
+    if (it == _uniforms.end())
         location = -2;
-    } else {
+    else
+        location = _uniforms[name];
+
+    if(location == -2)
+    {
         location =  glGetUniformLocation(_program, name.c_str());
         if(location == -1 && pedantic)
             throw std::runtime_error("no uniform with name %s in shader"); // todo: figure out exceptions in c++
-            _uniforms[name] = location;
+
+        _uniforms[name] = location;
     }
+
     return location;
 }
 
@@ -232,6 +239,13 @@ void arc::ShaderProgram::setUniformMat4(const std::string& name, arc::Mat4& valu
     int location = fetchUniformLocation(name, true); // todo: change once static pedantic bool added
 
     glUniformMatrix4fv(location, 1, transpose, value.data);
+}
+
+void arc::ShaderProgram::setUniformMat4Array(const std::string& name, std::vector<arc::Mat4>& value, bool transpose){
+    checkManaged();
+    int location = fetchUniformLocation(name, true); // todo: change once static pedantic bool added
+
+    glUniformMatrix4fv(location, value.size(), transpose, (float*) &value[0]);
 }
 
 

@@ -69,10 +69,35 @@ void arc::Model::convertMesh(arc::ModelMesh& modelMesh) {
 }
 
 void arc::Model::loadNodes(std::vector<arc::ModelNode>& nodes) {
+    nodePartBones.clear();
+
     for(auto& node : nodes)
     {
         Node* n = loadNode(node);
         this->nodes.emplace_back(n);
+    }
+/*
+ *
+		for (Entry<NodePart, ArrayMap<String, Matrix4>> e : nodePartBones.entries()) {
+			e.key.invBoneBindTransforms.clear();
+			for (Entry<String, Matrix4> b : e.value.entries())
+				e.key.invBoneBindTransforms.put(getNode(b.key), new Matrix4(b.value).inv());
+		}
+ *
+ */
+
+    for(auto& e : nodePartBones)
+    {
+        e.first->invBoneTransforms.clear();
+
+        for (int i = 0; i < e.second.size(); ++i) {
+            auto& pair = e.second[i];
+            auto* node = Node::getNode(this->nodes, pair.first);
+            auto invTransform = Mat4::inv(pair.second);
+
+            e.first->invBoneTransforms.emplace_back(std::pair(node, invTransform));
+            printf("YYOYOYOYOOY: %s\n", pair.first.c_str());
+        }
     }
 }
 
@@ -127,6 +152,8 @@ arc::Node* arc::Model::loadNode(arc::ModelNode& modelNode) {
         nodePart->meshPart = meshPart;
         nodePart->material = meshMaterial;
         node->parts.emplace_back(nodePart);
+        if(!modelNodePart.bones.empty())
+            nodePartBones[nodePart] = modelNodePart.bones;
     }
 
     if(!modelNode.children.empty())
@@ -144,7 +171,56 @@ arc::Node* arc::Model::loadNode(arc::ModelNode& modelNode) {
 
 void arc::Model::loadAnimations(std::vector<arc::ModelAnimation>& animations)
 {
+    for(auto& anim : animations)
+    {
+        auto* animation = new Animation;
+        animation->id = anim.id;
+        for(auto& nanim : anim.nodeAnimations)
+        {
+            auto* node = Node::getNode(nodes, nanim.nodeId);
+            if(node == nullptr)
+                continue;
 
+            auto* nodeAnim = new NodeAnimation;
+            nodeAnim->node = node;
+
+            if(!nanim.translation.empty())
+            {
+                //nodeAnim->translation.resize(nanim.translation.size());
+                for (int i = 0; i < nanim.translation.size(); ++i) {
+                    auto& kf = nanim.translation[i];
+                    if(kf.keytime > animation->duration) animation->duration = kf.keytime;
+                    auto kff = NodeKeyframe<Vec3>{kf.keytime, kf.value};
+                    nodeAnim->translation.emplace_back(kff);
+                }
+            }
+            if(!nanim.rotation.empty())
+            {
+                //nodeAnim->rotation.resize(nanim.rotation.size());
+                for (int i = 0; i < nanim.rotation.size(); ++i) {
+                    auto& kf = nanim.rotation[i];
+                    if(kf.keytime > animation->duration) animation->duration = kf.keytime;
+                    auto kff = NodeKeyframe<Quat>{kf.keytime, kf.value};
+                    nodeAnim->rotation.emplace_back(kff);
+                }
+            }
+            if(!nanim.scaling.empty())
+            {
+                //nodeAnim->scaling.resize(nanim.scaling.size());
+                for (int i = 0; i < nanim.scaling.size(); ++i) {
+                    auto& kf = nanim.scaling[i];
+                    if(kf.keytime > animation->duration) animation->duration = kf.keytime;
+                    auto kff = NodeKeyframe<Vec3>{kf.keytime, kf.value};
+                    nodeAnim->scaling.emplace_back(kff);
+                }
+            }
+
+            if ((!nodeAnim->translation.empty()) || (!nodeAnim->rotation.empty()) || (!nodeAnim->scaling.empty()))
+                animation->nodeAnimations.emplace_back(nodeAnim);
+        }
+        if(!animation->nodeAnimations.empty())
+            this->animations.emplace_back(animation);
+    }
 }
 
 void arc::Model::loadMaterials(std::vector<arc::ModelMaterial>& materials) {

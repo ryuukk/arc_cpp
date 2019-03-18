@@ -27,7 +27,7 @@ namespace arc
             if(!other->invBoneTransforms.empty())
             {
                 invBoneTransforms.resize(other->invBoneTransforms.size());
-                bones.resize(other->bones.size());
+                bones.resize(other->invBoneTransforms.size());
                 for (int i = 0; i < other->invBoneTransforms.size(); ++i) {
                     auto& entry = other->invBoneTransforms[i];
                     invBoneTransforms[i] = {entry.first, entry.second};

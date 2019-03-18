@@ -26,12 +26,12 @@ namespace arc
         Model& model;
         Mat4 transform = Mat4::identity();
 
-
         void calculateTransforms();
+        Animation* getAnimation(const std::string id);
 
     private:
         void copyNodes(std::vector<Node*>& nodes);
-        void copyAnimations(std::vector<Animation*>& animations, bool shareKeyframes = true);
+        void copyAnimations(std::vector<Animation*>& animations, bool shareKeyframes = false);
 
         void invalidate();
         void invalidate(Node* node);

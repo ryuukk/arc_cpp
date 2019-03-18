@@ -40,7 +40,6 @@ namespace arc
                 }
             }
 
-            printf("Unable to find node: %s\n", id.c_str());
             return nullptr;
         }
     public:

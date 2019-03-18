@@ -1,6 +1,7 @@
 #pragma once
 
 #include <cmath>
+#include <stdexcept>
 #include "Mathf.h"
 #include "Vec3.h"
 #include "Quat.h"
@@ -260,6 +261,71 @@ namespace arc
             auto ret = createLookAt(tmp, up) * createTranslation(-position);
 
             return ret;
+        }
+
+        static Mat4 inv(const Mat4& mat)
+        {
+            float l_det = mat.data[M30] * mat.data[M21] * mat.data[M12] * mat.data[M03] - mat.data[M20] * mat.data[M31] * mat.data[M12] * mat.data[M03] - mat.data[M30] * mat.data[M11]
+                                                                                                                                                  * mat.data[M22] * mat.data[M03] + mat.data[M10] * mat.data[M31] * mat.data[M22] * mat.data[M03] + mat.data[M20] * mat.data[M11] * mat.data[M32] * mat.data[M03] - mat.data[M10]
+                                                                                                                                                                                                                                                                                                          * mat.data[M21] * mat.data[M32] * mat.data[M03] - mat.data[M30] * mat.data[M21] * mat.data[M02] * mat.data[M13] + mat.data[M20] * mat.data[M31] * mat.data[M02] * mat.data[M13]
+                          + mat.data[M30] * mat.data[M01] * mat.data[M22] * mat.data[M13] - mat.data[M00] * mat.data[M31] * mat.data[M22] * mat.data[M13] - mat.data[M20] * mat.data[M01] * mat.data[M32]
+                                                                                                                                                    * mat.data[M13] + mat.data[M00] * mat.data[M21] * mat.data[M32] * mat.data[M13] + mat.data[M30] * mat.data[M11] * mat.data[M02] * mat.data[M23] - mat.data[M10] * mat.data[M31]
+                                                                                                                                                                                                                                                                                             * mat.data[M02] * mat.data[M23] - mat.data[M30] * mat.data[M01] * mat.data[M12] * mat.data[M23] + mat.data[M00] * mat.data[M31] * mat.data[M12] * mat.data[M23] + mat.data[M10]
+                                                                                                                                                                                                                                                                                                                                                                                                                                                     * mat.data[M01] * mat.data[M32] * mat.data[M23] - mat.data[M00] * mat.data[M11] * mat.data[M32] * mat.data[M23] - mat.data[M20] * mat.data[M11] * mat.data[M02] * mat.data[M33]
+                          + mat.data[M10] * mat.data[M21] * mat.data[M02] * mat.data[M33] + mat.data[M20] * mat.data[M01] * mat.data[M12] * mat.data[M33] - mat.data[M00] * mat.data[M21] * mat.data[M12]
+                                                                                                                                                    * mat.data[M33] - mat.data[M10] * mat.data[M01] * mat.data[M22] * mat.data[M33] + mat.data[M00] * mat.data[M11] * mat.data[M22] * mat.data[M33];
+            if (l_det == 0.0f) throw std::invalid_argument("non-invertible matrix");
+            float inv_det = 1.0f / l_det;
+            Mat4 tmp = Mat4::identity();
+            tmp.data[M00] = mat.data[M12] * mat.data[M23] * mat.data[M31] - mat.data[M13] * mat.data[M22] * mat.data[M31] + mat.data[M13] * mat.data[M21] * mat.data[M32] - mat.data[M11]
+                                                                                                                                                                  * mat.data[M23] * mat.data[M32] - mat.data[M12] * mat.data[M21] * mat.data[M33] + mat.data[M11] * mat.data[M22] * mat.data[M33];
+            tmp.data[M01] = mat.data[M03] * mat.data[M22] * mat.data[M31] - mat.data[M02] * mat.data[M23] * mat.data[M31] - mat.data[M03] * mat.data[M21] * mat.data[M32] + mat.data[M01]
+                                                                                                                                                                  * mat.data[M23] * mat.data[M32] + mat.data[M02] * mat.data[M21] * mat.data[M33] - mat.data[M01] * mat.data[M22] * mat.data[M33];
+            tmp.data[M02] = mat.data[M02] * mat.data[M13] * mat.data[M31] - mat.data[M03] * mat.data[M12] * mat.data[M31] + mat.data[M03] * mat.data[M11] * mat.data[M32] - mat.data[M01]
+                                                                                                                                                                  * mat.data[M13] * mat.data[M32] - mat.data[M02] * mat.data[M11] * mat.data[M33] + mat.data[M01] * mat.data[M12] * mat.data[M33];
+            tmp.data[M03] = mat.data[M03] * mat.data[M12] * mat.data[M21] - mat.data[M02] * mat.data[M13] * mat.data[M21] - mat.data[M03] * mat.data[M11] * mat.data[M22] + mat.data[M01]
+                                                                                                                                                                  * mat.data[M13] * mat.data[M22] + mat.data[M02] * mat.data[M11] * mat.data[M23] - mat.data[M01] * mat.data[M12] * mat.data[M23];
+            tmp.data[M10] = mat.data[M13] * mat.data[M22] * mat.data[M30] - mat.data[M12] * mat.data[M23] * mat.data[M30] - mat.data[M13] * mat.data[M20] * mat.data[M32] + mat.data[M10]
+                                                                                                                                                                  * mat.data[M23] * mat.data[M32] + mat.data[M12] * mat.data[M20] * mat.data[M33] - mat.data[M10] * mat.data[M22] * mat.data[M33];
+            tmp.data[M11] = mat.data[M02] * mat.data[M23] * mat.data[M30] - mat.data[M03] * mat.data[M22] * mat.data[M30] + mat.data[M03] * mat.data[M20] * mat.data[M32] - mat.data[M00]
+                                                                                                                                                                  * mat.data[M23] * mat.data[M32] - mat.data[M02] * mat.data[M20] * mat.data[M33] + mat.data[M00] * mat.data[M22] * mat.data[M33];
+            tmp.data[M12] = mat.data[M03] * mat.data[M12] * mat.data[M30] - mat.data[M02] * mat.data[M13] * mat.data[M30] - mat.data[M03] * mat.data[M10] * mat.data[M32] + mat.data[M00]
+                                                                                                                                                                  * mat.data[M13] * mat.data[M32] + mat.data[M02] * mat.data[M10] * mat.data[M33] - mat.data[M00] * mat.data[M12] * mat.data[M33];
+            tmp.data[M13] = mat.data[M02] * mat.data[M13] * mat.data[M20] - mat.data[M03] * mat.data[M12] * mat.data[M20] + mat.data[M03] * mat.data[M10] * mat.data[M22] - mat.data[M00]
+                                                                                                                                                                  * mat.data[M13] * mat.data[M22] - mat.data[M02] * mat.data[M10] * mat.data[M23] + mat.data[M00] * mat.data[M12] * mat.data[M23];
+            tmp.data[M20] = mat.data[M11] * mat.data[M23] * mat.data[M30] - mat.data[M13] * mat.data[M21] * mat.data[M30] + mat.data[M13] * mat.data[M20] * mat.data[M31] - mat.data[M10]
+                                                                                                                                                                  * mat.data[M23] * mat.data[M31] - mat.data[M11] * mat.data[M20] * mat.data[M33] + mat.data[M10] * mat.data[M21] * mat.data[M33];
+            tmp.data[M21] = mat.data[M03] * mat.data[M21] * mat.data[M30] - mat.data[M01] * mat.data[M23] * mat.data[M30] - mat.data[M03] * mat.data[M20] * mat.data[M31] + mat.data[M00]
+                                                                                                                                                                  * mat.data[M23] * mat.data[M31] + mat.data[M01] * mat.data[M20] * mat.data[M33] - mat.data[M00] * mat.data[M21] * mat.data[M33];
+            tmp.data[M22] = mat.data[M01] * mat.data[M13] * mat.data[M30] - mat.data[M03] * mat.data[M11] * mat.data[M30] + mat.data[M03] * mat.data[M10] * mat.data[M31] - mat.data[M00]
+                                                                                                                                                                  * mat.data[M13] * mat.data[M31] - mat.data[M01] * mat.data[M10] * mat.data[M33] + mat.data[M00] * mat.data[M11] * mat.data[M33];
+            tmp.data[M23] = mat.data[M03] * mat.data[M11] * mat.data[M20] - mat.data[M01] * mat.data[M13] * mat.data[M20] - mat.data[M03] * mat.data[M10] * mat.data[M21] + mat.data[M00]
+                                                                                                                                                                  * mat.data[M13] * mat.data[M21] + mat.data[M01] * mat.data[M10] * mat.data[M23] - mat.data[M00] * mat.data[M11] * mat.data[M23];
+            tmp.data[M30] = mat.data[M12] * mat.data[M21] * mat.data[M30] - mat.data[M11] * mat.data[M22] * mat.data[M30] - mat.data[M12] * mat.data[M20] * mat.data[M31] + mat.data[M10]
+                                                                                                                                                                  * mat.data[M22] * mat.data[M31] + mat.data[M11] * mat.data[M20] * mat.data[M32] - mat.data[M10] * mat.data[M21] * mat.data[M32];
+            tmp.data[M31] = mat.data[M01] * mat.data[M22] * mat.data[M30] - mat.data[M02] * mat.data[M21] * mat.data[M30] + mat.data[M02] * mat.data[M20] * mat.data[M31] - mat.data[M00]
+                                                                                                                                                                  * mat.data[M22] * mat.data[M31] - mat.data[M01] * mat.data[M20] * mat.data[M32] + mat.data[M00] * mat.data[M21] * mat.data[M32];
+            tmp.data[M32] = mat.data[M02] * mat.data[M11] * mat.data[M30] - mat.data[M01] * mat.data[M12] * mat.data[M30] - mat.data[M02] * mat.data[M10] * mat.data[M31] + mat.data[M00]
+                                                                                                                                                                  * mat.data[M12] * mat.data[M31] + mat.data[M01] * mat.data[M10] * mat.data[M32] - mat.data[M00] * mat.data[M11] * mat.data[M32];
+            tmp.data[M33] = mat.data[M01] * mat.data[M12] * mat.data[M20] - mat.data[M02] * mat.data[M11] * mat.data[M20] + mat.data[M02] * mat.data[M10] * mat.data[M21] - mat.data[M00]
+                                                                                                                                                                  * mat.data[M12] * mat.data[M21] - mat.data[M01] * mat.data[M10] * mat.data[M22] + mat.data[M00] * mat.data[M11] * mat.data[M22];
+            tmp.data[M00] = tmp.data[M00] * inv_det;
+            tmp.data[M01] = tmp.data[M01] * inv_det;
+            tmp.data[M02] = tmp.data[M02] * inv_det;
+            tmp.data[M03] = tmp.data[M03] * inv_det;
+            tmp.data[M10] = tmp.data[M10] * inv_det;
+            tmp.data[M11] = tmp.data[M11] * inv_det;
+            tmp.data[M12] = tmp.data[M12] * inv_det;
+            tmp.data[M13] = tmp.data[M13] * inv_det;
+            tmp.data[M20] = tmp.data[M20] * inv_det;
+            tmp.data[M21] = tmp.data[M21] * inv_det;
+            tmp.data[M22] = tmp.data[M22] * inv_det;
+            tmp.data[M23] = tmp.data[M23] * inv_det;
+            tmp.data[M30] = tmp.data[M30] * inv_det;
+            tmp.data[M31] = tmp.data[M31] * inv_det;
+            tmp.data[M32] = tmp.data[M32] * inv_det;
+            tmp.data[M33] = tmp.data[M33] * inv_det;
+            return tmp;
         }
     };
 

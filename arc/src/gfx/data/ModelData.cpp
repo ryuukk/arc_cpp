@@ -23,8 +23,9 @@ arc::ModelData arc::ModelData::load(const std::string& path) {
     printf("Loading: %s version: %d:%d id:%s\n", path.c_str(), lo, hi, id.c_str());
 
     parseMeshes(data, json);
-    parseNodes(data, json);
     parseMaterials(data, json, arc::dirName(path));
+    parseNodes(data, json);
+    parseAnimations(data, json);
 
     return data;
 }
@@ -158,7 +159,57 @@ void arc::ModelData::parseMaterials(arc::ModelData& data, json11::Json& json, co
 
 void arc::ModelData::parseAnimations(arc::ModelData& data, json11::Json& json) {
     // todo: finish
+    if(json["animations"].is_null())
+    {
+        printf("Model: %s has no animations\n", data.id.c_str());
+    } else {
+        auto array = json["animations"].array_items();
 
+        for (int i = 0; i < array.size(); ++i) {
+            auto anim = array[i];
+
+            auto nodes = anim["bones"];
+            if(nodes.is_null()) continue;
+            auto nodesArray = nodes.array_items();
+
+            auto animation = ModelAnimation();
+            animation.id = anim["id"].string_value();
+
+            for (int j = 0; j < nodesArray.size(); ++j) {
+                auto node = nodesArray[j];
+                auto nodeAnim = ModelNodeAnimation();
+                nodeAnim.nodeId = node["boneId"].string_value();
+
+                // v0.1
+                auto keyframes = node["keyframes"];
+                if(!keyframes.is_null())
+                {
+                    auto keyframesArray = keyframes.array_items();
+                    for (int k = 0; k < keyframesArray.size(); ++k) {
+                        auto keyframe = keyframesArray[k];
+
+                        float keytime = keyframe["keytime"].number_value() / 1000.0;
+
+                        if(!keyframe["translation"].is_null())
+                        {
+                            nodeAnim.translation.emplace_back(ModelNodeKeyframe<Vec3>{keytime, parseVec3(keyframe["translation"])});
+                        }
+                        if(!keyframe["rotation"].is_null())
+                        {
+                            nodeAnim.rotation.emplace_back(ModelNodeKeyframe<Quat>{keytime, parseQuat(keyframe["rotation"])});
+                        }
+                        if(!keyframe["scale"].is_null())
+                        {
+                            nodeAnim.scaling.emplace_back(ModelNodeKeyframe<Vec3>{keytime, parseVec3(keyframe["scale"])});
+                        }
+                    }
+                }
+
+                animation.nodeAnimations.emplace_back(nodeAnim);
+            }
+            data.animations.emplace_back(animation);
+        }
+    }
 }
 
 int arc::ModelData::parseTextureUsage(std::string& type) {
@@ -199,9 +250,17 @@ void arc::ModelData::parseAttributes(ModelMesh& data, json11::Json& json) {
         auto attribute = array[i].string_value();
 
         if (attribute.rfind("TEXCOORD", 0) == 0)
-            data.attributes[i] = VertexAttribute::texCoords(++unit);
+        {
+            int u = unit;
+            unit++;
+            data.attributes[i] = VertexAttribute::texCoords(u);
+        }
         else if (attribute.rfind("BLENDWEIGHT", 0) == 0)
-            data.attributes[i] = VertexAttribute::boneWeight(++blendWeightCount);
+        {
+            int u = blendWeightCount;
+            blendWeightCount++;
+            data.attributes[i] = VertexAttribute::boneWeight(u);
+        }
         else if (attribute == "POSITION")
             data.attributes[i] = VertexAttribute::position();
         else if (attribute == "NORMAL")

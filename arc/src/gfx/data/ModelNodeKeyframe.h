@@ -5,9 +5,8 @@
 namespace arc
 {
     template<typename T>
-    class ModelNodeKeyframe
+    struct ModelNodeKeyframe
     {
-    public:
         float keytime{};
         T value;
     };

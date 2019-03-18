@@ -19,6 +19,13 @@ void arc::ModelInstance::calculateTransforms() {
     }
 }
 
+arc::Animation* arc::ModelInstance::getAnimation(const std::string id){
+    for(auto* anim : animations)
+        if(anim->id == id) return anim;
+
+    return nullptr;
+}
+
 void arc::ModelInstance::copyNodes(std::vector<arc::Node*>& nodes) {
     this->nodes.resize(nodes.size());
     for (int i = 0; i < nodes.size(); ++i) {
@@ -29,7 +36,66 @@ void arc::ModelInstance::copyNodes(std::vector<arc::Node*>& nodes) {
 }
 
 void arc::ModelInstance::copyAnimations(std::vector<arc::Animation*>& animations, bool shareKeyframes) {
+   for(auto& modelAnim : animations)
+   {
+       auto* animation = new Animation;
+       animation->id = modelAnim->id;
+       animation->duration = modelAnim->duration;
+       for(auto& nanim : modelAnim->nodeAnimations)
+       {
+           auto* node = Node::getNode(nodes, nanim->node->id);
+           if(node == nullptr)
+               continue;
+           auto* nodeAnim = new NodeAnimation;
+           nodeAnim->node = node;
+           if(shareKeyframes)
+           {
+               nodeAnim->translation = nanim->translation;
+               nodeAnim->rotation = nanim->rotation;
+               nodeAnim->scaling = nanim->scaling;
+           } else
+           {
 
+               if(!nanim->translation.empty())
+               {
+                   //nodeAnim->translation.resize(nanim->translation.size());
+                   for (int i = 0; i < nanim->translation.size(); ++i) {
+                       auto& kf = nanim->translation[i];
+                       if(kf.keytime > animation->duration) animation->duration = kf.keytime;
+                       auto kff = NodeKeyframe<Vec3>{kf.keytime, kf.value};
+                       nodeAnim->translation.emplace_back(kff);
+                   }
+               }
+               if(!nanim->rotation.empty())
+               {
+                   //nodeAnim->rotation.resize(nanim->rotation.size());
+                   for (int i = 0; i < nanim->rotation.size(); ++i) {
+                       auto& kf = nanim->rotation[i];
+                       if(kf.keytime > animation->duration) animation->duration = kf.keytime;
+                       auto kff = NodeKeyframe<Quat>{kf.keytime, kf.value};
+                       nodeAnim->rotation.emplace_back(kff);
+                   }
+               }
+               if(!nanim->scaling.empty())
+               {
+                   //nodeAnim->scaling.resize(nanim->scaling.size());
+                   for (int i = 0; i < nanim->scaling.size(); ++i) {
+                       auto& kf = nanim->scaling[i];
+                       if(kf.keytime > animation->duration) animation->duration = kf.keytime;
+                       auto kff = NodeKeyframe<Vec3>{kf.keytime, kf.value};
+                       nodeAnim->scaling.emplace_back(kff);
+                   }
+               }
+               if ((!nodeAnim->translation.empty())
+                   || (!nodeAnim->rotation.empty())
+                   || (!nodeAnim->scaling.empty()))
+                   animation->nodeAnimations.emplace_back(nodeAnim);
+           }
+       }
+
+       if(!animation->nodeAnimations.empty())
+           this->animations.emplace_back(animation);
+   }
 }
 
 void arc::ModelInstance::invalidate() {

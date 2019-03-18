@@ -40,6 +40,8 @@ namespace arc
         void loadAnimations(std::vector<ModelAnimation>& animations);
         void loadMaterials(std::vector<ModelMaterial>& materials);
         Node* loadNode(ModelNode& modelNode);
+
+        std::unordered_map<NodePart*, std::vector<std::pair<std::string, Mat4>>> nodePartBones;
     };
 }
 
