@@ -26,6 +26,8 @@ namespace arc
 
         void setVertices(std::vector<float>& vertices);
 
+        void setVertices(std::vector<float>& vertices, int offset, int count);
+
         void setIndices(std::vector<short>& indices);
 
         void render(ShaderProgram* shader, int primitiveType);

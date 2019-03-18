@@ -23,6 +23,10 @@ void arc::Mesh::setVertices(std::vector<float> &vertices) {
     _vertices->setVertices(vertices, 0, vertices.size());
 }
 
+void arc::Mesh::setVertices(std::vector<float> &vertices, int offset, int count) {
+    _vertices->setVertices(vertices, offset, count);
+}
+
 void arc::Mesh::setIndices(std::vector<short> &indices) {
     _indices->setIndices(indices, 0, indices.size());
 }

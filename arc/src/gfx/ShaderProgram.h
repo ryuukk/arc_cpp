@@ -25,9 +25,13 @@ namespace arc {
 
         int fetchUniformLocation(const std::string& name, bool pedantic);
 
+        void setUniformi(const std::string& name, int value);
         void setUniformMat4(const std::string& name, Mat4& value, bool transpose = false);
         void setUniformMat4Array(const std::string& name, std::vector<Mat4>& value, bool transpose = false);
-
+        bool isCompiled()
+        {
+            return _isCompiled;
+        }
         std::string log;
     private:
         bool _isCompiled = false;

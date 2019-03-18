@@ -196,6 +196,43 @@ namespace arc
             return ret;
         }
 
+        static Mat4 createOrthographic(float left, float right, float bottom, float top, float nearr = 0.0f, float farr = 1.0f)
+        {
+            auto ret = Mat4::identity();
+
+            float x_orth = 2 / (right - left);
+            float y_orth = 2 / (top - bottom);
+            float z_orth = -2 / (farr - nearr);
+
+            float tx = -(right + left) / (right - left);
+            float ty = -(top + bottom) / (top - bottom);
+            float tz = -(farr + nearr) / (farr - nearr);
+
+            ret.data[M00] = x_orth;
+            ret.data[M10] = 0;
+            ret.data[M20] = 0;
+            ret.data[M30] = 0;
+            ret.data[M01] = 0;
+            ret.data[M11] = y_orth;
+            ret.data[M21] = 0;
+            ret.data[M31] = 0;
+            ret.data[M02] = 0;
+            ret.data[M12] = 0;
+            ret.data[M22] = z_orth;
+            ret.data[M32] = 0;
+            ret.data[M03] = tx;
+            ret.data[M13] = ty;
+            ret.data[M23] = tz;
+            ret.data[M33] = 1;
+
+            return ret;
+        }
+
+        static Mat4 createOrthographicOffCenter(float x, float y, float width, float height)
+        {
+            return createOrthographic(x, x + width, y, y + height, 0, 1);
+        }
+
 
         // todo: figure out what i can't use near and far as name
         static Mat4 createProjection(float nearr, float farr, float fovy, float aspectRatio)

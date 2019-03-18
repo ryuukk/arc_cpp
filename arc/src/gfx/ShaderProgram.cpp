@@ -233,6 +233,13 @@ int arc::ShaderProgram::fetchUniformLocation(const std::string &name, bool pedan
     return location;
 }
 
+void arc::ShaderProgram::setUniformi(const std::string& name, int value)
+{
+    checkManaged();
+    int location = fetchUniformLocation(name, true); // todo: change once static pedantic bool added
+    glUniform1i(location, value);
+}
+
 void arc::ShaderProgram::setUniformMat4(const std::string& name, arc::Mat4& value, bool transpose)
 {
     checkManaged();
