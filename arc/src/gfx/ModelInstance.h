@@ -27,7 +27,7 @@ namespace arc
         Mat4 transform = Mat4::identity();
 
         void calculateTransforms();
-        Animation* getAnimation(const std::string id);
+        Animation* getAnimation(const std::string& id);
 
     private:
         void copyNodes(std::vector<Node*>& nodes);
