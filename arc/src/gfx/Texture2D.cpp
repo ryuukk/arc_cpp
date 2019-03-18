@@ -6,7 +6,7 @@
 arc::Texture2D* arc::Texture2D::loadFromFile(const std::string& filename) {
 
     int x,y,n;
-    unsigned char *data = stbi_load("data/tree_diffuse.png", &x, &y, &n, 0);
+    unsigned char *data = stbi_load(filename.c_str(), &x, &y, &n, 0);
 
     // todo: check if file exists, and figure out what to do in case of error..
 
