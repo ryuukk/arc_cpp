@@ -12,6 +12,11 @@ namespace arc
     class NodePart
     {
     public:
+        ~NodePart()
+        {
+            delete meshPart;
+        }
+
         MeshPart* meshPart = nullptr;
         Material* material = nullptr;
 

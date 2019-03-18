@@ -43,6 +43,14 @@ namespace arc
             return nullptr;
         }
     public:
+        ~Node()
+        {
+            for(auto& part : parts)
+                delete part;
+            for(auto& node : children)
+                delete node;
+        }
+
         std::string id;
         bool inheritTransform = true;
         bool isAnimated = false;

@@ -55,7 +55,12 @@ namespace arc
     {
     public:
         AnimationController(ModelInstance& target) : BaseAnimationController(target) {}
-
+        ~AnimationController()
+        {
+            delete current;
+            delete queued;
+            delete previous;
+        };
         AnimationDesc* current = nullptr;
         AnimationDesc* queued = nullptr;
         float queuedTransitionTime{};
