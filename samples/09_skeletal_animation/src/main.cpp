@@ -80,7 +80,7 @@ void main()
 
     float _a = 0.0f;
     float _timerChangeAnim = 2.0f;
-    bool _flag = false;
+    int _selector = 0;
 
     void create() override {
 
@@ -98,7 +98,7 @@ void main()
         _model = new arc::Model(modelData);
         _instance = new arc::ModelInstance(*_model);
         _animController = new arc::AnimationController(*_instance);
-        auto* desc = _animController->animate("run_1h");
+        auto* desc = _animController->animate("idle_1h");
     }
 
     void update(float dt) override {
@@ -110,8 +110,10 @@ void main()
         _timerChangeAnim -=dt;
         if(_timerChangeAnim < 0.0f)
         {
-            _animController->animate(!_flag ?  "idle_1h" : "run_1h");
-            _flag = !_flag;
+            auto& animation =_instance->animations[_selector];
+            _animController->animate(animation->id);
+
+            _selector = (++_selector % _instance->animations.size());
             _timerChangeAnim = 2.0;
         }
 
@@ -144,7 +146,7 @@ void main()
         for(auto& part : node->parts)
         {
             _shader->setUniformMat4Array("u_bones", part->bones);
-            part->meshPart->mesh->render(_shader, GL_TRIANGLES);
+            part->meshPart->render(_shader, true);
         }
 
         for(auto& child : node->children)

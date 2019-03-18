@@ -74,7 +74,7 @@ void main()
         printf("Shader Log  : %s\n", _shader->log.c_str());
 
 
-        auto modelData = arc::ModelData::load("data/knight.g3dj");
+        auto modelData = arc::ModelData::load("data/tree_small_0.g3dj");
         _model = new arc::Model(modelData);
         _instance = new arc::ModelInstance(*_model);
     }
@@ -102,10 +102,9 @@ void main()
             _shader->setUniformMat4("u_world", transform);
             for(auto& part : node->parts)
             {
-                part->meshPart->mesh->render(_shader, GL_TRIANGLES);
+                part->meshPart->render(_shader, true);
             }
         }
-
 
         _shader->end();
     }

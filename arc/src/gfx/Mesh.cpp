@@ -43,7 +43,7 @@ void arc::Mesh::render(arc::ShaderProgram *shader, int primitiveType, int offset
     if (_indices->getNumIndices() > 0)
     {
         auto orr = offset * 2;
-        glDrawElements(primitiveType, count, GL_UNSIGNED_SHORT, (void*) orr);
+        glDrawElements(primitiveType, count, GL_UNSIGNED_SHORT, (int*) orr);
     }
     else
     {

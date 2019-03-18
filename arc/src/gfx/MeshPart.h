@@ -24,7 +24,10 @@ namespace arc
             this->halfExtents = other->halfExtents;
             this->radius = other->radius;
         }
-
+        void render(ShaderProgram* shader, bool autoBind)
+        {
+            mesh->render(shader, primitiveType, offset, size, autoBind);
+        }
         std::string id;
         int primitiveType{};
         int offset{};
