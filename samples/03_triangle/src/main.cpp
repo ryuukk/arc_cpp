@@ -37,8 +37,8 @@ void main()
 
     void create() override {
 
-        auto attributes = arc::VertexAttribute(arc::VertexUsage::Position, 3, "a_position");
-        _mesh = new arc::Mesh(true, 3, 3, attributes);
+        auto attribute = arc::VertexAttribute(arc::VertexUsage::Position, 3, "a_position");
+		_mesh = new arc::Mesh(true, 3, 3, new arc::VertexAttributes({ attribute }));
 
         std::vector<float> vertices = {
                 -1.0f, -1.0f, 0.0f,
