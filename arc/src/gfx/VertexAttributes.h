@@ -49,12 +49,13 @@ namespace arc
         VertexAttributes(const std::vector<VertexAttribute> attributes);
         int size();
         VertexAttribute& get(int index);
-
-        int vertexSize;
+        uint64_t getMask();
+        uint64_t getMaskWithSizePacked();
+        int vertexSize{};
     private:
         int calculateOffsets();
 
         std::vector<VertexAttribute> _attributes;
-        unsigned long _mask = 0;
+        uint64_t _mask = 0;
     };
 }

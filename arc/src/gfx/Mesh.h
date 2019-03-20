@@ -34,6 +34,8 @@ namespace arc
 
         void render(ShaderProgram* shader, int primitiveType, int offset, int count, bool autoBind);
 
+        VertexAttributes* getVertexAttributes();
+
         bool autoBind = true;
     private:
         VertexBuffer* _vertices;

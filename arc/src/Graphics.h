@@ -96,7 +96,7 @@ namespace arc {
         IApp *_app;
         Configuration _config;
 
-        bool _initialized;
+        bool _initialized = false;
 
 
         void track();

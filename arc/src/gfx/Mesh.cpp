@@ -57,3 +57,7 @@ void arc::Mesh::render(arc::ShaderProgram *shader, int primitiveType, int offset
     if (autoBind)
         unbind(shader, nullptr);
 }
+
+arc::VertexAttributes* arc::Mesh::getVertexAttributes() {
+    return _attributes;
+}

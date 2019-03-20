@@ -14,8 +14,9 @@ arc::ModelData arc::ModelData::load(const std::string& path) {
 
     ModelData data;
 
-    int lo = json["version"].array_items()[0].int_value();
-    int hi = json["version"].array_items()[1].int_value();
+	auto version = json["version"].array_items();
+    int lo = version[0].int_value();
+    int hi = version[1].int_value();
 
     std::string id = json["id"].string_value();
     data.id = id.length() > 0 ? id : path;
@@ -35,7 +36,7 @@ void arc::ModelData::parseMeshes(arc::ModelData& data, json11::Json& json) {
     auto meshes = json["meshes"].array_items();
 
     data.meshes.resize(meshes.size());
-    for (int i = 0; i < meshes.size(); ++i) {
+    for (auto i = 0; i < meshes.size(); ++i) {
         auto mesh = meshes[i];
         ModelMesh jsonMesh;
 
@@ -58,7 +59,7 @@ void arc::ModelData::parseMeshParts(ModelMesh& data, json11::Json& json) {
     auto array = json.array_items();
     data.parts.resize(array.size());
 
-    for (int i = 0; i < array.size(); ++i) {
+    for (auto i = 0; i < array.size(); ++i) {
         auto meshPart = array[i];
         ModelMeshPart jsonpart;
         jsonpart.id = meshPart["id"].string_value();
@@ -76,7 +77,7 @@ void arc::ModelData::parseNodes(arc::ModelData& data, json11::Json& json) {
     auto array = json["nodes"].array_items();
     data.nodes.resize(array.size());
 
-    for (int i = 0; i < array.size(); ++i) {
+    for (auto i = 0; i < array.size(); ++i) {
         data.nodes[i] = parseNodesRecursively(array[i]);
     }
 }
@@ -94,7 +95,7 @@ arc::ModelNode arc::ModelData::parseNodesRecursively(json11::Json& json) {
     if (!json["parts"].is_null()) {
         auto parts = json["parts"].array_items();
         jsonNode.parts.resize(parts.size());
-        for (int i = 0; i < parts.size(); ++i) {
+        for (auto i = 0; i < parts.size(); ++i) {
             auto material = parts[i];
             ModelNodePart nodePart;
 
@@ -104,7 +105,7 @@ arc::ModelNode arc::ModelData::parseNodesRecursively(json11::Json& json) {
             if (!material["bones"].is_null()) {
                 auto bones = material["bones"].array_items();
                 nodePart.bones.resize(bones.size());
-                for (int j = 0; j < bones.size(); ++j) {
+                for (auto j = 0; j < bones.size(); ++j) {
                     auto bone = bones[j];
                     std::string nodeId = bone["node"].string_value();
 
@@ -129,7 +130,7 @@ arc::ModelNode arc::ModelData::parseNodesRecursively(json11::Json& json) {
     if (!json["children"].is_null()) {
         auto children = json["children"].array_items();
         jsonNode.children.resize(children.size());
-        for (int i = 0; i < children.size(); ++i) {
+        for (auto i = 0; i < children.size(); ++i) {
             jsonNode.children[i] = parseNodesRecursively(children[i]);
         }
     }
@@ -147,7 +148,7 @@ void arc::ModelData::parseMaterials(arc::ModelData& data, json11::Json& json, co
         auto array = json["materials"].array_items();
         data.materials.resize(array.size());
 
-        for (int i = 0; i < array.size(); ++i) {
+        for (auto i = 0; i < array.size(); ++i) {
             auto material = array[i];
             auto jsonMaterial = ModelMaterial();
             jsonMaterial.id = material["id"].string_value();
@@ -165,7 +166,7 @@ void arc::ModelData::parseAnimations(arc::ModelData& data, json11::Json& json) {
     } else {
         auto array = json["animations"].array_items();
 
-        for (int i = 0; i < array.size(); ++i) {
+        for (auto i = 0; i < array.size(); ++i) {
             auto anim = array[i];
 
             auto nodes = anim["bones"];
@@ -175,7 +176,7 @@ void arc::ModelData::parseAnimations(arc::ModelData& data, json11::Json& json) {
             auto animation = ModelAnimation();
             animation.id = anim["id"].string_value();
 
-            for (int j = 0; j < nodesArray.size(); ++j) {
+            for (auto j = 0; j < nodesArray.size(); ++j) {
                 auto node = nodesArray[j];
                 auto nodeAnim = ModelNodeAnimation();
                 nodeAnim.nodeId = node["boneId"].string_value();
@@ -185,7 +186,7 @@ void arc::ModelData::parseAnimations(arc::ModelData& data, json11::Json& json) {
                 if(!keyframes.is_null())
                 {
                     auto keyframesArray = keyframes.array_items();
-                    for (int k = 0; k < keyframesArray.size(); ++k) {
+                    for (auto k = 0; k < keyframesArray.size(); ++k) {
                         auto keyframe = keyframesArray[k];
 
                         float keytime = keyframe["keytime"].number_value() / 1000.0;
@@ -227,7 +228,7 @@ int arc::ModelData::parseType(std::string& type) {
 void arc::ModelData::parseIndices(ModelMeshPart& data, json11::Json& json) {
     auto array = json.array_items();
     data.indices.resize(array.size());
-    for (int i = 0; i < array.size(); ++i) {
+    for (auto i = 0; i < array.size(); ++i) {
         data.indices[i] = (short) array[i].int_value();
     }
 }
@@ -235,7 +236,7 @@ void arc::ModelData::parseIndices(ModelMeshPart& data, json11::Json& json) {
 void arc::ModelData::parseVertices(ModelMesh& data, json11::Json& json) {
     auto array = json.array_items();
     data.vertices.resize(array.size());
-    for (int i = 0; i < array.size(); ++i) {
+    for (auto i = 0; i < array.size(); ++i) {
         data.vertices[i] = (float) array[i].number_value();
     }
 }
@@ -246,7 +247,7 @@ void arc::ModelData::parseAttributes(ModelMesh& data, json11::Json& json) {
     auto array = json.array_items();
 
     data.attributes.resize(array.size());
-    for (int i = 0; i < array.size(); ++i) {
+    for (auto i = 0; i < array.size(); ++i) {
         auto attribute = array[i].string_value();
 
         if (attribute.rfind("TEXCOORD", 0) == 0)

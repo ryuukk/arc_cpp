@@ -33,12 +33,12 @@ namespace arc
             {
                 invBoneTransforms.resize(other->invBoneTransforms.size());
                 bones.resize(other->invBoneTransforms.size());
-                for (int i = 0; i < other->invBoneTransforms.size(); ++i) {
+                for (auto i = 0; i < other->invBoneTransforms.size(); ++i) {
                     auto& entry = other->invBoneTransforms[i];
                     invBoneTransforms[i] = {entry.first, entry.second};
                 }
 
-                for (int j = 0; j < bones.size(); ++j) {
+                for (auto j = 0; j < bones.size(); ++j) {
                     bones[j] = Mat4::identity();
                 }
             }

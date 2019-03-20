@@ -1,5 +1,4 @@
 #pragma once
-#include <cmath>
 
 #include "BaseAnimationController.h"
 

@@ -5,14 +5,19 @@
 
 #define STB_IMAGE_IMPLEMENTATION
 #include <utils/stb_image.h>
+#include <gfx/material/Attribute.h>
 
 class MyGame : public arc::IApp
 {
     void create() override {
-        int x,y,n;
-        unsigned char *data = stbi_load("data/tree_diffuse.png", &x, &y, &n, 0);
 
-        printf("Image: %d:%d %d\n", x, y, n);
+        auto a = arc::DiffuseTextureAttribute::stype;
+        auto b = arc::CullfaceAttribute::stype;
+        auto c = arc::DepthTestAttribute::stype;
+
+        printf("Type: %d\n", a);
+        printf("Type: %d\n", b);
+        printf("Type: %d\n", c);
     }
 
     void update(float dt) override {

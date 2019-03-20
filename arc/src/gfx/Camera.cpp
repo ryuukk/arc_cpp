@@ -1,7 +1,4 @@
 #include <cmath>
-
-#include <cmath>
-
 #include "Camera.h"
 
 void arc::Camera::lookAt(float x, float y, float z) {

@@ -33,6 +33,21 @@ int arc::VertexAttributes::calculateOffsets() {
     return count;
 }
 
+uint64_t arc::VertexAttributes::getMask() {
+    if (_mask == 0) {
+        uint64_t result = 0;
+        for (int i = 0; i < _attributes.size(); i++) {
+            result |= _attributes[i].usage;
+        }
+        _mask = result;
+    }
+    return _mask;
+}
+
+uint64_t arc::VertexAttributes::getMaskWithSizePacked() {
+    return getMask() | (_attributes.size() << 32);
+}
+
 int arc::VertexAttribute::getKey() {
     return (_usageIndex << 8) + (unit & 0xFF);
 }

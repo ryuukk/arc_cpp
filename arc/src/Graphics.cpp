@@ -92,9 +92,9 @@ bool arc::Graphics::createContext()
 void arc::Graphics::update() {
     if(!_initialized)
     {
-        _initialized = true;
         _app->create();
         _app->resize(_backBufferWidth, _backBufferHeight);
+		_initialized = true;
     }
     glfwMakeContextCurrent(_window);
 

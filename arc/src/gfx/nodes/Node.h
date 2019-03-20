@@ -23,19 +23,19 @@ namespace arc
 
             if(ignoreCase)
             {
-                for (int i = 0; i < n; ++i) {
+                for (auto i = 0; i < n; ++i) {
                     if((node = nodes[i])->id == id) return node;
                 }
             } else
             {
-                for (int i = 0; i < n; ++i) {
+                for (auto i = 0; i < n; ++i) {
                     if((node = nodes[i])->id == id) return node;
                 }
             }
 
             if(recursive)
             {
-                for (int i = 0; i < n; ++i) {
+                for (auto i = 0; i < n; ++i) {
                     if ((node = getNode(nodes[i]->children, id, true, ignoreCase)) != nullptr) return node;
                 }
             }
@@ -96,7 +96,7 @@ namespace arc
                 if(part->invBoneTransforms.empty() || part->bones.empty() || part->invBoneTransforms.size() != part->bones.size())
                     continue;
                 auto n = part->invBoneTransforms.size();
-                for (int i = 0; i < n; ++i) {
+                for (auto i = 0; i < n; ++i) {
                     part->bones[i] = part->invBoneTransforms[i].first->globalTransform * part->invBoneTransforms[i].second;
                 }
             }
@@ -109,7 +109,7 @@ namespace arc
         }
 
         int indexOf(Node* child) {
-            for (int i = 0; i < children.size(); ++i) {
+            for (auto i = 0; i < children.size(); ++i) {
                 if (children[i] == child)
                     return i;
             }
@@ -146,13 +146,13 @@ namespace arc
             globalTransform = other->globalTransform;
 
             parts.resize(other->parts.size());
-            for (int i = 0; i < other->parts.size(); ++i) {
+            for (auto i = 0; i < other->parts.size(); ++i) {
                 NodePart* nodePart = other->parts[i];
                 NodePart* copy = nodePart->copy();
                 parts[i] = copy;
             }
 
-            for (int i = 0; i < other->children.size(); ++i) {
+            for (auto i = 0; i < other->children.size(); ++i) {
                 Node* child = other->children[i];
                 addChild(child->copy());
             }

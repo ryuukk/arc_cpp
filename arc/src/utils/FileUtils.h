@@ -5,7 +5,7 @@
 
 namespace arc
 {
-    std::string readFile(const std::string& path)
+    inline std::string readFile(const std::string& path)
     {
         std::ifstream file(path);
         std::string str;

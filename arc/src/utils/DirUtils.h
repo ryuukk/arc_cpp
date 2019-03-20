@@ -9,4 +9,10 @@ namespace arc
         if (found == -1) return "";
         return (path.substr(0, found));
     }
+	/*
+    const std::string currentPath()
+    {
+        return std::filesystem::current_path().string();
+    }
+	*/
 }
