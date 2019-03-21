@@ -219,7 +219,53 @@ void arc::Model::loadMaterials(std::vector<arc::ModelMaterial>& materials) {
         auto* material = new Material;
         material->id = modelMaterial.id;
 
-        printf("Material: %s\n", material->id.c_str());
+        if(!modelMaterial.textures.empty())
+        {
+            std::unordered_map<std::string, Texture2D*> tmp{};
+
+            materials.resize(modelMaterial.textures.size());
+            for (int i = 0; i < modelMaterial.textures.size(); ++i) {
+                auto& tex = modelMaterial.textures[i];
+                Texture2D* texture = nullptr;
+
+                if(tmp.find(tex.fileName) != tmp.end())
+                    texture = tmp[tex.fileName];
+                else
+                {
+                    texture = Texture2D::loadFromFile(tex.fileName);
+                    tmp[tex.fileName] = texture;
+                }
+                switch (tex.usage)
+                {
+                    case ModelTexture::USAGE_DIFFUSE:
+                        material->set(new DiffuseTextureAttribute(texture));
+                        break;
+                    //case ModelTexture::USAGE_SPECULAR:
+                    //    material->set(new TextureAttribute(TextureAttribute.Specular, descriptor, offsetU, offsetV, scaleU, scaleV));
+                    //    break;
+                    //case ModelTexture::USAGE_BUMP:
+                    //    material->set(new TextureAttribute(TextureAttribute.Bump, descriptor, offsetU, offsetV, scaleU, scaleV));
+                    //    break;
+                    //case ModelTexture::USAGE_NORMAL:
+                    //    material->set(new TextureAttribute(TextureAttribute.Normal, descriptor, offsetU, offsetV, scaleU, scaleV));
+                    //    break;
+                    //case ModelTexture::USAGE_AMBIENT:
+                    //    material->set(new TextureAttribute(TextureAttribute.Ambient, descriptor, offsetU, offsetV, scaleU, scaleV));
+                    //    break;
+                    //case ModelTexture::USAGE_EMISSIVE:
+                    //    material->set(new TextureAttribute(TextureAttribute.Emissive, descriptor, offsetU, offsetV, scaleU, scaleV));
+                    //    break;
+                    //case ModelTexture::USAGE_REFLECTION:
+                    //    material->set(new TextureAttribute(TextureAttribute.Reflection, descriptor, offsetU, offsetV, scaleU, scaleV));
+                    //    break;
+                    default:
+                        printf("Texture usage type: %d not yet supported\n", tex.usage);
+                        break;
+                }
+
+            }
+        }
+
 
         this->materials.emplace_back(material);
     }

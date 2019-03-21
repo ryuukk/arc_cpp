@@ -30,8 +30,8 @@ class MyGame : public arc::IApp
         _model = new arc::Model(modelData);
         _instance = new arc::ModelInstance(*_model);
 
-        std::string vs = arc::readFile("data/default.vert");
-        std::string fs = arc::readFile("data/default.frag");
+        std::string vs = arc::file::readFile("data/default.vert");
+        std::string fs = arc::file::readFile("data/default.frag");
 
         auto* provider = new arc::DefaultShaderProvider(vs, fs);
     }

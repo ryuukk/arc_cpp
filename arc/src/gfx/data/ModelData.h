@@ -36,9 +36,9 @@ namespace arc
 
         static void parseAnimations(ModelData& data, json11::Json& json);
 
-        static int parseTextureUsage(std::string& type);
+        static int parseTextureUsage(const std::string& type);
 
-        static int parseType(std::string& type);
+        static int parseType(const std::string& type);
 
         static void parseIndices(ModelMeshPart& data, json11::Json& json);
 

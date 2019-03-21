@@ -14,6 +14,8 @@ namespace arc
         {}
 
         uint64_t type;
+        virtual Attribute* copy() = 0;
+
 
     private:
         bool registered = false;
@@ -68,6 +70,12 @@ namespace arc
         float scaleV = 1;
         int uvIndex = 0;
 
+        Attribute* copy()
+        {
+            auto* ret = new DiffuseTextureAttribute(descriptor.texture);
+            return ret;
+        }
+
     };
 
     struct CullfaceAttribute : public Attribute
@@ -83,6 +91,12 @@ namespace arc
         }
 
         int value = 0;
+
+        Attribute* copy()
+        {
+            auto* ret = new CullfaceAttribute(value);
+            return ret;
+        }
 
     };
 
@@ -102,6 +116,16 @@ namespace arc
         float depthRangeFar{};
         bool depthMask{};
 
+        Attribute* copy()
+        {
+            auto* ret = new DepthTestAttribute();
+            ret->depthFunc = depthFunc;
+            ret->depthRangeNear = depthRangeNear;
+            ret->depthRangeFar = depthRangeFar;
+            ret->depthMask = depthMask;
+            return ret;
+        }
+
     };
 
     struct BlendingAttribute : public Attribute
@@ -119,5 +143,15 @@ namespace arc
         int sourceFunction{};
         int destFunction{};
         float opacity = 1.0f;
+
+        Attribute* copy()
+        {
+            auto* ret = new BlendingAttribute();
+            ret->blended = blended;
+            ret->sourceFunction = sourceFunction;
+            ret->destFunction = destFunction;
+            ret->opacity  = opacity ;
+            return ret;
+        }
     };
 }

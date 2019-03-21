@@ -7,7 +7,7 @@
 
 arc::ModelData arc::ModelData::load(const std::string& path) {
 
-    std::string file_contents = arc::readFile(path);
+    std::string file_contents = arc::file::readFile(path);
 
     std::string error;
     auto json = json11::Json::parse(file_contents, error, json11::JsonParse::COMMENTS);
@@ -153,6 +153,34 @@ void arc::ModelData::parseMaterials(arc::ModelData& data, json11::Json& json, co
             auto jsonMaterial = ModelMaterial();
             jsonMaterial.id = material["id"].string_value();
 
+            if(!material["textures"].is_null())
+            {
+                auto textures = material["textures"].array_items();
+                jsonMaterial.textures.resize(textures.size());
+
+                for (int j = 0; j < textures.size(); ++j) {
+                    auto texture = textures[j];
+                    auto jsonTexture = ModelTexture();
+
+                    jsonTexture.id = texture["id"].string_value();
+
+                    jsonTexture.uvTranslation = {0,0};
+                    jsonTexture.uvScaling = {1,1};
+
+                    jsonTexture.usage = parseTextureUsage(texture["type"].string_value());
+
+                    auto fileName = texture["filename"].string_value();
+                    auto filePath = matPath;
+
+                    jsonTexture.fileName = matPath.empty() ? filePath.append(fileName) : filePath.append("/").append(fileName);
+
+                    if(!arc::file::exists(jsonTexture.fileName))
+                        printf("ERROR: Texture doesn't exist on disk, path: %s\n", jsonTexture.fileName.c_str()); // todo: properly handle this
+
+                    jsonMaterial.textures[j] = jsonTexture;
+                }
+            }
+
             data.materials[i] = jsonMaterial;
         }
     }
@@ -213,12 +241,30 @@ void arc::ModelData::parseAnimations(arc::ModelData& data, json11::Json& json) {
     }
 }
 
-int arc::ModelData::parseTextureUsage(std::string& type) {
-    // todo: finish
-    return 0;
+int arc::ModelData::parseTextureUsage(const std::string& type) {
+    if (type == "AMBIENT")
+        return ModelTexture::USAGE_AMBIENT;
+    else if (type == "BUMP")
+        return ModelTexture::USAGE_BUMP;
+    else if (type == "DIFFUSE")
+        return ModelTexture::USAGE_DIFFUSE;
+    else if (type == "EMISSIVE")
+        return ModelTexture::USAGE_EMISSIVE;
+    else if (type == "NONE")
+        return ModelTexture::USAGE_NONE;
+    else if (type == "NORMAL")
+        return ModelTexture::USAGE_NORMAL;
+    else if (type == "REFLECTION")
+        return ModelTexture::USAGE_REFLECTION;
+    else if (type == "SHININESS")
+        return ModelTexture::USAGE_SHININESS;
+    else if (type == "SPECULAR")
+        return ModelTexture::USAGE_SPECULAR;
+    else if (type == "TRANSPARENCY") return ModelTexture::USAGE_TRANSPARENCY;
+    return ModelTexture::USAGE_UNKNOWN;
 }
 
-int arc::ModelData::parseType(std::string& type) {
+int arc::ModelData::parseType(const std::string& type) {
 
     if (type == "TRIANGLES") return GL_TRIANGLES;
 

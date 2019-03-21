@@ -65,9 +65,9 @@ out vec4 f_color;
 
 void main()
 {
-    //vec3 color = texture2D(u_texture, v_texCoord).rgb;
-    //f_color = vec4(color, 1.0) * v_color;
-    f_color = v_color;
+    vec3 color = texture2D(u_texture, v_texCoord).rgb;
+    f_color = vec4(color, 1.0) * v_color;
+    //f_color = v_color;
 }
 )";
 
@@ -79,7 +79,7 @@ void main()
     arc::Mat4 _transform;
 
     float _a = 0.0f;
-    float _timerChangeAnim = 2.0f;
+    float _timerChangeAnim = 0.0f;
     int _selector = 0;
 
     void create() override {
@@ -94,11 +94,10 @@ void main()
         printf("Shader Log  : %s\n", _shader->log.c_str());
 
 
-        auto modelData = arc::ModelData::load("data/character_male_0.g3dj");
+        auto modelData = arc::ModelData::load("data/knight.g3dj");
         _model = new arc::Model(modelData);
         _instance = new arc::ModelInstance(*_model);
         _animController = new arc::AnimationController(*_instance);
-        auto* desc = _animController->animate("idle_1h");
     }
 
     void update(float dt) override {
@@ -108,7 +107,7 @@ void main()
         _transform.set({0, 0, 0}, arc::Quat::fromAxis({0, 1, 0}, _a));
 
         _timerChangeAnim -=dt;
-        if(_timerChangeAnim < 0.0f)
+        if(_timerChangeAnim <= 0.0f && !_instance->animations.empty())
         {
             auto& animation =_instance->animations[_selector];
             _animController->animate(animation->id);
@@ -146,6 +145,12 @@ void main()
         for(auto& part : node->parts)
         {
             _shader->setUniformMat4Array("u_bones", part->bones);
+
+            auto* ta = part->material->get<arc::DiffuseTextureAttribute>(arc::DiffuseTextureAttribute::stype);
+            ta->descriptor.texture->bind();
+
+            _shader->setUniformi("u_texture", 0);
+
             part->meshPart->render(_shader, true);
         }
 

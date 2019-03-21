@@ -1,3 +1,4 @@
+#include <algorithm>
 #include "ModelInstance.h"
 
 
@@ -113,7 +114,22 @@ void arc::ModelInstance::invalidate(arc::Node* node) {
             bindPose[j].first = Node::getNode(nodes, bindPose[j].first->id);
         }
         
-        // todo: invalidate materials
+        if ( std::find(materials.begin(), materials.end(), part->material) == materials.end() )
+        {
+            int midx = -1;
+            for (int j = 0; j < materials.size(); ++j) {
+                if(materials[j] == part->material)
+                {
+                    midx = j;
+                    break;
+                }
+            }
+
+            if(midx < 0)
+                materials.emplace_back(part->material = part->material->copy());
+            else
+                part->material = materials[midx];
+        }
     }
 
     for (int k = 0; k < node->children.size(); ++k) {
