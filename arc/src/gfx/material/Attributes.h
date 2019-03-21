@@ -12,8 +12,14 @@ namespace arc
         bool has(uint64_t type);
         int indexOf(uint64_t type);
 
-        template <class T>
-        T* get(uint64_t type);
+        template <typename T>
+        T* get(uint64_t type) {
+            int index = indexOf(type);
+            if (index == -1)
+                return nullptr;
+
+            return (T*) attributes[index];
+        }
 
         void sort();
         void clear();

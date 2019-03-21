@@ -44,15 +44,6 @@ int arc::Attributes::indexOf(uint64_t type) {
     return -1;
 }
 
-template<class T>
-T* arc::Attributes::get(uint64_t type) {
-    int index = indexOf(type);
-    if (index == -1)
-        return nullptr;
-
-    return (T) attributes[index];
-}
-
 void arc::Attributes::enable(uint64_t mask) {
 
     this->mask |= mask;
