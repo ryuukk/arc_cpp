@@ -5,14 +5,6 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/../bin)
 function(add_sample sample_name)
     project(${sample_name})
 
-    set(CMAKE_CXX_STANDARD 17)
-    set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
-
-    set(CMAKE_C_COMPILER "c:/Program Files/llvm/bin/clang.exe")
-    set(CMAKE_CXX_COMPILER "c:/Program Files/llvm/bin/clang++.exe")
-    set(CLANG_COVERAGE_COMPILE_FLAGS "-v -target x86_64-pc-windows-gnu -Wall -Wextra -std=gnu++17")
-    set(CMAKE_CXX_FLAGS  "${CMAKE_CXX_FLAGS} ${CLANG_COVERAGE_COMPILE_FLAGS}" )
-
     include_directories(${CMAKE_CURRENT_SOURCE_DIR}/${sample_name}/../../arc/src)
     include_directories(${CMAKE_CURRENT_SOURCE_DIR}/${sample_name}/../../libs/glad/include)
     include_directories(${CMAKE_CURRENT_SOURCE_DIR}/${sample_name}/../../libs/glfw/include)
