@@ -10,6 +10,10 @@ namespace arc
     public:
         MeshPart()
         {};
+
+        ~MeshPart()
+        {};
+
         MeshPart(MeshPart* other) {
             set(other);
         };

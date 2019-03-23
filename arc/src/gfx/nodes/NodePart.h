@@ -14,7 +14,7 @@ namespace arc
     public:
         ~NodePart()
         {
-            delete meshPart;
+            // delete meshPart;
         }
 
         MeshPart* meshPart = nullptr;
