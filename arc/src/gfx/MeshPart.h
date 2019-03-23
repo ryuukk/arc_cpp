@@ -24,11 +24,24 @@ namespace arc
             this->halfExtents = other->halfExtents;
             this->radius = other->radius;
         }
+
+        void set(const std::string& id, Mesh* mesh, int offset, int size, int type) {
+            this->id = id;
+            this->mesh = mesh;
+            this->offset = offset;
+            this->size = size;
+            this->primitiveType = type;
+            this->center = {0, 0, 0};
+            this->halfExtents = {0, 0, 0};
+            this->radius = -1.0;
+        }
+
+
         void render(ShaderProgram* shader, bool autoBind)
         {
             mesh->render(shader, primitiveType, offset, size, autoBind);
         }
-        std::string id;
+        std::string id{};
         int primitiveType{};
         int offset{};
         int size{};

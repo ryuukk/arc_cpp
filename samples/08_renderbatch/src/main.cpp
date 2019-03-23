@@ -44,6 +44,7 @@ class MyGame : public arc::IApp
 
         _a += dt;
         _transform.set({0, 0, 0}, arc::Quat::fromAxis({0, 1, 0}, _a));
+        _instance->transform = _transform;
         _cam->update();
     }
 

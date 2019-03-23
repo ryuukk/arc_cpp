@@ -1,7 +1,10 @@
 #include "DefaultShader.h"
 
-arc::DefaultShader::DefaultShader(arc::Renderable* renderable, const arc::DefaultShader::Config& config) : _renderable(renderable), _config(config) {
-
+arc::DefaultShader::DefaultShader(arc::Renderable* renderable, const arc::DefaultShader::Config& config, ShaderProgram* program) : _renderable(renderable), _config(config)
+{
+    this->program = program;
+    _attributesMask = renderable->material->getMask() | _optionalAttributes;
+    _vertexMask = renderable->meshPart.mesh->getVertexAttributes()->getMaskWithSizePacked();
 }
 
 void arc::DefaultShader::init() {
@@ -28,17 +31,47 @@ bool arc::DefaultShader::canRender(arc::Renderable* renderable)
     // if (renderable->environment != nullptr) mask |= renderable->environment.getMask();
 
     return (_attributesMask == (renderableMask | _optionalAttributes))
-           && (_vertexMask == renderable->meshPart->mesh->getVertexAttributes()->getMaskWithSizePacked()) /*&& (renderable.environment != null) == lighting*/
+           && (_vertexMask == renderable->meshPart.mesh->getVertexAttributes()->getMaskWithSizePacked()) /*&& (renderable.environment != null) == lighting*/
             ;
 }
 
 void arc::DefaultShader::begin(arc::Camera* camera, arc::RenderContext* context) {
     arc::BaseShader::begin(camera, context);
 
-    // todo: set lights
+
+    program->setUniformMat4("u_projViewTrans", camera->combined);
+
 }
 
 void arc::DefaultShader::render(arc::Renderable* renderable) {
+
+    program->setUniformMat4("u_worldTrans", renderable->worldTransform);
+
+    if(_config.numBones > 0 && !renderable->bones->empty())
+        program->setUniformMat4Array("u_bones", *renderable->bones);
+
+
+    // MATERIAL
+    auto cullFace = _config.defaultCullFace == -1 ? _defaultCullFace : _config.defaultCullFace;
+    auto depthFunc = _config.defaultDepthFunc == -1 ? _defaultDepthFunc : _config.defaultDepthFunc;
+    auto depthRangeNear = 0.0f;
+    auto depthRangeFar = 1.0f;
+    auto depthMask = true;
+
+    if (renderable->material->has(DiffuseTextureAttribute::stype))
+    {
+        // todo: use binder from context
+        auto* ta = renderable->material->get<DiffuseTextureAttribute>(DiffuseTextureAttribute::stype);
+        ta->descriptor.texture->bind();
+        //context.textureBinder.bind(ta.textureDescriptor);
+        program->setUniformi("u_diffuseTexture", 0);
+        program->setUniform4f("u_diffuseUVTransform", 0, 0, 1, 1);
+    }
+
+    context->setCullFace(cullFace);
+    context->setDepthTest(depthFunc, depthRangeNear, depthRangeFar);
+    context->setDepthMask(depthMask);
+    // --
 
     arc::BaseShader::render(renderable);
 }

@@ -22,7 +22,6 @@ namespace arc
         Pool(uint32_t initialCapacity = 16, uint32_t max = 1000) : max(max)
         {
             //freeObjects.resize(initialCapacity); // todo: std::queue can't be resized :(
-
         }
 
         ~Pool()
@@ -34,9 +33,10 @@ namespace arc
             }
         }
 
-        T* obtain()
+        virtual T* obtain()
         {
-            if(freeObjects.empty()) return newObject();
+            if(freeObjects.empty())
+                return newObject();
 
             auto* ret = freeObjects.front();
             freeObjects.pop();
@@ -54,12 +54,13 @@ namespace arc
             reset(object);
         }
 
-        void freeAll(std::vector<T*> objects)
+        void freeAll(std::vector<T*>& objects)
         {
             for (int i = 0; i < objects.size(); i++) {
                 auto& object = objects[i];
                 if (object == nullptr) continue;
-                if (freeObjects.size() < max) freeObjects.push(object);
+                if (freeObjects.size() < max)
+                    freeObjects.push(object);
                 reset(object);
             }
             peak = std::max(peak, (uint32_t) freeObjects.size());

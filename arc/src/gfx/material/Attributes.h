@@ -8,6 +8,12 @@ namespace arc
     class Attributes
     {
     public:
+        ~Attributes()
+        {
+            for(auto& attr : attributes)
+                delete attr;
+        }
+
         void set(Attribute* attribute);
         bool has(uint64_t type);
         int indexOf(uint64_t type);

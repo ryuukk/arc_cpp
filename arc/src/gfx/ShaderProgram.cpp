@@ -240,6 +240,21 @@ void arc::ShaderProgram::setUniformi(const std::string& name, int value)
     glUniform1i(location, value);
 }
 
+void arc::ShaderProgram::setUniformf(const std::string& name, float value)
+{
+    checkManaged();
+    int location = fetchUniformLocation(name, true); // todo: change once static pedantic bool added
+    glUniform1f(location, value);
+}
+
+
+void arc::ShaderProgram::setUniform4f(const std::string& name, float a, float b, float c, float d)
+{
+    checkManaged();
+    int location = fetchUniformLocation(name, true); // todo: change once static pedantic bool added
+    glUniform4f(location, a, b, c, d);
+}
+
 void arc::ShaderProgram::setUniformMat4(const std::string& name, arc::Mat4& value, bool transpose)
 {
     checkManaged();

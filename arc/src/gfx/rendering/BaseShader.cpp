@@ -36,14 +36,14 @@ void arc::BaseShader::render(arc::Renderable* renderable, arc::Attributes* attri
 {
     // setters
 
-    if(currentMesh != renderable->meshPart->mesh)
+    if(currentMesh != renderable->meshPart.mesh)
     {
         if(currentMesh != nullptr)
             currentMesh->unbind(program, nullptr);
 
-        currentMesh = renderable->meshPart->mesh;
+        currentMesh = renderable->meshPart.mesh;
         currentMesh->bind(program, nullptr);
     }
 
-    renderable->meshPart->render(program, false);
+    renderable->meshPart.render(program, false);
 }

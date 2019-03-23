@@ -10,6 +10,19 @@ namespace arc
 {
     class RenderablePool : public Pool<Renderable>
     {
+    public:
+        Renderable* obtain() override
+        {
+            auto* ret = Pool::obtain();
+            ret->environement = nullptr;
+            ret->material = nullptr;
+            ret->meshPart.set("", nullptr, 0, 0, 0);
+            ret->shader = nullptr;
+            ret->bones = nullptr;
+            ret->worldTransform = Mat4::identity();
+            return ret;
+        }
+
     protected:
         Renderable* newObject() override
         {
@@ -82,6 +95,7 @@ namespace arc
                     renderable->environement = environement;
                     renderable->material = part->material;
                     renderable->bones = &part->bones;
+                    renderable->meshPart.set(part->meshPart);
 
                     if(!part->bones.empty())
                         renderable->worldTransform = model->transform * node->globalTransform;

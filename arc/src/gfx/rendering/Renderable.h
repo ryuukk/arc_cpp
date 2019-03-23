@@ -13,8 +13,8 @@ namespace arc
     {
     public:
         Mat4 worldTransform = Mat4::identity();
+        MeshPart meshPart{};
 
-        MeshPart* meshPart = nullptr;
         Material* material = nullptr;
         Environement* environement = nullptr;
         std::vector<Mat4>* bones = nullptr;

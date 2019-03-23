@@ -22,7 +22,7 @@ namespace arc
         };
 
     public:
-        DefaultShader(Renderable* renderable, const Config& config);
+        DefaultShader(Renderable* renderable, const Config& config, ShaderProgram* program);
 
         void init() override;
 
@@ -44,6 +44,9 @@ namespace arc
         uint64_t _attributesMask{};
         uint64_t _vertexMask{};
         uint64_t _optionalAttributes{};
+
+        uint32_t _defaultCullFace = GL_BACK;
+        uint32_t _defaultDepthFunc = GL_LEQUAL;
     };
 
 }

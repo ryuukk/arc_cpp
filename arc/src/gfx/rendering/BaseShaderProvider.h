@@ -2,6 +2,7 @@
 
 #include "IShaderProvider.h"
 #include "IShader.h"
+#include "DefaultShader.h"
 
 namespace arc
 {
@@ -14,12 +15,13 @@ namespace arc
                 delete shader;
         }
 
-        IShader* getShader(Renderable* renderable) override
-        {
+        IShader* getShader(Renderable* renderable) override {
             auto* suggestedShader = renderable->shader;
-            if (suggestedShader != nullptr && suggestedShader->canRender(renderable)) return suggestedShader;
+            if (suggestedShader != nullptr && suggestedShader->canRender(renderable))
+                return suggestedShader;
             for (auto& shader : shaders) {
-                if (shader->canRender(renderable)) return shader;
+                if (shader->canRender(renderable))
+                    return shader;
             }
             auto* shader = createShader(renderable);
             shader->init();
