@@ -78,7 +78,7 @@ bool arc::Graphics::createContext()
     Core::logger->info("Vendor:    {}", glGetString(GL_VENDOR));
     Core::logger->info("Renderer:  {}", glGetString(GL_RENDERER));
     Core::logger->info("Version:   {}", glGetString(GL_VERSION));
-    Core::logger->info("GLSL:      {}", glGetString(GL_SHADE_MODEL));
+    Core::logger->info("GLSL:      {}", glGetString(GL_SHADING_LANGUAGE_VERSION));
 
 
     glViewport(0, 0, _width, _height);
