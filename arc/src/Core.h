@@ -1,21 +1,22 @@
 #pragma once
 
+#include <spdlog/logger.h>
 #include "Graphics.h"
 #include "Input.h"
 
-namespace arc {
-
+namespace arc
+{
     class Graphics;
     class Input;
     class IApp;
     class Core
     {
     public:
-        static Graphics *graphics;
-        static Input *input;
-        static arc::IApp *app;
+        static Graphics* graphics;
+        static Input* input;
+        static arc::IApp* app;
+        static spdlog::logger* logger;
     };
-
 
 
     class IApp

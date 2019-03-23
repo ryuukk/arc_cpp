@@ -109,7 +109,6 @@ arc::Node* arc::Model::loadNode(arc::ModelNode& modelNode) {
             {
                 if(modelNodePart.meshPartId == part->id)
                 {
-                    printf("Found the MeshPart!\n");
                     meshPart = part;
                     break;
                 }
@@ -122,7 +121,6 @@ arc::Node* arc::Model::loadNode(arc::ModelNode& modelNode) {
             {
                 if(modelNodePart.materialId == material->id)
                 {
-                    printf("Found the Material!\n");
                     meshMaterial = material;
                     break;
                 }
@@ -131,9 +129,6 @@ arc::Node* arc::Model::loadNode(arc::ModelNode& modelNode) {
 
         if(meshPart == nullptr || meshMaterial == nullptr)
         {
-            printf("Node: %s MeshPart: %s MeshMaterial: %s\n", node->id.c_str(), modelNodePart.meshPartId.c_str(), modelNodePart.materialId.c_str());
-            printf("Mesh: %s\n", meshPart == nullptr ? "false":"true");
-            printf("Material: %s\n", meshMaterial == nullptr ? "false":"true");
             throw std::invalid_argument("invalid node: %s"); // todo: figure out exceptions
         }
 
@@ -259,8 +254,7 @@ void arc::Model::loadMaterials(std::vector<arc::ModelMaterial>& materials) {
                     //    material->set(new TextureAttribute(TextureAttribute.Reflection, descriptor, offsetU, offsetV, scaleU, scaleV));
                     //    break;
                     default:
-                        printf("Texture usage type: %d not yet supported\n", tex.usage);
-                        break;
+                        throw std::invalid_argument("Texture usage type: %d not yet supported"); // todo: figure out exceptions
                 }
 
             }

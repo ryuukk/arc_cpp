@@ -4,6 +4,7 @@ project(arc)
 include_directories("../../arc/src")
 include_directories("../../libs/glad/include/")
 include_directories("../../libs/glfw/include/")
+include_directories("../../libs/spdlog/include/")
 
 include_directories(include)
 
@@ -14,7 +15,7 @@ add_library(arc STATIC ${SOURCES} src/gfx/VertexBuffer.cpp src/gfx/VertexBuffer.
 if(WIN32)
     target_link_libraries(arc opengl32 glad glfw)
 else()
-    target_link_libraries(arc glad glfw)
+    target_link_libraries(arc glad glfw spdlog)
 endif()
 
 # install(TARGETS arc DESTINATION /usr/lib)

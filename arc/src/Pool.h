@@ -21,25 +21,25 @@ namespace arc
     public:
         Pool(uint32_t initialCapacity = 16, uint32_t max = 1000) : max(max)
         {
-            //freeObjects.resize(initialCapacity); // todo: std::queue can't be resized :(
+            //_freeObjects.resize(initialCapacity); // todo: std::queue can't be resized :(
         }
 
         ~Pool()
         {
-            while (freeObjects.size() != 0)
+            while (_freeObjects.size() != 0)
             {
-                delete freeObjects.front();
-                freeObjects.pop();
+                delete _freeObjects.front();
+                _freeObjects.pop();
             }
         }
 
         virtual T* obtain()
         {
-            if(freeObjects.empty())
+            if(_freeObjects.empty())
                 return newObject();
 
-            auto* ret = freeObjects.front();
-            freeObjects.pop();
+            auto* ret = _freeObjects.front();
+            _freeObjects.pop();
             return ret;
         }
 
@@ -47,9 +47,9 @@ namespace arc
         {
             if(object == nullptr) throw std::invalid_argument("can't free null object"); // todo: figure out exceptions
 
-            if (freeObjects.size() < max) {
-                freeObjects.push(object);
-                peak = std::max(peak, freeObjects.size);
+            if (_freeObjects.size() < max) {
+                _freeObjects.push(object);
+                peak = std::max(peak, _freeObjects.size);
             }
             reset(object);
         }
@@ -59,19 +59,19 @@ namespace arc
             for (int i = 0; i < objects.size(); i++) {
                 auto& object = objects[i];
                 if (object == nullptr) continue;
-                if (freeObjects.size() < max)
-                    freeObjects.push(object);
+                if (_freeObjects.size() < max)
+                    _freeObjects.push(object);
                 reset(object);
             }
-            peak = std::max(peak, (uint32_t) freeObjects.size());
+            peak = std::max(peak, (uint32_t) _freeObjects.size());
         }
 
         void clear()
         {
-            while (freeObjects.size() != 0)
+            while (_freeObjects.size() != 0)
             {
-                delete freeObjects.front();
-                freeObjects.pop();
+                delete _freeObjects.front();
+                _freeObjects.pop();
             }
         }
 
@@ -88,7 +88,7 @@ namespace arc
         uint32_t max{};
         uint32_t peak{};
     private:
-        std::queue<T*> freeObjects{};
+        std::queue<T*> _freeObjects{};
     };
 
     template <typename T>

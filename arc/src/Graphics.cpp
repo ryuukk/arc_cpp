@@ -63,7 +63,7 @@ bool arc::Graphics::createContext()
 
     if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
     {
-        printf("Failed to initialize GLAD\n");
+        Core::logger->error("Failed to initialize GLAD");
         return false;
     }
 
@@ -73,12 +73,12 @@ bool arc::Graphics::createContext()
     glfwShowWindow(_window);
 
 
-    printf("Created window with size: %d %d\n", _config.windowWidth, _config.windowHeight);
+    Core::logger->info("Created window with size: {]:{}", _config.windowWidth, _config.windowHeight);
 
-    printf("Vendor:    %s\n", glGetString(GL_VENDOR));
-    printf("Renderer:  %s\n", glGetString(GL_RENDERER));
-    printf("Version:   %s\n", glGetString(GL_VERSION));
-    printf("GLSL:      %s\n", glGetString(GL_SHADE_MODEL));
+    Core::logger->info("Vendor:    {}", glGetString(GL_VENDOR));
+    Core::logger->info("Renderer:  {}", glGetString(GL_RENDERER));
+    Core::logger->info("Version:   {}", glGetString(GL_VERSION));
+    Core::logger->info("GLSL:      {}", glGetString(GL_SHADE_MODEL));
 
 
     glViewport(0, 0, _width, _height);

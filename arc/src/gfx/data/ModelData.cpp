@@ -4,6 +4,7 @@
 #include "../../utils/json11.hpp"
 #include "../../utils/DirUtils.h"
 #include "../../utils/FileUtils.h"
+#include "../../Core.h"
 
 arc::ModelData arc::ModelData::load(const std::string& path) {
 
@@ -21,7 +22,7 @@ arc::ModelData arc::ModelData::load(const std::string& path) {
     std::string id = json["id"].string_value();
     data.id = id.length() > 0 ? id : path;
 
-    printf("Loading: %s version: %d:%d id:%s\n", path.c_str(), lo, hi, id.c_str());
+    Core::logger->info("Loading Model: {} version: {}:{} id: {}\n", path.c_str(), lo, hi, id);
 
     parseMeshes(data, json);
     parseMaterials(data, json, arc::dirName(path));
@@ -175,7 +176,9 @@ void arc::ModelData::parseMaterials(arc::ModelData& data, json11::Json& json, co
                     jsonTexture.fileName = matPath.empty() ? filePath.append(fileName) : filePath.append("/").append(fileName);
 
                     if(!arc::file::exists(jsonTexture.fileName))
-                        printf("ERROR: Texture doesn't exist on disk, path: %s\n", jsonTexture.fileName.c_str()); // todo: properly handle this
+                    {
+                        Core::logger->error("Model: {} Texture not found in disk: {}", data.id, jsonTexture.fileName); // todo: maybe load default texture ?
+                    }
 
                     jsonMaterial.textures[j] = jsonTexture;
                 }
@@ -190,7 +193,6 @@ void arc::ModelData::parseAnimations(arc::ModelData& data, json11::Json& json) {
     // todo: finish
     if(json["animations"].is_null())
     {
-        printf("Model: %s has no animations\n", data.id.c_str());
     } else {
         auto array = json["animations"].array_items();
 

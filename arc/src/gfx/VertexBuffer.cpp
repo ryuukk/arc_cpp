@@ -103,9 +103,6 @@ void arc::VertexBuffer::bindAttributes(ShaderProgram *shader, std::vector<int> *
             if (locations == nullptr)
             {
                 int l = shader->getAttributeLocation(attribute.aliass);
-
-
-                printf("CACHE LOC: %d NAME: %s\n",l, attribute.aliass.c_str());
                 _cachedLocations.emplace_back(l);
             }
 #ifdef false
@@ -139,7 +136,6 @@ void arc::VertexBuffer::unbindAttributes(ShaderProgram* shader) {
     for (int i = 0; i < numAttributes; i++)
     {
         int location = _cachedLocations[i];
-        printf("UNBIND LOC: %d\n", location);
         if (location < 0)
         {
             continue;

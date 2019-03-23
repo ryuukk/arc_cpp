@@ -65,7 +65,7 @@ class MyGame : public arc::IApp
 
         _batch = new arc::RenderableBatch(new arc::DefaultShaderProvider(vs, fs));
 
-        auto s = 8;
+        auto s = 4;
         for (int i = -s; i < s; ++i) {
             for (int j = -s; j < s; ++j) {
 

@@ -1,4 +1,5 @@
 #include "ShaderProgram.h"
+#include "../Core.h"
 #include <assert.h>
 #include <glad/glad.h>
 
@@ -118,9 +119,6 @@ void arc::ShaderProgram::fetchAttributes() {
         _attributeNames[i] = name;
 
         delete[] buffer;
-        {
-            printf("ATTRIBUTE: %s loc: %d type: %d size: %d\n", name.c_str(), location, type, size);
-        }
     }
 }
 
@@ -146,9 +144,6 @@ void arc::ShaderProgram::fetchUniforms() {
         _uniformNames[i] = name;
 
         delete[] buffer;
-        {
-            printf("UNIFORM: %s loc: %d type: %d size: %d\n", name.c_str(), location, type, size);
-        }
     }
 }
 
@@ -160,7 +155,6 @@ int arc::ShaderProgram::fetchAttributeLocation(std::string &name) {
     if (search != _attributes.end()) {
         location = glGetAttribLocation(_program, name.c_str());
         _attributes[name] = location;
-        printf("Found attrib: %s : %d", name.c_str(), location);
     }
     return location;
 }
@@ -168,7 +162,7 @@ int arc::ShaderProgram::fetchAttributeLocation(std::string &name) {
 void arc::ShaderProgram::checkManaged() {
     if (_invalidated)
     {
-        printf("Recompile shader\n");
+        Core::logger->info("Recompile shader: {}", _program);
 
         compileShaders(_vertexShaderSource, _fragmentShaderSource);
         _invalidated = false;
