@@ -52,9 +52,9 @@ namespace arc
             _running = !_graphics->shouldClose();
         }
 
-        glfwTerminate();
-
         _app->dispose();
+
+        glfwTerminate();
 
         delete(_graphics);
         delete(_app);

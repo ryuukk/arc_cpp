@@ -3,7 +3,7 @@ project(arc_cpp)
 
 set(CMAKE_CXX_STANDARD 17)
 
-set(CMAKE_BUILD_TYPE Release) # Release, RelWithDebInfo, Debug
+set(CMAKE_BUILD_TYPE Debug) # Release, RelWithDebInfo, Debug
 
 
 option (ARC_SAMPLES "Enable arc samples" ON)
