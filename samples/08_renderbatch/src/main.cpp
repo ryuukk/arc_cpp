@@ -10,12 +10,15 @@
 #include <gfx/ModelInstance.h>
 #include <gfx/data/ModelData.h>
 #include <utils/FileUtils.h>
+#include <gfx/rendering/RenderableBatch.h>
 
 class MyGame : public arc::IApp
 {
     arc::PerspectiveCamera* _cam;
     arc::Model* _model;
     arc::ModelInstance* _instance;
+    arc::RenderableBatch* _batch;
+
     arc::Mat4 _transform;
     float _a = 5.0f;
 
@@ -33,7 +36,8 @@ class MyGame : public arc::IApp
         std::string vs = arc::file::readFile("data/default.vert");
         std::string fs = arc::file::readFile("data/default.frag");
 
-        auto* provider = new arc::DefaultShaderProvider(vs, fs);
+        _batch = new arc::RenderableBatch(new arc::DefaultShaderProvider(vs, fs));
+
     }
 
     void update(float dt) override {
@@ -49,6 +53,12 @@ class MyGame : public arc::IApp
 
         glEnable(GL_DEPTH_TEST);
 
+        _batch->begin(_cam);
+
+        _batch->render(_instance);
+
+        _batch->end();
+
     }
 
     void resize(int width, int height) override {
@@ -59,6 +69,7 @@ class MyGame : public arc::IApp
         delete _cam;
         delete _model;
         delete _instance;
+        delete _batch;
     }
 
 };

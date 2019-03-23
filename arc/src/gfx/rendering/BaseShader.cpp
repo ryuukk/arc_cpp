@@ -3,6 +3,7 @@
 void arc::BaseShader::init(arc::ShaderProgram* program, arc::Renderable* renderable)
 {
     // todo: check if compild
+
     this->program = program;
 }
 

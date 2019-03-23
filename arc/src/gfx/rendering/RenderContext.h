@@ -1,6 +1,7 @@
 #pragma once
 
 #include "TextureBinder.h"
+#include <glad/glad.h>
 
 namespace arc
 {

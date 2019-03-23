@@ -17,7 +17,7 @@ namespace arc
         DefaultShader::Config config;
     protected:
         IShader* createShader(Renderable* renderable) override {
-
+            // todo: create prefix
             return new DefaultShader(renderable, config);
         }
     };
