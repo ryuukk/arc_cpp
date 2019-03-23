@@ -28,10 +28,11 @@ bool arc::DefaultShader::canRender(arc::Renderable* renderable)
 {
     uint64_t renderableMask = 0;
     if (renderable->material != nullptr) renderableMask |= renderable->material->getMask();
-    // if (renderable->environment != nullptr) mask |= renderable->environment.getMask();
+    if (renderable->environement != nullptr) renderableMask |= renderable->environement->getMask();
 
-    return (_attributesMask == (renderableMask | _optionalAttributes))
-           && (_vertexMask == renderable->meshPart.mesh->getVertexAttributes()->getMaskWithSizePacked()) /*&& (renderable.environment != null) == lighting*/
+    return (_attributesMask == (renderableMask | _optionalAttributes)) &&
+            (_vertexMask == renderable->meshPart.mesh->getVertexAttributes()->getMaskWithSizePacked()) &&
+            (renderable->environement != nullptr) == _lighting
             ;
 }
 

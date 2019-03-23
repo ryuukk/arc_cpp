@@ -24,26 +24,38 @@ namespace arc
     {
     public:
         VertexBuffer(bool isStatic, int numVertices, VertexAttributes* attributes);
-        ~VertexBuffer()
-        {
+
+        ~VertexBuffer() {
             glBindBuffer(GL_ARRAY_BUFFER, 0);
             glDeleteBuffers(1, &_bufferHandle);
             glDeleteVertexArrays(1, &_vaoHandle);
         }
+
         int getNumVertices();
+
         int getNumMaxVertices();
-        void setVertices(std::vector<float> vertices, int offset, int count);
-        void bind(ShaderProgram *shader, std::vector<int> *locations);
-        void unbind(ShaderProgram *shader, std::vector<int> *locations);
+
+        void setVertices(const std::vector<float>& vertices, int offset, int count);
+
+        void bind(ShaderProgram* shader, std::vector<int>* locations);
+
+        void unbind(ShaderProgram* shader, std::vector<int>* locations);
+
         void invalidate();
+
     private:
         void bufferChanged();
-        void bindAttributes(ShaderProgram *shader, std::vector<int> *locations);
+
+        void bindAttributes(ShaderProgram* shader, std::vector<int>* locations);
+
         void unbindAttributes(ShaderProgram* shader);
+
         void bindData();
+
         void createVAO();
+
     private:
-        VertexAttributes* _attributes;
+        VertexAttributes* _attributes = nullptr;
         GLuint _bufferHandle;
         bool _isStatic = false;
         int _usage = 0;

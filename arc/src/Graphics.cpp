@@ -73,7 +73,7 @@ bool arc::Graphics::createContext()
     glfwShowWindow(_window);
 
 
-    Core::logger->info("Created window with size: {]:{}", _config.windowWidth, _config.windowHeight);
+    Core::logger->info("Created window with size: {}:{}", _config.windowWidth, _config.windowHeight);
 
     Core::logger->info("Vendor:    {}", glGetString(GL_VENDOR));
     Core::logger->info("Renderer:  {}", glGetString(GL_RENDERER));

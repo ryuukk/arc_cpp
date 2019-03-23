@@ -37,8 +37,7 @@ namespace arc
             _logger = spdlog::default_logger_raw();
         }
 
-        _logger->set_pattern("[%H:%M:%S %z] (%l) %v");
-
+        _logger->set_pattern("[%H:%M:%S %z] (%l) %@ %v");
 
         _logger->info("Starting engine..");
 

@@ -41,7 +41,7 @@ namespace arc
         {
             mesh->render(shader, primitiveType, offset, size, autoBind);
         }
-        std::string id{};
+        std::string id;
         int primitiveType{};
         int offset{};
         int size{};

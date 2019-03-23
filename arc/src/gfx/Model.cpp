@@ -19,7 +19,7 @@ void arc::Model::calculateTransforms() {
     }
 }
 
-void arc::Model::loadMeshes(std::vector<arc::ModelMesh>& meshes) {
+void arc::Model::loadMeshes(std::vector<ModelMesh>& meshes) {
     for(auto& mesh : meshes)
         convertMesh(mesh);
 }
@@ -165,7 +165,7 @@ void arc::Model::loadAnimations(std::vector<arc::ModelAnimation>& animations)
             if(node == nullptr)
                 continue;
 
-            auto* nodeAnim = new NodeAnimation;
+            auto* nodeAnim = new NodeAnimation();
             nodeAnim->node = node;
 
             // todo: should figure out why i can't resize the vectors.. i should avoid emplace_back if i already know the final size
@@ -181,7 +181,7 @@ void arc::Model::loadAnimations(std::vector<arc::ModelAnimation>& animations)
             }
             if(!nanim.rotation.empty())
             {
-                //nodeAnim->rotation.resize(nanim.rotation.size());
+                nodeAnim->rotation.reserve(nanim.rotation.size());
                 for (int i = 0; i < nanim.rotation.size(); ++i) {
                     auto& kf = nanim.rotation[i];
                     if(kf.keytime > animation->duration) animation->duration = kf.keytime;
@@ -202,6 +202,7 @@ void arc::Model::loadAnimations(std::vector<arc::ModelAnimation>& animations)
 
             if ((!nodeAnim->translation.empty()) || (!nodeAnim->rotation.empty()) || (!nodeAnim->scaling.empty()))
                 animation->nodeAnimations.emplace_back(nodeAnim);
+
         }
         if(!animation->nodeAnimations.empty())
             this->animations.emplace_back(animation);

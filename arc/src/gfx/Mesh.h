@@ -8,7 +8,6 @@
 namespace arc
 {
     class VertexBuffer;
-
     class Mesh
     {
     public:
@@ -24,11 +23,11 @@ namespace arc
 
         void unbind(ShaderProgram* shader, std::vector<int>* locations);
 
-        void setVertices(std::vector<float>& vertices);
+        void setVertices(const std::vector<float>& vertices);
 
-        void setVertices(std::vector<float>& vertices, int offset, int count);
+        void setVertices(const std::vector<float>& vertices, int offset, int count);
 
-        void setIndices(std::vector<short>& indices);
+        void setIndices(const std::vector<short>& indices);
 
         void render(ShaderProgram* shader, int primitiveType);
 

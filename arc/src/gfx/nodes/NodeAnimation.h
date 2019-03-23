@@ -10,7 +10,7 @@ namespace arc
     template<typename T>
     struct NodeKeyframe
     {
-        float keytime;
+        float keytime{};
         T value;
     };
 

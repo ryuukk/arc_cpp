@@ -16,7 +16,7 @@ namespace arc
     class Node
     {
     public:
-        static Node* getNode(std::vector<Node*>& nodes, std::string& id, bool recursive = true, bool ignoreCase = false)
+        static Node* getNode(std::vector<Node*>& nodes,const std::string& id, bool recursive = true, bool ignoreCase = false)
         {
             auto n = nodes.size();
             Node* node = nullptr;

@@ -47,6 +47,8 @@ namespace arc
 
         uint32_t _defaultCullFace = GL_BACK;
         uint32_t _defaultDepthFunc = GL_LEQUAL;
+
+        bool _lighting{};
     };
 
 }

@@ -22,7 +22,7 @@ arc::ModelData arc::ModelData::load(const std::string& path) {
     std::string id = json["id"].string_value();
     data.id = id.length() > 0 ? id : path;
 
-    Core::logger->info("Loading Model: {} version: {}:{} id: {}\n", path.c_str(), lo, hi, id);
+    Core::logger->info("Loading Model: {} version: {}:{} id: {}", path.c_str(), lo, hi, data.id);
 
     parseMeshes(data, json);
     parseMaterials(data, json, arc::dirName(path));

@@ -2,9 +2,9 @@
 
 void arc::BaseShader::init(arc::ShaderProgram* program, arc::Renderable* renderable)
 {
-    // todo: check if compild
-
+    // todo: check if compiled
     this->program = program;
+
 }
 
 void arc::BaseShader::begin(Camera* camera, arc::RenderContext* context) {

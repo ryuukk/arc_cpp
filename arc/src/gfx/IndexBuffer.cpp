@@ -10,7 +10,7 @@ arc::IndexBuffer::IndexBuffer(bool isStatic, int maxIndices) {
     _usage = isStatic ? GL_STATIC_DRAW : GL_DYNAMIC_DRAW;
 }
 
-void arc::IndexBuffer::setIndices(std::vector<short>& indices, int offset, int count) {
+void arc::IndexBuffer::setIndices(const std::vector<short>& indices, int offset, int count) {
 
     _isDirty = true;
 

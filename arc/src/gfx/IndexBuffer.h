@@ -9,17 +9,24 @@ namespace arc
     {
     public:
         IndexBuffer(bool isStatic, int maxIndices);
-        ~IndexBuffer()
-        {
-           glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
-           glDeleteBuffers(1, &_bufferHandle);
+
+        ~IndexBuffer() {
+            glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+            glDeleteBuffers(1, &_bufferHandle);
         }
-        void setIndices(std::vector<short>& indices, int offset, int count);
+
+        void setIndices(const std::vector<short>& indices, int offset, int count);
+
         void bind();
+
         void unbind();
+
         void invalidate();
+
         int getNumIndices();
+
         int getNumMaxIndices();
+
     private:
         std::vector<short> _buffer;
         GLuint _bufferHandle;

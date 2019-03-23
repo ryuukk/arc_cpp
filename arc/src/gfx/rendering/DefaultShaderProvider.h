@@ -29,6 +29,8 @@ namespace arc
 
             auto* program = new ShaderProgram(vs, fs);
 
+            Core::logger->info("Compile new shader: {} for renderable", program->isCompiled());
+
             // todo: create prefix
             return new DefaultShader(renderable, config, program);
         }
