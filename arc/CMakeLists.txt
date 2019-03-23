@@ -13,7 +13,7 @@ file(GLOB_RECURSE SOURCES src/*.cpp src/*.c src/*.h)
 add_library(arc STATIC ${SOURCES} src/gfx/VertexBuffer.cpp src/gfx/VertexBuffer.h)
 
 if(WIN32)
-    target_link_libraries(arc opengl32 glad glfw)
+    target_link_libraries(arc opengl32 glad glfw spdlog)
 else()
     target_link_libraries(arc glad glfw spdlog)
 endif()
