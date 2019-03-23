@@ -15,7 +15,7 @@ namespace arc
             int numDirectionalLights = 2;
             int numPointLights = 5;
             int numSpotLights = 0;
-            int numBones = 12;
+            int numBones = 20;
             bool ignoreUnimplemented = true;
             int defaultCullFace = -1;
             int defaultDepthFunc = -1;
