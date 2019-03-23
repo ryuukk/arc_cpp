@@ -14,6 +14,7 @@ set(GLFW_BUILD_EXAMPLES OFF CACHE BOOL "" FORCE)
 
 add_subdirectory(libs/glad)
 add_subdirectory(libs/glfw)
+add_subdirectory(libs/spdlog)
 add_subdirectory(arc)
 
 
