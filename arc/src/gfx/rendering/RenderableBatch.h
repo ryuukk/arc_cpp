@@ -41,6 +41,7 @@ namespace arc
 
         ~RenderableBatch()
         {
+            pool.clear();
             delete shaderProvider;
         }
 

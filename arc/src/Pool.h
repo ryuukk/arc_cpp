@@ -66,6 +66,15 @@ namespace arc
             peak = std::max(peak, (uint32_t) freeObjects.size());
         }
 
+        void clear()
+        {
+            while (freeObjects.size() != 0)
+            {
+                delete freeObjects.front();
+                freeObjects.pop();
+            }
+        }
+
     protected:
         virtual T* newObject() = 0;
 
