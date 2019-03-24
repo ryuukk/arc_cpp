@@ -1,6 +1,6 @@
 #pragma once
 
-#include <spdlog/logger.h>
+#include "Logger.h"
 #include "Graphics.h"
 #include "Input.h"
 
@@ -14,8 +14,8 @@ namespace arc
     public:
         static Graphics* graphics;
         static Input* input;
-        static arc::IApp* app;
-        static spdlog::logger* logger;
+        static IApp* app;
+        static Logger* logger;
     };
 
 

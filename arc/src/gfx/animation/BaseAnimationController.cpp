@@ -40,7 +40,7 @@ void arc::BaseAnimationController::removeAnimation(arc::Animation& animation){
 // STATIC STUFF
 
 template<typename T>
-int arc::BaseAnimationController::getFirstKeyframeIndexAtTime(std::vector<arc::NodeKeyframe<T>> arr, float time) {
+inline int arc::BaseAnimationController::getFirstKeyframeIndexAtTime(std::vector<arc::NodeKeyframe<T>> arr, float time) {
     for (int i = 0; i < arr.size() - 1; ++i) {
         if(time > arr[i].keytime && time <= arr[i + 1].keytime)
             return i;
@@ -48,7 +48,7 @@ int arc::BaseAnimationController::getFirstKeyframeIndexAtTime(std::vector<arc::N
     return 0;
 }
 
-arc::Vec3 arc::BaseAnimationController::getTranslationAtTime(arc::NodeAnimation& nodeAnim, float time) {
+inline arc::Vec3 arc::BaseAnimationController::getTranslationAtTime(arc::NodeAnimation& nodeAnim, float time) {
 
     if(nodeAnim.translation.empty()) return nodeAnim.node->translation;
     if(nodeAnim.translation.size() == 1) return nodeAnim.translation[0].value;
@@ -68,7 +68,7 @@ arc::Vec3 arc::BaseAnimationController::getTranslationAtTime(arc::NodeAnimation&
     return out;
 }
 
-arc::Quat arc::BaseAnimationController::getRotationAtTime(arc::NodeAnimation& nodeAnim, float time) {
+inline arc::Quat arc::BaseAnimationController::getRotationAtTime(arc::NodeAnimation& nodeAnim, float time) {
 
     if(nodeAnim.rotation.empty()) return nodeAnim.node->rotation;
     if(nodeAnim.rotation.size() == 1) return nodeAnim.rotation[0].value;
@@ -88,7 +88,7 @@ arc::Quat arc::BaseAnimationController::getRotationAtTime(arc::NodeAnimation& no
     return out;
 }
 
-arc::Vec3 arc::BaseAnimationController::getScalingAtTime(arc::NodeAnimation& nodeAnim, float time) {
+inline arc::Vec3 arc::BaseAnimationController::getScalingAtTime(arc::NodeAnimation& nodeAnim, float time) {
 
     if(nodeAnim.scaling.empty()) return nodeAnim.node->scale;
     if(nodeAnim.scaling.size() == 1) return nodeAnim.scaling[0].value;
@@ -108,7 +108,7 @@ arc::Vec3 arc::BaseAnimationController::getScalingAtTime(arc::NodeAnimation& nod
     return out;
 }
 
-arc::Transform arc::BaseAnimationController::getNodeAnimationTransform(arc::NodeAnimation& nodeAnim, float time) {
+inline arc::Transform arc::BaseAnimationController::getNodeAnimationTransform(arc::NodeAnimation& nodeAnim, float time) {
     auto transform = Transform::idt();
     transform.translation = getTranslationAtTime(nodeAnim, time);
     transform.rotation = getRotationAtTime(nodeAnim, time);

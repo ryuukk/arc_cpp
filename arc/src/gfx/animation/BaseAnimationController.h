@@ -14,13 +14,13 @@ namespace arc
         static TransformMap transforms;
 
         template <typename T>
-        static int getFirstKeyframeIndexAtTime(std::vector<NodeKeyframe<T>> arr, float time);
+        inline static int getFirstKeyframeIndexAtTime(std::vector<NodeKeyframe<T>> arr, float time);
 
-        static Vec3 getTranslationAtTime(NodeAnimation& nodeAnim, float time);
-        static Quat getRotationAtTime(NodeAnimation& nodeAnim, float time);
-        static Vec3 getScalingAtTime(NodeAnimation& nodeAnim, float time);
+        inline static Vec3 getTranslationAtTime(NodeAnimation& nodeAnim, float time);
+        inline static Quat getRotationAtTime(NodeAnimation& nodeAnim, float time);
+        inline static Vec3 getScalingAtTime(NodeAnimation& nodeAnim, float time);
 
-        static Transform getNodeAnimationTransform(NodeAnimation& nodeAnim, float time);
+        inline static Transform getNodeAnimationTransform(NodeAnimation& nodeAnim, float time);
 
         static void applyNodeAnimationDirectly(NodeAnimation& nodeAnim, float time);
         static void applyNodeAnimationDirectly(NodeAnimation& nodeAnim, std::unordered_map<Node*, Transform>* out, float alpha, float time);

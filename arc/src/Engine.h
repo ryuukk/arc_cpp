@@ -1,8 +1,8 @@
 #pragma once
 
 
-#include <spdlog/sinks/basic_file_sink.h>
 #include "Graphics.h"
+#include "Logger.h"
 
 namespace arc
 {
@@ -19,7 +19,7 @@ namespace arc
         Graphics* _graphics = nullptr;
         Input* _input = nullptr;
         IApp* _app = nullptr;
-        spdlog::logger* _logger = nullptr;
+        Logger* _logger = nullptr;
 
         Configuration _config;
         bool _running = true;
@@ -28,16 +28,16 @@ namespace arc
     void Engine::run()
     {
 
-        if(_config.logToFile)
+        //if(_config.logToFile)
+        //{
+        //    _logger = spdlog::basic_logger_mt("main_log", _config.logPath).get();
+        //}
+        //else
         {
-            _logger = spdlog::basic_logger_mt("main_log", _config.logPath).get();
-        }
-        else
-        {
-            _logger = spdlog::default_logger_raw();
+            _logger = new Logger();
         }
 
-        _logger->set_pattern("[%H:%M:%S %z] (%l) %@ %v");
+        //_logger->set_pattern("[%H:%M:%S %z] (%l) %@ %v");
 
         _logger->info("Starting engine..");
 
