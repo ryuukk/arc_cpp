@@ -22,8 +22,8 @@ public:
         delete instance;
     }
 
-    arc::ModelInstance* instance;
-    arc::AnimationController* controller;
+    arc::ModelInstance* instance = nullptr;
+    arc::AnimationController* controller = nullptr;
 
     arc::Vec3 position = {0, 0, 0};
     arc::Mat4 _transform = arc::Mat4::identity();
@@ -35,7 +35,8 @@ public:
         _transform.set(position, arc::Quat::fromAxis({0, 1, 0}, _a));
         instance->transform = _transform;
 
-        controller->update(dt);
+        if(controller)
+            controller->update(dt);
     }
 
     void render(arc::RenderableBatch* batch, arc::Environement* environement = nullptr) {
@@ -54,7 +55,7 @@ class MyGame : public arc::IApp
     void create() override {
 
         _cam = new arc::PerspectiveCamera(67, arc::Core::graphics->getWidth(), arc::Core::graphics->getHeight());
-        _cam->position = arc::Vec3(0, 10, 5) * 2.0f;
+        _cam->position = arc::Vec3(0, 10, 5) * 4.0f;
         _cam->lookAt(0, 0, 0);
         _cam->update();
 
@@ -65,7 +66,7 @@ class MyGame : public arc::IApp
 
         _batch = new arc::RenderableBatch(new arc::DefaultShaderProvider(vs, fs));
 
-        auto s = 4;
+        auto s = 16;
         for (int i = -s; i < s; ++i) {
             for (int j = -s; j < s; ++j) {
 
@@ -97,7 +98,6 @@ class MyGame : public arc::IApp
         glEnable(GL_DEPTH_TEST);
 
         _batch->begin(_cam);
-
 
         for (auto& entity : _entities)
             entity->render(_batch, nullptr);

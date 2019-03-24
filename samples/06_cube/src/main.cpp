@@ -8,6 +8,30 @@
 #include <gfx/Mesh.h>
 #include <gfx/Camera.h>
 
+
+class Entity
+{
+public:
+    ~Entity() {
+    }
+
+    arc::Mesh* mesh = nullptr;
+    arc::Vec3 position = {0, 0, 0};
+    arc::Mat4 _transform = arc::Mat4::identity();
+    float _a = 5.0f;
+
+
+    void update(const float dt) {
+        _a += dt;
+        _transform.set(position, arc::Quat::fromAxis({0, 1, 0}, _a));
+    }
+
+    void render(arc::ShaderProgram* shader) {
+        shader->setUniformMat4("u_world", _transform);
+        mesh->render(shader, GL_TRIANGLES);
+    }
+};
+
 class MyGame : public arc::IApp
 {
     std::string vs = R"(
@@ -44,16 +68,10 @@ void main()
 )";
 
     arc::ShaderProgram *_shader;
-    arc::Mesh *_mesh;
     arc::PerspectiveCamera *_cam;
-    arc::Mat4 _transform;
-    float _a = 0.0f;
+    std::vector<Entity*> _entities{};
 
     void create() override {
-
-        auto attrPos = arc::VertexAttribute(arc::VertexUsage::Position, 3, "a_position");
-        auto attrNormal = arc::VertexAttribute(arc::VertexUsage::Normal, 3, "a_normal");
-        _mesh = new arc::Mesh(true, 24, 36, new arc::VertexAttributes({attrPos, attrNormal}));
 
         std::vector<float> positions = {
                 -0.5f, -0.5f, -0.5f, -0.5f, -0.5f, 0.5f, 0.5f, -0.5f, 0.5f, 0.5f, -0.5f, -0.5f, -0.5f, 0.5f, -0.5f,
@@ -94,14 +112,29 @@ void main()
                 18, 19, 20, 23, 22, 20, 22, 21
         };
 
-        _mesh->setVertices(vertices);
-        _mesh->setIndices(indices);
+        auto s = 8;
+
+        for (int j = -s; j < s; ++j) {
+            for (int i = -s; i < s; ++i) {
+                auto* e = new Entity();
+
+                auto attrPos = arc::VertexAttribute(arc::VertexUsage::Position, 3, "a_position");
+                auto attrNormal = arc::VertexAttribute(arc::VertexUsage::Normal, 3, "a_normal");
+
+                e->position = {j * 2.0f, 0, i * 2.0f};
+                e->mesh = new arc::Mesh(true, 24, 36, new arc::VertexAttributes({attrPos, attrNormal}));
+                e->mesh->setVertices(vertices);
+                e->mesh->setIndices(indices);
+
+                _entities.emplace_back(e);
+            }
+        }
 
 
         _shader = new arc::ShaderProgram(vs, fs);
 
         _cam = new arc::PerspectiveCamera(67, arc::Core::graphics->getWidth(), arc::Core::graphics->getHeight());
-        _cam->position = arc::Vec3(0, 10, 5)*0.5f;
+        _cam->position = arc::Vec3(0, 10, 5) * 5.0f;
         _cam->lookAt(0, 0, 0);
         _cam->update();
 
@@ -110,8 +143,8 @@ void main()
 
     void update(float dt) override {
 
-        _a += dt;
-        _transform.set({0,0,0}, arc::Quat::fromAxis({0.5,1,0.5}, _a));
+        for (auto& entity : _entities)
+            entity->update(dt);
         _cam->update();
     }
 
@@ -124,9 +157,9 @@ void main()
         _shader->begin();
         _shader->setUniformMat4("u_proj", _cam->projection);
         _shader->setUniformMat4("u_view", _cam->view);
-        _shader->setUniformMat4("u_world", _transform);
 
-        _mesh->render(_shader, GL_TRIANGLES);
+        for (auto& entity : _entities)
+            entity->render(_shader);
 
         _shader->end();
     }
@@ -136,7 +169,6 @@ void main()
     }
 
     void dispose() override {
-        delete _mesh;
         delete _shader;
     }
 
