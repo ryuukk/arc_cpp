@@ -14,7 +14,7 @@ add_library(arc STATIC ${SOURCES} src/gfx/VertexBuffer.cpp src/gfx/VertexBuffer.
 if(WIN32)
     target_link_libraries(arc opengl32 glad glfw)
 else()
-    target_link_libraries(arc glad glfw spdlog)
+    target_link_libraries(arc glad glfw)
 endif()
 
 # install(TARGETS arc DESTINATION /usr/lib)
