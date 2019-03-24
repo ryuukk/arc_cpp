@@ -33,4 +33,7 @@
 
 
 # CLion
-.idea/*
+.idea/
+
+# VSCode
+.vscode/
