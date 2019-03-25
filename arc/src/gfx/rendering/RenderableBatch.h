@@ -36,18 +36,22 @@ namespace arc
     public:
         RenderableBatch(IShaderProvider* provider) : shaderProvider(provider)
         {
-
+            renderables.reserve(16*16);
         }
 
         ~RenderableBatch()
         {
-            pool.clear();
+            // pool.clear();
             delete shaderProvider;
         }
 
+        std::queue<Renderable*> queue;
         std::vector<Renderable*> renderables;
         RenderContext context{};
-        RenderablePool pool{};
+
+
+        //RenderablePool pool{};
+
         IShaderProvider* shaderProvider = nullptr;
 
         Camera* camera = nullptr;
@@ -80,8 +84,16 @@ namespace arc
             }
             if (currentShader != nullptr) currentShader->end();
 
-            pool.freeAll(renderables);
-            renderables.clear();
+
+            // FIXME: pool causes a mem leak !!!
+            // for the moment i'll manually handle a queue
+            // i need to find a better way to handle this shit
+           //pool.freeAll(renderables);
+
+            for (int i = 0; i < renderables.size(); ++i) {
+                queue.push(renderables[i]);
+            }
+           renderables.clear();
         }
 
         void render(ModelInstance* model, Environement* environement = nullptr)
@@ -92,7 +104,23 @@ namespace arc
             {
                 for(auto& part : node->parts)
                 {
-                    auto* renderable = pool.obtain();
+                    Renderable* renderable = nullptr;
+
+                    if(queue.empty())
+                        renderable = new Renderable();
+                    else
+                    {
+                        renderable = queue.front();
+                        // clean it here, remove when pool is fixed
+                        renderable->environement = nullptr;
+                        renderable->material = nullptr;
+                        renderable->meshPart.set("", nullptr, 0, 0, 0);
+                        renderable->shader = nullptr;
+                        renderable->bones = nullptr;
+                        renderable->worldTransform = Mat4::identity();
+                        // --
+                        queue.pop();
+                    }
                     renderable->environement = environement;
                     renderable->material = part->material;
                     renderable->bones = &part->bones;
