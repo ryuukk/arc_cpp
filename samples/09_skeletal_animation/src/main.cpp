@@ -174,27 +174,11 @@ void main()
 
 
 int main(int argc, char** argv) {
-
-
-    arc::Mat4 test = arc::Mat4::identity().set({1.25f, -5, 2.25f}, arc::Quat::fromAxis({0.25f,0.5f,0.75f}, 0.25f), {1,1,1});
-
-    arc::Mat4::print(test);
-    arc::Mat4::print(test*test);
-    arc::Mat4::print(arc::Mat4::inv(test));
-
-
-    //return 0;
-
-
-
     auto config = arc::Configuration();
     config.windowTitle = "Sample 09 - Skeletal Animation";
     auto myGame = new MyGame();
     auto engine = new arc::Engine(myGame, config);
     engine->run();
-
-
-
 
     return 0;
 }
