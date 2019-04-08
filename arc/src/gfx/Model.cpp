@@ -19,8 +19,8 @@ void arc::Model::calculateTransforms() {
     }
 }
 
-void arc::Model::loadMeshes(std::vector<ModelMesh>& meshes) {
-    for(auto& mesh : meshes)
+void arc::Model::loadMeshes(std::vector<ModelMesh>& modelMeshes) {
+    for(auto& mesh : modelMeshes)
         convertMesh(mesh);
 }
 
@@ -68,10 +68,10 @@ void arc::Model::convertMesh(arc::ModelMesh& modelMesh) {
     }
 }
 
-void arc::Model::loadNodes(std::vector<arc::ModelNode>& nodes) {
+void arc::Model::loadNodes(std::vector<arc::ModelNode>& modelNodes) {
     nodePartBones.clear();
 
-    for(auto& node : nodes)
+    for(auto& node : modelNodes)
     {
         Node* n = loadNode(node);
         this->nodes.emplace_back(n);
@@ -85,7 +85,6 @@ void arc::Model::loadNodes(std::vector<arc::ModelNode>& nodes) {
             auto& pair = e.second[i];
             auto* node = Node::getNode(this->nodes, pair.first);
             auto invTransform = Mat4::inv(pair.second);
-
             e.first->invBoneTransforms.emplace_back(std::pair(node, invTransform));
         }
     }
@@ -153,9 +152,9 @@ arc::Node* arc::Model::loadNode(arc::ModelNode& modelNode) {
     return node;
 }
 
-void arc::Model::loadAnimations(std::vector<arc::ModelAnimation>& animations)
+void arc::Model::loadAnimations(std::vector<arc::ModelAnimation>& modelAnimations)
 {
-    for(auto& anim : animations)
+    for(auto& anim : modelAnimations)
     {
         auto* animation = new Animation;
         animation->id = anim.id;
@@ -177,6 +176,8 @@ void arc::Model::loadAnimations(std::vector<arc::ModelAnimation>& animations)
                     if(kf.keytime > animation->duration) animation->duration = kf.keytime;
                     auto kff = NodeKeyframe<Vec3>{kf.keytime, kf.value};
                     nodeAnim->translation.emplace_back(kff);
+
+                    //printf("%s: %s: translation: %f:%f:%f\n", anim.id.c_str(), nanim.nodeId.c_str(), kf.value.x, kf.value.y, kf.value.z);
                 }
             }
             if(!nanim.rotation.empty())
@@ -209,8 +210,8 @@ void arc::Model::loadAnimations(std::vector<arc::ModelAnimation>& animations)
     }
 }
 
-void arc::Model::loadMaterials(std::vector<arc::ModelMaterial>& materials) {
-    for(auto& modelMaterial : materials)
+void arc::Model::loadMaterials(std::vector<arc::ModelMaterial>& modelMaterials) {
+    for(auto& modelMaterial : modelMaterials)
     {
         auto* material = new Material;
         material->id = modelMaterial.id;
@@ -219,7 +220,7 @@ void arc::Model::loadMaterials(std::vector<arc::ModelMaterial>& materials) {
         {
             std::unordered_map<std::string, Texture2D*> tmp{};
 
-            materials.resize(modelMaterial.textures.size());
+            modelMaterials.resize(modelMaterial.textures.size());
             for (int i = 0; i < modelMaterial.textures.size(); ++i) {
                 auto& tex = modelMaterial.textures[i];
                 Texture2D* texture = nullptr;

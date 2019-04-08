@@ -60,8 +60,8 @@ inline arc::Vec3 arc::BaseAnimationController::getTranslationAtTime(arc::NodeAni
 
     if(++index < nodeAnim.translation.size())
     {
-        auto& secondKeyframe = nodeAnim.translation[index];
-        float t = (time - firstKeyframe.keytime) / (secondKeyframe.keytime - firstKeyframe.keytime);
+        //auto& secondKeyframe = nodeAnim.translation[index];
+        //float t = (time - firstKeyframe.keytime) / (secondKeyframe.keytime - firstKeyframe.keytime);
         // todo: lerp
     }
 
@@ -80,8 +80,8 @@ inline arc::Quat arc::BaseAnimationController::getRotationAtTime(arc::NodeAnimat
 
     if(++index < nodeAnim.rotation.size())
     {
-        auto& secondKeyframe = nodeAnim.rotation[index];
-        float t = (time - firstKeyframe.keytime) / (secondKeyframe.keytime - firstKeyframe.keytime);
+        //auto& secondKeyframe = nodeAnim.rotation[index];
+        //float t = (time - firstKeyframe.keytime) / (secondKeyframe.keytime - firstKeyframe.keytime);
         // todo: lerp
     }
 
@@ -100,8 +100,8 @@ inline arc::Vec3 arc::BaseAnimationController::getScalingAtTime(arc::NodeAnimati
 
     if(++index < nodeAnim.scaling.size())
     {
-        auto& secondKeyframe = nodeAnim.scaling[index];
-        float t = (time - firstKeyframe.keytime) / (secondKeyframe.keytime - firstKeyframe.keytime);
+        //auto& secondKeyframe = nodeAnim.scaling[index];
+        //float t = (time - firstKeyframe.keytime) / (secondKeyframe.keytime - firstKeyframe.keytime);
         // todo: lerp
     }
 

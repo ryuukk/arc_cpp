@@ -88,6 +88,9 @@ void arc::ModelInstance::copyAnimations(std::vector<arc::Animation*>& animations
                        nodeAnim->scaling.emplace_back(kff);
                    }
                }
+
+
+
                if ((!nodeAnim->translation.empty())
                    || (!nodeAnim->rotation.empty())
                    || (!nodeAnim->scaling.empty()))

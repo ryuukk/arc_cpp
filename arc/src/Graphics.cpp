@@ -99,6 +99,7 @@ void arc::Graphics::update() {
     glfwMakeContextCurrent(_window);
 
     track();
+    
     _app->render(_deltaTime);
     _app->update(_deltaTime);
 

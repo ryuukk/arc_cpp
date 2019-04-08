@@ -19,9 +19,13 @@ namespace arc
     class Pool
     {
     public:
-        Pool(uint32_t initialCapacity = 16, uint32_t max = 1000) : max(max)
+        Pool(uint32_t initialCapacity = 16*16, uint32_t max = 1000) : max(max)
         {
             //_freeObjects.resize(initialCapacity); // todo: std::queue can't be resized :(
+
+            for (int i = 0; i < initialCapacity; ++i) {
+                _freeObjects.push(new T());
+            }
         }
 
         ~Pool()

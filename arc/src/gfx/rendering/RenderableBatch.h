@@ -126,7 +126,7 @@ namespace arc
                     renderable->bones = &part->bones;
                     renderable->meshPart.set(part->meshPart);
 
-                    if(!part->bones.empty())
+                    if(part->bones.empty())
                         renderable->worldTransform = model->transform * node->globalTransform;
                     else
                         renderable->worldTransform = model->transform;

@@ -98,6 +98,7 @@ void main()
         _model = new arc::Model(modelData);
         _instance = new arc::ModelInstance(*_model);
         _animController = new arc::AnimationController(*_instance);
+        _animController->animate("Attack");
     }
 
     void update(float dt) override {
@@ -110,7 +111,7 @@ void main()
         if(_timerChangeAnim <= 0.0f && !_instance->animations.empty())
         {
             auto& animation =_instance->animations[_selector];
-            _animController->animate(animation->id);
+            //_animController->animate(animation->id);
 
             _selector = (++_selector % _instance->animations.size());
             _timerChangeAnim = 2.0;
@@ -144,12 +145,15 @@ void main()
         _shader->setUniformMat4("u_world", transform);
         for(auto& part : node->parts)
         {
-            _shader->setUniformMat4Array("u_bones", part->bones);
+            _shader->setUniformMat4Array("u_bones", part->bones.size(), part->bones);
 
-            auto* ta = part->material->get<arc::DiffuseTextureAttribute>(arc::DiffuseTextureAttribute::stype);
-            ta->descriptor.texture->bind();
+            if(part->material->has(arc::DiffuseTextureAttribute::stype))
+            {
+                auto* ta = part->material->get<arc::DiffuseTextureAttribute>(arc::DiffuseTextureAttribute::stype);
+                ta->descriptor.texture->bind();
 
-            _shader->setUniformi("u_texture", 0);
+                _shader->setUniformi("u_texture", 0);
+            }
 
             part->meshPart->render(_shader, true);
         }
@@ -168,12 +172,29 @@ void main()
 
 };
 
+
 int main(int argc, char** argv) {
+
+
+    arc::Mat4 test = arc::Mat4::identity().set({1.25f, -5, 2.25f}, arc::Quat::fromAxis({0.25f,0.5f,0.75f}, 0.25f), {1,1,1});
+
+    arc::Mat4::print(test);
+    arc::Mat4::print(test*test);
+    arc::Mat4::print(arc::Mat4::inv(test));
+
+
+    //return 0;
+
+
+
     auto config = arc::Configuration();
     config.windowTitle = "Sample 09 - Skeletal Animation";
     auto myGame = new MyGame();
     auto engine = new arc::Engine(myGame, config);
     engine->run();
+
+
+
 
     return 0;
 }

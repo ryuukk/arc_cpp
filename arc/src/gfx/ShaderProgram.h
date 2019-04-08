@@ -29,7 +29,7 @@ namespace arc {
         void setUniformf(const std::string& name, float value);
         void setUniform4f(const std::string& name, float a, float b, float c, float d);
         void setUniformMat4(const std::string& name, Mat4& value, bool transpose = false);
-        void setUniformMat4Array(const std::string& name, std::vector<Mat4>& value, bool transpose = false);
+        void setUniformMat4Array(const std::string& name, int count, std::vector<Mat4>& value, bool transpose = false);
         bool isCompiled()
         {
             return _isCompiled;

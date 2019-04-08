@@ -254,14 +254,14 @@ void arc::ShaderProgram::setUniformMat4(const std::string& name, arc::Mat4& valu
     checkManaged();
     int location = fetchUniformLocation(name, true); // todo: change once static pedantic bool added
 
-    glUniformMatrix4fv(location, 1, transpose, value.data);
+    glUniformMatrix4fv(location, 1, transpose, &value.m00);
 }
 
-void arc::ShaderProgram::setUniformMat4Array(const std::string& name, std::vector<arc::Mat4>& value, bool transpose){
+void arc::ShaderProgram::setUniformMat4Array(const std::string& name, int count, std::vector<arc::Mat4>& value, bool transpose){
     checkManaged();
     int location = fetchUniformLocation(name, true); // todo: change once static pedantic bool added
 
-    glUniformMatrix4fv(location, value.size(), transpose, (float*) &value[0]);
+    glUniformMatrix4fv(location, count, transpose, (float*) &value[0].m00);
 }
 
 

@@ -9,10 +9,10 @@ include_directories(include)
 
 file(GLOB_RECURSE SOURCES src/*.cpp src/*.c src/*.h)
 
-add_library(arc STATIC ${SOURCES} src/gfx/VertexBuffer.cpp src/gfx/VertexBuffer.h)
+add_library(arc STATIC ${SOURCES})
 
 if(WIN32)
-    target_link_libraries(arc opengl32 glad glfw)
+    target_link_libraries(arc opengl32 glad glfw ws2_32)
 else()
     target_link_libraries(arc glad glfw)
 endif()

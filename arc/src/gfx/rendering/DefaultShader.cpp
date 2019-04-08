@@ -49,7 +49,7 @@ void arc::DefaultShader::render(arc::Renderable* renderable) {
     program->setUniformMat4("u_worldTrans", renderable->worldTransform);
 
     if(_config.numBones > 0 && !renderable->bones->empty())
-        program->setUniformMat4Array("u_bones", *renderable->bones);
+        program->setUniformMat4Array("u_bones", _config.numBones, *renderable->bones);
 
 
     // MATERIAL

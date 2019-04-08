@@ -16,7 +16,7 @@ function(add_sample sample_name)
 
     if(WIN32)
         # target_link_libraries(${PROJECT_NAME} -mwindows opengl32 glad glfw arc)
-        target_link_libraries(${PROJECT_NAME} opengl32 glad glfw arc)
+        target_link_libraries(${PROJECT_NAME} opengl32 glad glfw arc ws2_32)
     else()
         target_link_libraries(${PROJECT_NAME} glad glfw arc)
     endif()

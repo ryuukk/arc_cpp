@@ -55,11 +55,12 @@ class MyGame : public arc::IApp
     void create() override {
 
         _cam = new arc::PerspectiveCamera(67, arc::Core::graphics->getWidth(), arc::Core::graphics->getHeight());
-        _cam->position = arc::Vec3(0, 10, 5) * 4.0f;
-        _cam->lookAt(0, 0, 0);
+        //_cam->position = arc::Vec3(0, 10, 5) * 6.0f;
+        //_cam->lookAt(0, 0, 0);
         _cam->update();
 
         auto modelData = arc::ModelData::load("data/character_male_0.g3dj");
+        //auto modelData = arc::ModelData::load("data/tree_small_0.g3dj");
         _model = new arc::Model(modelData);
         std::string vs = arc::file::readFile("data/default.vert");
         std::string fs = arc::file::readFile("data/default.frag");
@@ -74,17 +75,40 @@ class MyGame : public arc::IApp
                 entity->position = {(float) i * 2, 0, (float) j * 2};
 
                 entity->instance = new arc::ModelInstance(*_model);
-                entity->controller = new arc::AnimationController(*entity->instance);
-                entity->controller->animate("run_1h");
+
+                if(!entity->instance->animations.empty())
+                {
+                    entity->controller = new arc::AnimationController(*entity->instance);
+                    entity->controller->animate("run_1h");
+                }
 
                 _entities.emplace_back(entity);
             }
         }
 
+        printf("Loaded %d entities\n", _entities.size());
+
     }
 
+    int fpsAcc = 0;
+    int c = 0;
+    float timer = 0.0f;
     void update(float dt) override {
 
+        auto fps = arc::Core::graphics->fps();
+        fpsAcc+=fps;
+        timer += dt;
+        c++;
+
+        if (timer > 1.0f)
+        {
+            int f = fpsAcc / c;
+            printf("FPS: %d  AVG: %d\n", fps, f);
+
+            c = 0;
+            fpsAcc = 0;
+            timer = 0;
+        }
         _cam->update();
 
         for (auto& entity : _entities)
@@ -103,7 +127,6 @@ class MyGame : public arc::IApp
             entity->render(_batch, nullptr);
 
         _batch->end();
-
     }
 
     void resize(int width, int height) override {
@@ -124,6 +147,7 @@ class MyGame : public arc::IApp
 int main(int argc, char** argv) {
     auto config = arc::Configuration();
     config.windowTitle = "Sample 08 - Render Batch";
+    config.vsync = true;
     auto myGame = new MyGame();
     auto engine = new arc::Engine(myGame, config);
     engine->run();
