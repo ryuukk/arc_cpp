@@ -100,7 +100,5 @@ namespace arc {
 
 
         void track();
-
-        //void onFrameBufferResize(GLFWwindow* window, int width, int height);
     };
 }
