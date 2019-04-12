@@ -13,15 +13,14 @@ namespace arc
         ~BaseShader()
         {}
 
-        void init(ShaderProgram* program, Renderable* renderable);
-
         void begin(Camera* camera, RenderContext* context) override;
 
         void render(Renderable* renderable) override;
 
         void end() override;
 
-        virtual void render(Renderable* renderable, Attributes* attributes);
+        virtual void bindGlobal(Camera* camera, RenderContext* context) = 0;
+        virtual void bind(Renderable* renderable) = 0;
 
         ShaderProgram* program = nullptr;
         RenderContext* context = nullptr;

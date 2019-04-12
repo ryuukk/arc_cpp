@@ -241,7 +241,6 @@ void arc::ShaderProgram::setUniformf(const std::string& name, float value)
     glUniform1f(location, value);
 }
 
-
 void arc::ShaderProgram::setUniform4f(const std::string& name, float a, float b, float c, float d)
 {
     checkManaged();
@@ -261,6 +260,37 @@ void arc::ShaderProgram::setUniformMat4Array(const std::string& name, int count,
     checkManaged();
     int location = fetchUniformLocation(name, true); // todo: change once static pedantic bool added
 
+    glUniformMatrix4fv(location, count, transpose, (float*) &value[0].m00);
+}
+
+
+
+void arc::ShaderProgram::setUniformi(int location, int value)
+{
+    checkManaged();
+    glUniform1i(location, value);
+}
+
+void arc::ShaderProgram::setUniformf(int location, float value)
+{
+    checkManaged();
+    glUniform1f(location, value);
+}
+
+void arc::ShaderProgram::setUniform4f(int location, float a, float b, float c, float d)
+{
+    checkManaged();
+    glUniform4f(location, a, b, c, d);
+}
+
+void arc::ShaderProgram::setUniformMat4(int location, arc::Mat4& value, bool transpose)
+{
+    checkManaged();
+    glUniformMatrix4fv(location, 1, transpose, &value.m00);
+}
+
+void arc::ShaderProgram::setUniformMat4Array(int location, int count, std::vector<arc::Mat4>& value, bool transpose){
+    checkManaged();
     glUniformMatrix4fv(location, count, transpose, (float*) &value[0].m00);
 }
 
