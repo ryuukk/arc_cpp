@@ -135,11 +135,10 @@ void arc::DefaultShader::bindMaterial(arc::Attributes* attributes) {
         ta->descriptor.texture->bind(0);
         program->setUniformi(u_diffuseTexture, 0);
         program->setUniform4f(u_diffuseUVTransform, ta->offsetU, ta->offsetV, ta->scaleU, ta->scaleV);
-
-        context->setCullFace(cullFace);
-        context->setDepthTest(depthFunc, depthRangeNear, depthRangeFar);
-        context->setDepthMask(depthMask);
     }
+    context->setCullFace(cullFace);
+    context->setDepthTest(depthFunc, depthRangeNear, depthRangeFar);
+    context->setDepthMask(depthMask);
 }
 
 void arc::DefaultShader::bindLights(arc::Environement* environement) {
