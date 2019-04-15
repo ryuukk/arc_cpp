@@ -22,17 +22,19 @@ public:
         delete instance;
     }
 
+    int id{};
     arc::ModelInstance* instance = nullptr;
     arc::AnimationController* controller = nullptr;
 
     arc::Vec3 position = {0, 0, 0};
+    arc::Vec3 scale = {1, 1, 1};
     arc::Mat4 _transform = arc::Mat4::identity();
     float _a = 5.0f;
 
 
     void update(const float dt) {
         _a += dt;
-        _transform.set(position, arc::Quat::fromAxis({0, 1, 0}, _a));
+        _transform.set(position, arc::Quat::fromAxis({0, 1, 0}, _a), scale);
         instance->transform = _transform;
 
         if(controller)
@@ -47,7 +49,9 @@ public:
 class MyGame : public arc::IApp
 {
     arc::PerspectiveCamera* _cam;
-    arc::Model* _model;
+    arc::Model* _modelA;
+    arc::Model* _modelB;
+    arc::Model* _modelC;
     arc::RenderableBatch* _batch;
     std::vector<Entity*> _entities{};
 
@@ -55,34 +59,95 @@ class MyGame : public arc::IApp
     void create() override {
 
         _cam = new arc::PerspectiveCamera(67, arc::Core::graphics->getWidth(), arc::Core::graphics->getHeight());
-        //_cam->position = arc::Vec3(0, 10, 5) * 6.0f;
-        //_cam->lookAt(0, 0, 0);
+        _cam->position = arc::Vec3(0, 10, 5) * 3.0f;
+        _cam->lookAt(0, 0, 0);
         _cam->update();
 
-        auto modelData = arc::ModelData::load("data/character_male_0.g3dj");
-        //auto modelData = arc::ModelData::load("data/tree_small_0.g3dj");
-        _model = new arc::Model(modelData);
+        auto modelDataA = arc::ModelData::load("data/knight.g3dj");
+        auto modelDataB = arc::ModelData::load("data/character_male_0.g3dj");
+        auto modelDataC = arc::ModelData::load("data/tree_small_0.g3dj");
+        _modelA = new arc::Model(modelDataA);
+        _modelB = new arc::Model(modelDataB);
+        _modelC = new arc::Model(modelDataC);
         std::string vs = arc::file::readFile("data/default.vert");
         std::string fs = arc::file::readFile("data/default.frag");
 
         _batch = new arc::RenderableBatch(new arc::DefaultShaderProvider(vs, fs));
 
-        auto s = 16;
-        for (int i = -s; i < s; ++i) {
-            for (int j = -s; j < s; ++j) {
 
-                auto* entity = new Entity;
-                entity->position = {(float) i * 2, 0, (float) j * 2};
+        auto one = false;
+        auto enableAnim = true;
+        auto size = 8;
+        auto pad = 2;
 
-                entity->instance = new arc::ModelInstance(*_model);
 
-                if(!entity->instance->animations.empty())
+        if(one)
+        {
+            auto* entity = new Entity;
+            entity->position = {0, 0, 0};
+
+            entity->instance = new arc::ModelInstance(*_modelA);
+
+            if(!entity->instance->animations.empty())
+            {
+                entity->controller = new arc::AnimationController(*entity->instance);
+                entity->controller->animate("run_1h");
+            }
+
+            _entities.emplace_back(entity);
+        }
+        else
+        {
+            int id = 0;
+            for (int i = -size; i < size; i++)
+            {
+                for (int j = -size; j < size; j++)
                 {
-                    entity->controller = new arc::AnimationController(*entity->instance);
-                    entity->controller->animate("run_1h");
-                }
+                    auto a = id % 3;
 
-                _entities.emplace_back(entity);
+                    if(a == 0)
+                    {
+                        auto* entity = new Entity;
+                        entity->id = ++id;
+                        entity->position = {(float) i * 2, 0, (float) j * 2};
+                        entity->scale = {0.2f, 0.2f, 0.2f};
+
+                        entity->instance = new arc::ModelInstance(*_modelA);
+
+                        if(!entity->instance->animations.empty())
+                        {
+                            entity->controller = new arc::AnimationController(*entity->instance);
+                            entity->controller->animate("Attack");
+                        }
+
+                        _entities.emplace_back(entity);
+                    }
+                    else if (a == 1)
+                    {
+                        auto* entity = new Entity;
+                        entity->id = ++id;
+                        entity->position = {(float) i * 2, 0, (float) j * 2};
+
+                        entity->instance = new arc::ModelInstance(*_modelB);
+
+                        if(!entity->instance->animations.empty())
+                        {
+                            entity->controller = new arc::AnimationController(*entity->instance);
+                            entity->controller->animate("run_1h");
+                        }
+
+                        _entities.emplace_back(entity);
+                    }
+                    else
+                    {
+                        auto* entity = new Entity;
+                        entity->id = ++id;
+                        entity->position = {(float) i * 2, 0, (float) j * 2};
+                        entity->instance = new arc::ModelInstance(*_modelC);
+
+                        _entities.emplace_back(entity);
+                    }
+                }
             }
         }
 
@@ -135,7 +200,9 @@ class MyGame : public arc::IApp
 
     void dispose() override {
         delete _cam;
-        delete _model;
+        delete _modelA;
+        delete _modelB;
+        delete _modelC;
         delete _batch;
 
         for (auto& entity : _entities)

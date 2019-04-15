@@ -105,7 +105,7 @@ void arc::DefaultShader::bind(arc::Renderable* renderable) {
 
     program->setUniformMat4(u_worldTrans, renderable->worldTransform);
 
-    if (_config.numBones > 0 && renderable->bones != nullptr)
+    if (_config.numBones > 0 && renderable->bones != nullptr && !renderable->bones->empty())
         program->setUniformMat4Array(u_bones, _config.numBones, *renderable->bones);
 
 
