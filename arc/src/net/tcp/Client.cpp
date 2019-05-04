@@ -1,13 +1,17 @@
 #include "Client.hpp"
 
-#include "utils\Sockets.hpp"
-#include "utils\Messages.hpp"
-#include "utils\Errors.hpp"
+#include "utils/Sockets.hpp"
+#include "utils/Messages.hpp"
+#include "utils/Errors.hpp"
 
 #include <vector>
 #include <list>
 #include <cassert>
 #include <numeric>
+
+#ifndef _WIN32
+#include <cstring>
+#endif
 
 namespace Network
 {
@@ -355,9 +359,10 @@ namespace Network
 			if (mSocket != INVALID_SOCKET)
 				disconnect();
 
+#ifdef _WIN32
             WSADATA wsaData;
             WSAStartup(MAKEWORD(2, 2), &wsaData);
-
+#endif
 			mSocket = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
 			if (mSocket == INVALID_SOCKET)
 			{

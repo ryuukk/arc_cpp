@@ -1,9 +1,9 @@
 #include "Server.hpp"
 #include "Client.hpp"
 
-#include "utils\Sockets.hpp"
-#include "utils\Messages.hpp"
-#include "utils\Errors.hpp"
+#include "utils/Sockets.hpp"
+#include "utils/Messages.hpp"
+#include "utils/Errors.hpp"
 
 #include <map>
 #include <list>

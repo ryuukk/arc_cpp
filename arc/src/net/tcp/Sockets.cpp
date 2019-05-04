@@ -1,5 +1,9 @@
-#include "utils\Sockets.hpp"
-#include "utils\Utils.hpp"
+#include "utils/Sockets.hpp"
+#include "utils/Utils.hpp"
+
+#ifndef _WIN32
+#include <fcntl.h>
+#endif
 
 namespace Network
 {
