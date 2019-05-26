@@ -18,13 +18,13 @@ namespace arc
         static Color GREEN;
         static Color BLUE;
 
-        uint8_t r{};
-        uint8_t g{};
-        uint8_t b{};
-        uint8_t a{};
+        uint8_t r = 255;
+        uint8_t g = 255;
+        uint8_t b = 255;
+        uint8_t a = 255;
 
         Color() = default;
-        Color(const uint32_t& value)
+        Color(uint32_t value)
         {
             r = (uint8_t)((value & 0xff000000U) >> 24U);
             g = (uint8_t)((value & 0x00ff0000U) >> 16U);
@@ -51,10 +51,25 @@ namespace arc
             return *this;
         }
 
+        static Color fromRGB888(uint32_t value)
+        {
+            Color color{};
+            color.r = ((value & 0x00ff0000u) >> 16u);
+            color.g = ((value & 0x0000ff00u) >> 8u);
+            color.b = ((value & 0x000000ffu));
+            color.a = 255;
+            return color;
+        }
+
         float toFloatBits()
         {
-            auto s = Stuff();
-            s.packed = (uint32_t)((r << 24U) | (g << 16U) | (b << 8U) | (a));
+            uint32_t color = ((uint32_t) (a) << 24u) |
+                    ((uint32_t) (b) << 16u) |
+                    ((uint32_t) (g) << 8u) |
+                    ((uint32_t) (r));
+
+            Stuff s{};
+            s.packed = color;
             return s.floatBits;
         }
     };

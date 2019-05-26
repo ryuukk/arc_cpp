@@ -5,7 +5,7 @@
 
 
 void arc::TextMarkup::beginChunk(arc::Color color, int start) {
-    _colorChunks.emplace_back(start, color);
+    _colorChunks.emplace_back(ColorChunk{start, color});
     _currentColorStack.push(_lastColor);
     _lastColor = color;
 }
@@ -16,7 +16,7 @@ void arc::TextMarkup::endChunk(int start) {
         _lastColor = _currentColorStack.top(); // todo: pop
         _currentColorStack.pop();
 
-        _colorChunks.emplace_back(start, _lastColor);
+        _colorChunks.emplace_back(ColorChunk{start, _lastColor});
     }
 }
 
@@ -41,7 +41,7 @@ void arc::TextMarkup::clear() {
 
     int size = _colorChunks.size();
     _colorChunks.clear();
-    _currentColorStack = std::stack<Color>(); // todo: check memory ?
+    _currentColorStack = std::stack<Color>();
     setDefaultChunk(_defaultColor, 0);
 }
 
@@ -80,10 +80,9 @@ int arc::TextMarkup::parseColorTag(arc::TextMarkup* markup, const std::string& s
                         throw std::runtime_error("Hex color wrong digits");
                     }
                     if (i <= start + 7) { // RRGGBB
-                        hexColor = Color(colorInt);
-                        hexColor.a = 255;
+                        hexColor = Color::fromRGB888(colorInt);
                     } else { // RRGGBBAA
-                        hexColor = Color(colorInt);
+                        hexColor = Color::fromRGB888(colorInt);
                     }
                     markup->beginChunk(hexColor, nomarkupStart);
                     return i - start;

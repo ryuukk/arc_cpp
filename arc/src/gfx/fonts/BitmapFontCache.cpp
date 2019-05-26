@@ -295,7 +295,7 @@ float arc::BitmapFontCache::addToCache(const std::string& str, float x, float y,
                 if(!(start < end && str[start] == '['))
                 {
                     // non escaped [
-                    start += TextMarkup::parseColorTag(&_markup, str, _charsCount, start, end + 1);
+                    start += TextMarkup::parseColorTag(&_markup, str, _charsCount, start, end) + 1;
                     _color = _markup.getLastColor().toFloatBits();
                     continue;
                 }
@@ -403,6 +403,7 @@ float arc::BitmapFontCache::addToCache(const std::string& str, float x, float y,
 }
 
 void arc::BitmapFontCache::addGlyph(arc::Glyph* glyph, float x, float y, float width, float height) {
+
     float x2 = x + width;
     float y2 = y + height;
     float u = glyph->u;

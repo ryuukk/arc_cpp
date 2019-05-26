@@ -49,15 +49,21 @@ class MyGame : public arc::IApp
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
 
+
+        _font->getData().scaleX = 2;
+        _font->getData().scaleY = 2;
+        _font->enableColorMarkup = true;
         float y = arc::Core::graphics->getHeight();
 
         _spriteBatch->begin();
 
-        _spriteBatch->draw(_texture, {0,y - 720}, {1280,720});
+        //_spriteBatch->draw(_texture, {0,y - 720}, {1280,720});
 
         //auto bounds = _font->draw(_spriteBatch, "Hello", 0, y);
-        //auto bounds = _font->draw(_spriteBatch, "[#FF0000]red[]white[#00FF00]gr[#0000FF]ee[]n[]", 0, y);
-        auto bounds = _font->draw(_spriteBatch, "[#FF0000]Hello[]", 0, y);
+        //auto bounds = _font->draw(_spriteBatch, "[#FF0000]reeeeeeeeeeeeeeeeeeeeeeed[]white[#00FF00]gr[#0000FF]ee[]n[]", 0, y);
+        //auto bounds = _font->draw(_spriteBatch, "[#FF0000]Hello[]", 50, 50);
+        auto bounds = _font->draw(_spriteBatch, "[#FF0000]Hello[] [#00FF00]Colored[] [#0000FF]World[] Yay", 50, 50);
+
 
         //printf("Bounds: %f:%f:%f:%f\n", bounds.x, bounds.y, bounds.width, bounds.height);
 
