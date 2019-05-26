@@ -4,7 +4,6 @@
 #include <vector>
 #include "../TextureRegion.h"
 #include "BitmapFontData.h"
-#include "BitmapFontCache.h"
 
 namespace arc
 {
@@ -15,6 +14,8 @@ namespace arc
         static const int PAGES = 0x10000 / PAGE_SIZE;
     }
 
+
+    class BitmapFontCache;
     class BitmapFont
     {
     public:

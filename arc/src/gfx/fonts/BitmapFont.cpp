@@ -1,4 +1,5 @@
 #include "BitmapFont.h"
+#include "BitmapFontCache.h"
 
 arc::BitmapFont::BitmapFont(arc::BitmapFontData data, bool integer) : _data(std::move(data)), _integer(integer)
 {

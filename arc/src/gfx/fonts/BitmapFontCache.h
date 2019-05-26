@@ -18,7 +18,6 @@ namespace arc
     };
 
     class BitmapFont;
-    class TextMarkup;
     class BitmapFontCache
     {
     public:
