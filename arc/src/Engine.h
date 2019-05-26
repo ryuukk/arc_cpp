@@ -59,7 +59,6 @@ namespace arc
         {
             // ru;nables
 
-
             if (!_graphics->isIconified())
                 _input->update();
 
