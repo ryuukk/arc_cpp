@@ -25,7 +25,7 @@ arc::ModelData arc::ModelData::load(const std::string& path) {
     Core::logger->info("Loading Model: {} version: {}:{} id: {}", path.c_str(), lo, hi, data.id);
 
     parseMeshes(data, json);
-    parseMaterials(data, json, arc::dirName(path));
+    parseMaterials(data, json, arc::directory::dirName(path));
     parseNodes(data, json);
     parseAnimations(data, json);
 

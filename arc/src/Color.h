@@ -32,6 +32,25 @@ namespace arc
             a = (uint8_t)((value & 0x000000ffU));
         }
 
+        Color operator * (const Color& v) const
+        {
+            Color ret{};
+            ret.r = r * v.r;
+            ret.g = g * v.g;
+            ret.b = b * v.b;
+            ret.a = a * v.a;
+            return ret;
+        }
+
+        Color& operator *= (const Color& rhs)
+        {
+            r *= rhs.r;
+            g *= rhs.g;
+            b *= rhs.b;
+            a *= rhs.a;
+            return *this;
+        }
+
         float toFloatBits()
         {
             auto s = Stuff();

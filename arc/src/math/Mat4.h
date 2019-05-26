@@ -8,23 +8,6 @@
 
 namespace arc
 {
-    const int M00 = 0;
-    const int M01 = 4;
-    const int M02 = 8;
-    const int M03 = 12;
-    const int M10 = 1;
-    const int M11 = 5;
-    const int M12 = 9;
-    const int M13 = 13;
-    const int M20 = 2;
-    const int M21 = 6;
-    const int M22 = 10;
-    const int M23 = 14;
-    const int M30 = 3;
-    const int M31 = 7;
-    const int M32 = 11;
-    const int M33 = 15;
-
     struct Mat4
     {
     public:
@@ -414,6 +397,9 @@ namespace arc
 
         static void print(const arc::Mat4& matrix)
         {
+            printf("----\n");
+            printf("----\n");
+
             printf("%f\n", matrix.m00);
             printf("%f\n", matrix.m10);
             printf("%f\n", matrix.m20);
