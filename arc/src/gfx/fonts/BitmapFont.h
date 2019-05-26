@@ -5,6 +5,7 @@
 #include "../SpriteBatch.h"
 #include "../TextureRegion.h"
 #include "BitmapFontData.h"
+#include "../Align.h"
 
 namespace arc
 {
@@ -21,7 +22,7 @@ namespace arc
     {
     public:
         std::vector<TextureRegion*> regions;
-        bool enableColorMarkup = false;
+        bool enableColorMarkup = true;
 
         BitmapFont(const std::string& file, bool flip, bool integer);
 
@@ -33,7 +34,18 @@ namespace arc
         }
 
         Rect draw(SpriteBatch* batch, const std::string& str, float x, float y);
+        Rect draw(SpriteBatch* batch, const std::string& str, float x, float y, int start, int end);
 
+        Rect drawMultiLine(SpriteBatch* batch, const std::string& str, float x, float y);
+        Rect drawMultiLine(SpriteBatch* batch, const std::string& str, float x, float y, float alignWidth, Align align);
+
+        Rect drawWrapped(SpriteBatch* batch, const std::string& str, float x, float y, float wrapWidth);
+        Rect drawWrapped(SpriteBatch* batch, const std::string& str, float x, float y, float wrapWidth, Align align);
+
+        Rect getBounds(const std::string& str, int start, int end);
+        int computeVisibleGlyphs(const std::string& str, int start, int end, float availableWidth);
+        int indexOf(const std::string& str, char ch, int start);
+        bool isWhitespace(char ch);
 
         BitmapFontData& getData()
         {

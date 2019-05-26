@@ -28,12 +28,16 @@ namespace arc
         {
             int start;
             Color color;
+
+            ColorChunk(){}
+            ColorChunk(int start, Color color): start(start), color(color)
+            {}
         };
 
-        std::vector<ColorChunk> _colorChunks;
-        std::stack<Color> _currentColorStack;
-        Color _lastColor;
-        Color _defaultColor;
+        std::vector<ColorChunk> _colorChunks{};
+        std::stack<Color> _currentColorStack{};
+        Color _lastColor = Color::WHITE;
+        Color _defaultColor = Color::WHITE;
     };
 
 }

@@ -1,14 +1,13 @@
+#include <sstream>
 #include "TextMarkup.h"
 #include "BitmapFontCache.h"
+//#include "../../utils/fmt/fmt/format.h"
 
 
 void arc::TextMarkup::beginChunk(arc::Color color, int start) {
-    ColorChunk newChunk{};
-    newChunk.color = color;
-    newChunk.start = start;
-    _colorChunks.emplace_back(newChunk);
+    _colorChunks.emplace_back(start, color);
     _currentColorStack.push(_lastColor);
-    _lastColor = newChunk.color;
+    _lastColor = color;
 }
 
 void arc::TextMarkup::endChunk(int start) {
@@ -17,10 +16,7 @@ void arc::TextMarkup::endChunk(int start) {
         _lastColor = _currentColorStack.top(); // todo: pop
         _currentColorStack.pop();
 
-        ColorChunk newChunk{};
-        newChunk.color = _lastColor;
-        newChunk.start = start;
-        _colorChunks.emplace_back(newChunk);
+        _colorChunks.emplace_back(start, _lastColor);
     }
 }
 
@@ -50,11 +46,8 @@ void arc::TextMarkup::clear() {
 }
 
 void arc::TextMarkup::setDefaultChunk(arc::Color color, int start) {
-    ColorChunk newChunk{};
-    newChunk.color = color;
-    newChunk.start = start;
-    _colorChunks.emplace_back(newChunk);
-    setDefaultColor(newChunk.color);
+    _colorChunks.emplace_back(start, color);
+    setDefaultColor(color);
 }
 
 arc::Color arc::TextMarkup::getLastColor() {
@@ -71,23 +64,24 @@ void arc::TextMarkup::setDefaultColor(arc::Color defaultColor) {
 
 int arc::TextMarkup::parseColorTag(arc::TextMarkup* markup, const std::string& str, int nomarkupStart, int start, int end) {
 
-    if(start < end)
-    {
+    if (start < end) {
         Color hexColor;
-        if(str[start] == '#')
-        {
+        if (str[start] == '#') {
+            // Parse hex color RRGGBBAA where AA is optional and defaults to 0xFF if less than 6 chars are used
             uint32_t colorInt = 0;
             for (int i = start + 1; i < end; i++) {
                 char ch = str[i];
-                if (ch == ']') {
+                if (ch == ']')
+                {
                     if (i < start + 2 || i > start + 9)
                     {
-                        //throw std::invalid_argument("Hex color cannot have " + (i - start - 1) + " digits.");
-                        printf("Hex color cannot have %d digits\n", (i - start - 1)); // todo: figure out exceptions
+                        printf("Hex color cannot have %d digits.\n", (i - start - 1));
+                        //throw std::runtime_error(fmt::format("Hex color cannot have {0} digits.", (i - start - 1)));
+                        throw std::runtime_error("Hex color wrong digits");
                     }
                     if (i <= start + 7) { // RRGGBB
                         hexColor = Color(colorInt);
-                        hexColor.a = 1.0f;
+                        hexColor.a = 255;
                     } else { // RRGGBBAA
                         hexColor = Color(colorInt);
                     }
@@ -95,22 +89,40 @@ int arc::TextMarkup::parseColorTag(arc::TextMarkup* markup, const std::string& s
                     return i - start;
                 }
                 if (ch >= '0' && ch <= '9')
-                    colorInt = (uint32_t) (colorInt * 16 + (ch - '0'));
+                    colorInt =  (colorInt * 16 + (ch - '0'));
                 else if (ch >= 'a' && ch <= 'f')
-                    colorInt = (uint32_t) (colorInt * 16 + (ch - ('a' - 10)));
+                    colorInt =  (colorInt * 16 + (ch - ('a' - 10)));
                 else if (ch >= 'A' && ch <= 'F')
-                    colorInt = (uint32_t) (colorInt * 16 + (ch - ('A' - 10)));
+                    colorInt =  (colorInt * 16 + (ch - ('A' - 10)));
                 else
                 {
-                    //throw new Exception("Unexpected character in hex color: " + ch);
-                    printf("Unexpected character in hex color: %s\n", ch); // todo: figure out exceptions
+                    printf("Unexpected character in hex color: %s\n", ch);
+                    throw std::runtime_error("wut");
                 }
             }
-        } else
-        {
-            printf("WAR: missing named color\n");
+        } else {
+            // Parse named color
+            //tempColorBuffer.Clear();
+            std::stringstream ss;
+            for (int i = start; i < end; i++) {
+                char ch = str[i];
+                if (ch == ']')
+                {
+                    if (ss.width() == 0) { // end tag []
+                        markup->endChunk(nomarkupStart);
+                    } else {
+                        throw std::runtime_error("named color not impl");
+                        //var colorString = tempColorBuffer.toString();
+                        //Color newColor = Colors.get(colorString);
+                        //if (newColor == null) throw new Exception("Unknown color: " + colorString);
+                        //markup.beginChunk(newColor, nomarkupStart);
+                    }
+                    return i - start;
+                } else {
+                    ss << ch;
+                }
+            }
         }
     }
-
-    throw std::invalid_argument("Unclosed color tag"); // todo: figure out exceptions
+    throw std::runtime_error("Unclosed color tag"); // todo: figure out exceptions
 }

@@ -36,3 +36,47 @@ arc::Rect arc::BitmapFont::draw(arc::SpriteBatch* batch, const std::string& str,
     _cache->draw(batch);
     return bounds;
 }
+
+arc::Rect arc::BitmapFont::draw(arc::SpriteBatch* batch, const std::string& str, float x, float y, int start, int end) {
+    _cache->clear();
+    auto bounds = _cache->addText(str, x, y, start, end);
+    _cache->draw(batch);
+    return bounds;
+}
+
+arc::Rect arc::BitmapFont::drawMultiLine(arc::SpriteBatch* batch, const std::string& str, float x, float y) {
+    return arc::Rect();
+}
+
+arc::Rect
+arc::BitmapFont::drawMultiLine(arc::SpriteBatch* batch, const std::string& str, float x, float y, float alignWidth,
+                               arc::Align align) {
+    return arc::Rect();
+}
+
+arc::Rect
+arc::BitmapFont::drawWrapped(arc::SpriteBatch* batch, const std::string& str, float x, float y, float wrapWidth) {
+    return arc::Rect();
+}
+
+arc::Rect
+arc::BitmapFont::drawWrapped(arc::SpriteBatch* batch, const std::string& str, float x, float y, float wrapWidth,
+                             arc::Align align) {
+    return arc::Rect();
+}
+
+arc::Rect arc::BitmapFont::getBounds(const std::string& str, int start, int end) {
+    return arc::Rect();
+}
+
+int arc::BitmapFont::computeVisibleGlyphs(const std::string& str, int start, int end, float availableWidth) {
+    return 0;
+}
+
+int arc::BitmapFont::indexOf(const std::string& str, char ch, int start) {
+    return 0;
+}
+
+bool arc::BitmapFont::isWhitespace(char ch) {
+    return false;
+}

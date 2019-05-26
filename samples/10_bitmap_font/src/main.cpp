@@ -55,9 +55,9 @@ class MyGame : public arc::IApp
 
         _spriteBatch->draw(_texture, {0,y - 720}, {1280,720});
 
-        _font->getData().scaleX = 4;
-        _font->getData().scaleY = 4;
-        auto bounds = _font->draw(_spriteBatch, "Hello", 0, y);
+        //auto bounds = _font->draw(_spriteBatch, "Hello", 0, y);
+        //auto bounds = _font->draw(_spriteBatch, "[#FF0000]red[]white[#00FF00]gr[#0000FF]ee[]n[]", 0, y);
+        auto bounds = _font->draw(_spriteBatch, "[#FF0000]Hello[]", 0, y);
 
         //printf("Bounds: %f:%f:%f:%f\n", bounds.x, bounds.y, bounds.width, bounds.height);
 
