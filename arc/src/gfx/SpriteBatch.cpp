@@ -152,7 +152,39 @@ void arc::SpriteBatch::draw(arc::Texture2D* texture, arc::Vec2 position, arc::Ve
 }
 
 void arc::SpriteBatch::draw(arc::Texture2D* texture, std::vector<float>& v, uint32_t offset, uint32_t count) {
-    // todol finish
+    int verticesLength = v.size();
+    int remainingVertices = verticesLength;
+    if (texture != _lastTexture)
+        switchTexture(texture);
+    else
+    {
+        remainingVertices -= _idx;
+        if (remainingVertices == 0)
+        {
+            flush();
+            remainingVertices = verticesLength;
+        }
+    }
+
+    int copyCount = Mathf::min(remainingVertices, count);
+
+    _vertices.reserve(_vertices.size() + copyCount);
+    std::copy(v.begin() + offset, v.end(), _vertices.begin() + _idx);
+
+    _idx += copyCount;
+    count -= copyCount;
+    while(count > 0)
+    {
+        offset += copyCount;
+        flush();
+        copyCount = Mathf::min(verticesLength, count);
+
+        _vertices.reserve(_vertices.size() + copyCount);
+        std::copy(v.begin() + offset, v.end(), _vertices.begin());
+
+        _idx += copyCount;
+        count -= copyCount;
+    }
 }
 
 bool arc::SpriteBatch::isBlendingEnabled() {
