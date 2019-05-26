@@ -1,12 +1,13 @@
 #include "BitmapFont.h"
 #include "BitmapFontCache.h"
 
-arc::BitmapFont::BitmapFont(arc::BitmapFontData data, bool integer) : _data(std::move(data)), _integer(integer)
+arc::BitmapFont::BitmapFont(const std::string& file, bool flip, bool integer) : _data(file, flip), _integer(integer)
 {
-    _flipped = data.flipped;
+    _flipped = _data.flipped;
 
-    for(auto& path : data.imagePaths)
+    for(auto& path : _data.imagePaths)
     {
+        printf("INFO: Loading font texture at: %s\n", path.c_str());
         auto* texture = Texture2D::loadFromFile(path);
         regions.emplace_back(new TextureRegion(texture));
     }
@@ -20,10 +21,18 @@ void arc::BitmapFont::load(BitmapFontData& data)  {
         if (page.empty()) continue;
 
         for (auto* glyph : page) {
-            if (glyph != nullptr) {
+            if (glyph != nullptr)
+            {
                 data.setGlyphRegion(glyph, regions[glyph->page]);
             }
         }
     }
     if(data.missingGlyph != nullptr) data.setGlyphRegion(data.missingGlyph, regions[data.missingGlyph->page]);
+}
+
+arc::Rect arc::BitmapFont::draw(arc::SpriteBatch* batch, const std::string& str, float x, float y) {
+    _cache->clear();
+    auto bounds = _cache->addText(str, x, y, 0, str.size());
+    _cache->draw(batch);
+    return bounds;
 }

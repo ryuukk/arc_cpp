@@ -1,4 +1,6 @@
 #include "TextMarkup.h"
+#include "BitmapFontCache.h"
+
 
 void arc::TextMarkup::beginChunk(arc::Color color, int start) {
     ColorChunk newChunk{};

@@ -1,7 +1,8 @@
 #pragma once
 
-
 #include <vector>
+#include "../../math/Rect.h"
+#include "../SpriteBatch.h"
 #include "../TextureRegion.h"
 #include "BitmapFontData.h"
 
@@ -20,9 +21,9 @@ namespace arc
     {
     public:
         std::vector<TextureRegion*> regions;
-        bool enableColorMarkup = true;
+        bool enableColorMarkup = false;
 
-        BitmapFont(BitmapFontData data, bool integer);
+        BitmapFont(const std::string& file, bool flip, bool integer);
 
         ~BitmapFont()
         {
@@ -30,6 +31,8 @@ namespace arc
             for(auto* region : regions)
                 delete region;
         }
+
+        Rect draw(SpriteBatch* batch, const std::string& str, float x, float y);
 
 
         BitmapFontData& getData()

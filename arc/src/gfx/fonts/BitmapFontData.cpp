@@ -103,7 +103,9 @@ void arc::BitmapFontData::setGlyphRegion(arc::Glyph* glyph, arc::TextureRegion* 
 arc::Glyph* arc::BitmapFontData::getGlyph(uint8_t ch)
 {
     auto& page = glyphs[ch / arc::font::PAGE_SIZE];
-    if (!page.empty()) return page[ch & arc::font::PAGE_SIZE - 1];
+    if (!page.empty())
+
+        return page[ch & arc::font::PAGE_SIZE - 1];
     return nullptr;
 }
 
@@ -208,7 +210,7 @@ void arc::BitmapFontData::load(const std::string& fontFile, bool flip)
             if(buffer.find("metrics") != -1) break;
             if(buffer.find("char ") == -1) continue;
 
-            auto glyph = new Glyph();
+            auto* glyph = new Glyph();
             auto tokens = arc::string::split(buffer, " ");
 
             auto id = std::stoi(tokens[1].substr(3));

@@ -4,7 +4,6 @@
 #include <stack>
 #include <string>
 #include "../../Color.h"
-#include "BitmapFontCache.h"
 
 namespace arc
 {

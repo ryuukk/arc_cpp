@@ -9,7 +9,11 @@ arc::BitmapFontCache::BitmapFontCache(arc::BitmapFont* font, bool integer) :
     _vertexData.resize(regionsLength);
     _idx.resize(regionsLength);
 
+
     int vertexDataLength = _vertexData.size();
+
+
+    printf("Regions: %d VD: %d\n", regionsLength, vertexDataLength);
     if(vertexDataLength > 1)
     {
         _glyphIndices.resize(vertexDataLength);
@@ -95,7 +99,7 @@ void arc::BitmapFontCache::setColors(float color, int start, int end) {
 
 void arc::BitmapFontCache::draw(arc::SpriteBatch* spriteBatch) {
 
-    auto regions = _font->regions;
+    auto& regions = _font->regions;
     for (int j = 0, n = _vertexData.size(); j < n; j++)
     {
         if (_idx[j] > 0)
@@ -120,60 +124,69 @@ void arc::BitmapFontCache::clear() {
     }
 }
 
-arc::TextBounds arc::BitmapFontCache::setText(const std::string& str, float x, float y) {
-    return arc::TextBounds();
+arc::Rect arc::BitmapFontCache::setText(const std::string& str, float x, float y) {
+    return arc::Rect();
 }
 
-arc::TextBounds arc::BitmapFontCache::setText(const std::string& str, float x, float y, int start, int end) {
-    return arc::TextBounds();
+arc::Rect arc::BitmapFontCache::setText(const std::string& str, float x, float y, int start, int end) {
+    return arc::Rect();
 }
 
-arc::TextBounds arc::BitmapFontCache::addText(const std::string& str, float x, float y) {
-    return arc::TextBounds();
+arc::Rect arc::BitmapFontCache::addText(const std::string& str, float x, float y) {
+    return arc::Rect();
 }
 
-arc::TextBounds arc::BitmapFontCache::addText(const std::string& str, float x, float y, int start, int end) {
-    return arc::TextBounds();
+arc::Rect arc::BitmapFontCache::addText(const std::string& str, float x, float y, int start, int end) {
+    Rect textBounds{};
+    textBounds.x = x;
+    textBounds.y = y;
+
+    requireSequence(str, start, end);
+    y += _font->getData().ascent;
+
+    textBounds.width = addToCache(str, x, y , start, end);
+    textBounds.height = _font->getData().capHeight;
+    return textBounds;
 }
 
-arc::TextBounds arc::BitmapFontCache::setMultiLineText(const std::string& str, float x, float y) {
-    return arc::TextBounds();
+arc::Rect arc::BitmapFontCache::setMultiLineText(const std::string& str, float x, float y) {
+    return arc::Rect();
 }
 
-arc::TextBounds arc::BitmapFontCache::setMultiLineText(const std::string& str, float x, float y, float alignmentWidth,
+arc::Rect arc::BitmapFontCache::setMultiLineText(const std::string& str, float x, float y, float alignmentWidth,
                                                        arc::Align alignment) {
-    return arc::TextBounds();
+    return arc::Rect();
 }
 
-arc::TextBounds arc::BitmapFontCache::addMultiLineText(const std::string& str, float x, float y) {
-    return arc::TextBounds();
+arc::Rect arc::BitmapFontCache::addMultiLineText(const std::string& str, float x, float y) {
+    return arc::Rect();
 }
 
-arc::TextBounds arc::BitmapFontCache::addMultiLineText(const std::string& str, float x, float y, float alignmentWidth,
+arc::Rect arc::BitmapFontCache::addMultiLineText(const std::string& str, float x, float y, float alignmentWidth,
                                                        arc::Align alignment) {
-    return arc::TextBounds();
+    return arc::Rect();
 }
 
-arc::TextBounds arc::BitmapFontCache::setWrappedText(const std::string& str, float x, float y, float wrapWidth) {
-    return arc::TextBounds();
+arc::Rect arc::BitmapFontCache::setWrappedText(const std::string& str, float x, float y, float wrapWidth) {
+    return arc::Rect();
 }
 
-arc::TextBounds
+arc::Rect
 arc::BitmapFontCache::setWrappedText(const std::string& str, float x, float y, float wrapWidth, arc::Align alignment) {
-    return arc::TextBounds();
+    return arc::Rect();
 }
 
-arc::TextBounds arc::BitmapFontCache::addWrappedText(const std::string& str, float x, float y, float wrapWidth) {
-    return arc::TextBounds();
+arc::Rect arc::BitmapFontCache::addWrappedText(const std::string& str, float x, float y, float wrapWidth) {
+    return arc::Rect();
 }
 
-arc::TextBounds
+arc::Rect
 arc::BitmapFontCache::addWrappedText(const std::string& str, float x, float y, float wrapWidth, arc::Align alignment) {
-    return arc::TextBounds();
+    return arc::Rect();
 }
 
 int arc::BitmapFontCache::getCharsCount() {
-    return 0;
+    return _charsCount;
 }
 
 int arc::BitmapFontCache::countGlyphs(const std::string& seq, int start, int end) {
@@ -232,8 +245,12 @@ void arc::BitmapFontCache::requireSequence(const std::string& seg, int start, in
                 start++;
             }
 
-            Glyph* g = _font->getData().getGlyph(ch);
-            if (g == nullptr) continue;
+            auto* g = _font->getData().getGlyph(ch);
+            if (g == nullptr)
+            {
+                printf("Missing glyph for %s\n", ch);
+                continue;
+            }
             _tmpGlyphCount[g->page]++;
         }
 
@@ -244,13 +261,199 @@ void arc::BitmapFontCache::requireSequence(const std::string& seg, int start, in
 }
 
 void arc::BitmapFontCache::require(int page, int glyphCount) {
+    if(!_glyphIndices.empty())
+    {
+        if(glyphCount > _glyphIndices[page].size())
+            _glyphIndices[page].reserve(glyphCount - _glyphIndices[page].size());
+    }
 
+    int vertexCount = _idx[page] + glyphCount * 20;
+    auto& vertices = _vertexData[page];
+    if(vertices.empty()) vertices.resize(vertexCount);
+    else if(vertices.size() < vertexCount)
+    {
+        vertices.resize(vertexCount);
+        // todo: verify this since it is incomplete
+    }
 }
 
 float arc::BitmapFontCache::addToCache(const std::string& str, float x, float y, int start, int end) {
-    return 0;
+
+    float startX = x;
+    auto* font = _font;
+    Glyph* lastGlyph = nullptr;
+    auto& data = font->getData();
+    _textChanged = start < end;
+
+    if(data.scaleX == 1 && data.scaleY == 1)
+    {
+        while(start < end)
+        {
+            auto ch = str[start++];
+            if(ch == '[' && font->enableColorMarkup)
+            {
+                if(!(start < end && str[start] == '['))
+                {
+                    // non escaped [
+                    start += TextMarkup::parseColorTag(&_markup, str, _charsCount, start, end + 1);
+                    _color = _markup.getLastColor().toFloatBits();
+                    continue;
+                }
+                start++;
+            }
+
+            lastGlyph = data.getGlyph(ch);
+            if(lastGlyph != nullptr)
+            {
+                addGlyph(lastGlyph, x + lastGlyph->xoffset, y + lastGlyph->yoffset, lastGlyph->width, lastGlyph->height);
+                x+= lastGlyph->xadvance;
+                break;
+            }
+        }
+
+        while(start < end)
+        {
+            auto ch = str[start++];
+            if (ch == '[' && font->enableColorMarkup)
+            {
+                if (!(start < end && str[start] == '['))
+                {
+                    // non escaped '['
+                    start += TextMarkup::parseColorTag(&_markup, str, _charsCount, start, end) + 1;
+                    _color = _markup.getLastColor().toFloatBits();
+                    continue;
+                }
+
+                start++;
+            }
+
+            auto* g = data.getGlyph(ch);
+            if (g != nullptr)
+            {
+                x += lastGlyph->getKerning(ch);
+                lastGlyph = g;
+                addGlyph(lastGlyph, x + g->xoffset, y + g->yoffset, g->width, g->height);
+                x += g->xadvance;
+            }
+        }
+    } else
+    {
+        float scaleX = data.scaleX, scaleY = data.scaleY;
+        while (start < end)
+        {
+            char ch = str[start++];
+            if (ch == '[' && font->enableColorMarkup)
+            {
+                if (!(start < end && str[start] == '['))
+                {
+                    // non escaped '['
+                    start += TextMarkup::parseColorTag(&_markup, str, _charsCount, start, end) + 1;
+                    _color = _markup.getLastColor().toFloatBits();
+                    continue;
+                }
+
+                start++;
+            }
+
+            lastGlyph = data.getGlyph(ch);
+            if (lastGlyph != nullptr)
+            {
+                addGlyph(lastGlyph, //
+                         x + lastGlyph->xoffset * scaleX, //
+                         y + lastGlyph->yoffset * scaleY, //
+                         lastGlyph->width * scaleX, //
+                         lastGlyph->height * scaleY);
+                x += lastGlyph->xadvance * scaleX;
+                break;
+            }
+        }
+
+        while (start < end)
+        {
+            char ch = str[start++];
+            if (ch == '[' && font->enableColorMarkup)
+            {
+                if (!(start < end && str[start] == '['))
+                {
+                    // non escaped '['
+                    start += TextMarkup::parseColorTag(&_markup, str, _charsCount, start, end) + 1;
+                    _color = _markup.getLastColor().toFloatBits();
+                    continue;
+                }
+
+                start++;
+            }
+
+            auto* g = data.getGlyph(ch);
+            if (g != nullptr)
+            {
+                x += lastGlyph->getKerning(ch) * scaleX;
+                lastGlyph = g;
+                addGlyph(lastGlyph, //
+                         x + g->xoffset * scaleX, //
+                         y + g->yoffset * scaleY, //
+                         g->width * scaleX, //
+                         g->height * scaleY);
+                x += g->xadvance * scaleX;
+            }
+        }
+    }
+
+    return x - startX;
 }
 
 void arc::BitmapFontCache::addGlyph(arc::Glyph* glyph, float x, float y, float width, float height) {
+    float x2 = x + width;
+    float y2 = y + height;
+    float u = glyph->u;
+    float u2 = glyph->u2;
+    float v = glyph->v;
+    float v2 = glyph->v2;
+
+    int page = glyph->page;
+
+    if (!_glyphIndices.empty())
+    {
+        _glyphIndices[page].emplace_back(_glyphCount++);
+    }
+
+    auto& vertices = _vertexData[page];
+
+    if (_integer)
+    {
+        x = Mathf::round(x);
+        y = Mathf::round(y);
+        x2 = Mathf::round(x2);
+        y2 = Mathf::round(y2);
+    }
+
+    int idx = _idx[page];
+    _idx[page] += 20;
+
+    vertices[idx++] = x;
+    vertices[idx++] = y;
+    vertices[idx++] = _color;
+    vertices[idx++] = u;
+    vertices[idx++] = v;
+
+    vertices[idx++] = x;
+    vertices[idx++] = y2;
+    vertices[idx++] = _color;
+    vertices[idx++] = u;
+    vertices[idx++] = v2;
+
+    vertices[idx++] = x2;
+    vertices[idx++] = y2;
+    vertices[idx++] = _color;
+    vertices[idx++] = u2;
+    vertices[idx++] = v2;
+
+    vertices[idx++] = x2;
+    vertices[idx++] = y;
+    vertices[idx++] = _color;
+    vertices[idx++] = u2;
+    vertices[idx] = v;
+
+    _charsCount++;
 
 }

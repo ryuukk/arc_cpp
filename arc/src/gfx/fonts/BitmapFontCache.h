@@ -6,17 +6,10 @@
 #include "../../Color.h"
 #include "../SpriteBatch.h"
 #include "../Align.h"
+#include "../../math/Rect.h"
 
 namespace arc
 {
-    struct TextBounds
-    {
-        float x;
-        float y;
-        float width;
-        float height;
-    };
-
     class BitmapFont;
     class BitmapFontCache
     {
@@ -29,18 +22,18 @@ namespace arc
         void setColors(float color, int start, int end);
         void draw(SpriteBatch* spriteBatch);
         void clear();
-        TextBounds setText(const std::string& str, float x, float y);
-        TextBounds setText(const std::string& str, float x, float y, int start, int end);
-        TextBounds addText(const std::string& str, float x, float y);
-        TextBounds addText(const std::string& str, float x, float y, int start, int end);
-        TextBounds setMultiLineText(const std::string& str, float x, float y);
-        TextBounds setMultiLineText(const std::string& str, float x, float y, float alignmentWidth, Align alignment);
-        TextBounds addMultiLineText(const std::string& str, float x, float y);
-        TextBounds addMultiLineText(const std::string& str, float x, float y, float alignmentWidth, Align alignment);
-        TextBounds setWrappedText(const std::string& str, float x, float y, float wrapWidth);
-        TextBounds setWrappedText(const std::string& str, float x, float y, float wrapWidth, Align alignment);
-        TextBounds addWrappedText(const std::string& str, float x, float y, float wrapWidth);
-        TextBounds addWrappedText(const std::string& str, float x, float y, float wrapWidth, Align alignment);
+        Rect setText(const std::string& str, float x, float y);
+        Rect setText(const std::string& str, float x, float y, int start, int end);
+        Rect addText(const std::string& str, float x, float y);
+        Rect addText(const std::string& str, float x, float y, int start, int end);
+        Rect setMultiLineText(const std::string& str, float x, float y);
+        Rect setMultiLineText(const std::string& str, float x, float y, float alignmentWidth, Align alignment);
+        Rect addMultiLineText(const std::string& str, float x, float y);
+        Rect addMultiLineText(const std::string& str, float x, float y, float alignmentWidth, Align alignment);
+        Rect setWrappedText(const std::string& str, float x, float y, float wrapWidth);
+        Rect setWrappedText(const std::string& str, float x, float y, float wrapWidth, Align alignment);
+        Rect addWrappedText(const std::string& str, float x, float y, float wrapWidth);
+        Rect addWrappedText(const std::string& str, float x, float y, float wrapWidth, Align alignment);
         int getCharsCount();
     private:
         int countGlyphs(const std::string& seq, int start, int end);
@@ -56,7 +49,7 @@ namespace arc
         std::vector<int> _tmpGlyphCount;
         float _x{};
         float _y{};
-        float _color{};
+        float _color = Color::WHITE.toFloatBits();
         bool _integer = true;
         int _glyphCount{};
 

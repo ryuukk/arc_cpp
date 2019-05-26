@@ -12,14 +12,15 @@ class MyGame : public arc::IApp
 {
     arc::BitmapFont* _font;
     arc::SpriteBatch* _spriteBatch;
+    arc::Texture2D* _texture;
 
 
     void create() override {
-        auto fontData = arc::BitmapFontData("data/fonts/helveti_pixel_16_o.fnt", false);
-        _font = new arc::BitmapFont(fontData, false);
+
+        _font = new arc::BitmapFont("data/fonts/helveti_pixel_16_o.fnt", false, false);
 
         _spriteBatch = new arc::SpriteBatch();
-
+        _texture = arc::Texture2D::loadFromFile("data/bg_stars.png");
 
     }
 
@@ -48,7 +49,17 @@ class MyGame : public arc::IApp
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
 
+        float y = arc::Core::graphics->getHeight();
+
         _spriteBatch->begin();
+
+        _spriteBatch->draw(_texture, {0,y - 720}, {1280,720});
+
+        _font->getData().scaleX = 4;
+        _font->getData().scaleY = 4;
+        auto bounds = _font->draw(_spriteBatch, "Hello", 0, y);
+
+        //printf("Bounds: %f:%f:%f:%f\n", bounds.x, bounds.y, bounds.width, bounds.height);
 
         _spriteBatch->end();
     }

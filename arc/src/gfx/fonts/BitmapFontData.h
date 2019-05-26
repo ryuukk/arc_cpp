@@ -59,7 +59,8 @@ namespace arc
         {
             for(auto& row : glyphs)
                 for(auto* glyph : row)
-                    delete glyph;
+                    if(glyph != nullptr)
+                        delete glyph;
             delete missingGlyph;
         }
 
