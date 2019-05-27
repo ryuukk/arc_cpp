@@ -49,9 +49,9 @@ out vec4 f_color;
 
 void main()
 {
-    //vec3 color = texture2D(u_texture, v_texCoord).rgb;
-    //f_color = vec4(color, 1.0) * v_color;
-    f_color = v_color;
+    vec3 color = texture2D(u_texture, v_texCoord).rgb;
+    f_color = vec4(color, 1.0) * v_color;
+    //f_color = v_color;
 }
 )";
 
@@ -102,6 +102,15 @@ void main()
             _shader->setUniformMat4("u_world", transform);
             for(auto& part : node->parts)
             {
+
+                if(part->material->has(arc::DiffuseTextureAttribute::stype))
+                {
+                    auto* ta = part->material->get<arc::DiffuseTextureAttribute>(arc::DiffuseTextureAttribute::stype);
+                    ta->descriptor.texture->bind();
+
+                    _shader->setUniformi("u_texture", 0);
+                }
+
                 part->meshPart->render(_shader, true);
             }
         }

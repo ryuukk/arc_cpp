@@ -3,7 +3,7 @@
 #include <string>
 #include "Stage.h"
 #include "Group.h"
-#include "Touchable.hpp"
+#include "Touchable.h"
 #include "../Color.h"
 #include "../gfx/SpriteBatch.h"
 
