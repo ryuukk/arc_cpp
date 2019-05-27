@@ -11,6 +11,7 @@
 #include <utils/FileUtils.h>
 #include <gfx/rendering/RenderableBatch.h>
 #include <gfx/animation/AnimationController.h>
+#include <utils/CameraController.h>
 
 class Entity
 {
@@ -46,6 +47,7 @@ public:
 
 class MyGame : public arc::IApp
 {
+    arc::CameraController* _camController;
     arc::PerspectiveCamera* _cam;
     arc::Model* _modelA;
     arc::Model* _modelB;
@@ -56,18 +58,20 @@ class MyGame : public arc::IApp
     void create() override {
 
         _cam = new arc::PerspectiveCamera(67, arc::Core::graphics->getWidth(), arc::Core::graphics->getHeight());
-        _cam->position = arc::Vec3(0, 10, 5) * 3.0f;
-        _cam->lookAt(0, 0, 0);
+        _cam->position = arc::Vec3(0, 0, 10);
         _cam->update();
+        _camController = new arc::CameraController(_cam);
 
-        auto modelDataA = arc::ModelData::load("data/knight.g3dj");
-        auto modelDataB = arc::ModelData::load("data/character_male_0.g3dj");
-        auto modelDataC = arc::ModelData::load("data/tree_small_0.g3dj");
+        arc::Core::input->setInputProcessor(_camController);
+
+        auto modelDataA = arc::ModelData::load("data/models/knight.g3dj");
+        auto modelDataB = arc::ModelData::load("data/models/character_male_0.g3dj");
+        auto modelDataC = arc::ModelData::load("data/models/tree_small_0.g3dj");
         _modelA = new arc::Model(modelDataA);
         _modelB = new arc::Model(modelDataB);
         _modelC = new arc::Model(modelDataC);
-        std::string vs = arc::file::readFile("data/default.vert");
-        std::string fs = arc::file::readFile("data/default.frag");
+        std::string vs = arc::file::readFile("data/shaders/default.vert");
+        std::string fs = arc::file::readFile("data/shaders/default.frag");
 
         _batch = new arc::RenderableBatch(new arc::DefaultShaderProvider(vs, fs));
 
@@ -169,6 +173,7 @@ class MyGame : public arc::IApp
             fpsAcc = 0;
             timer = 0;
         }
+        _camController->update(dt);
         _cam->update();
 
         for (auto& entity : _entities)

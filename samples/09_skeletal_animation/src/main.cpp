@@ -11,6 +11,7 @@
 #include <gfx/ModelInstance.h>
 #include <gfx/animation/AnimationController.h>
 #include <gfx/data/ModelData.h>
+#include <utils/CameraController.h>
 
 class MyGame : public arc::IApp
 {
@@ -71,6 +72,7 @@ void main()
 }
 )";
 
+    arc::CameraController* _camController;
     arc::ShaderProgram* _shader;
     arc::PerspectiveCamera* _cam;
     arc::Model* _model;
@@ -87,14 +89,14 @@ void main()
         _shader = new arc::ShaderProgram(vs, fs);
 
         _cam = new arc::PerspectiveCamera(67, arc::Core::graphics->getWidth(), arc::Core::graphics->getHeight());
-        _cam->position = arc::Vec3(0, 10, 5) * 0.5f;
-        _cam->lookAt(0, 0, 0);
+        _cam->position = arc::Vec3(0, 0, 10);
         _cam->update();
+        _camController = new arc::CameraController(_cam);
 
         printf("Shader Log  : %s\n", _shader->log.c_str());
 
 
-        auto modelData = arc::ModelData::load("data/knight.g3dj");
+        auto modelData = arc::ModelData::load("data/models/knight.g3dj");
         _model = new arc::Model(modelData);
         _instance = new arc::ModelInstance(*_model);
         _animController = new arc::AnimationController(*_instance);
@@ -102,6 +104,7 @@ void main()
     }
 
     void update(float dt) override {
+        _camController->update(dt);
         _cam->update();
 
         _a += dt;
