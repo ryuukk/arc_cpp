@@ -1,8 +1,8 @@
 #pragma once
 
 #include "Logger.h"
-#include "Graphics.h"
 #include "Input.h"
+#include "Graphics.h"
 
 namespace arc
 {

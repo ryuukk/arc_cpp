@@ -52,6 +52,7 @@ namespace arc
 
         _graphics->createContext();
 
+        _input->windowHandleChanged(_graphics->windowHandle());
 
         _logger->info("Engine started !");
 

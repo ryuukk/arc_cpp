@@ -3,8 +3,8 @@
 #include <glad/glad.h>
 
 #define GLFW_INCLUDE_NONE
-
 #include <GLFW/glfw3.h>
+
 #include "Configuration.h"
 #include "Core.h"
 
@@ -72,6 +72,31 @@ namespace arc {
 
         IApp *getApp() {
             return _app;
+        }
+
+        HdpiMode getHdpiMode()
+        {
+            return _hdpiMode;
+        }
+
+        int getBackBufferWidth()
+        {
+            return _backBufferWidth;
+        }
+
+        int getBackBufferHeight()
+        {
+            return _backBufferHeight;
+        }
+
+        int getLogicalWidth()
+        {
+            return _logicalWidth;
+        }
+
+        int getLogicalHeight()
+        {
+            return _logicalHeight;
         }
 
     private:

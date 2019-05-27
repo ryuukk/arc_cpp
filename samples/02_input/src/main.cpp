@@ -4,9 +4,57 @@
 #include <Configuration.h>
 #include <Engine.h>
 
+class MyController : public arc::InputProcessor
+{
+public:
+    bool keyDown(arc::Keys keycode) override {
+        printf("KEY DOWN: \n");
+        return false;
+    }
+
+    bool keyUp(arc::Keys keycode) override {
+        printf("KEY UP: \n");
+        return false;
+    }
+
+    bool keyTyped(char character) override {
+        printf("KEY TYPED: %c\n", character);
+        return false;
+    }
+
+    bool touchDown(int screenX, int screenY, int pointer, arc::Buttons button) override {
+        printf("TOUCH DOWN %d -> %d:%d\n", pointer, screenX, screenY);
+        return false;
+    }
+
+    bool touchUp(int screenX, int screenY, int pointer, arc::Buttons button) override {
+        printf("TOUCH UP: %d -> %d:%d\n", pointer, screenX, screenY);
+        return false;
+    }
+
+    bool touchDragged(int screenX, int screenY, int pointer) override {
+        printf("TOUCH DRAGGED: %d -> %d:%d\n", pointer, screenX, screenY);
+        return false;
+    }
+
+    bool mouseMoved(int screenX, int screenY) override {
+        printf("MOUSE MOVED: %d:%d\n", screenX, screenY);
+        return false;
+    }
+
+    bool scrolled(int amount) override {
+        printf("SCROLLED: %d\n", amount);
+        return false;
+    }
+};
+
 class MyGame : public arc::IApp
 {
+    MyController* _controller = nullptr;
+
     void create() override {
+        _controller = new MyController();
+        arc::Core::input->setInputProcessor(_controller);
     }
 
     void update(float dt) override {

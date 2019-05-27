@@ -53,5 +53,18 @@ namespace arc
         {
             return a >= b ? b : a;
         }
+        static int sign(float v)
+        {
+            return v > 0.0f ? 1 : (v < 0.0f ? -1 : 0);
+        }
+        static int sign(double v)
+        {
+            return v > 0.0 ? 1 : (v < 0.0 ? -1 : 0);
+        }
+
+        static int sign(int v)
+        {
+            return v > 0 ? 1 : (v < 0 ? -1 : 0);
+        }
     };
 }
