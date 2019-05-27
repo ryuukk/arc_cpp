@@ -105,7 +105,7 @@ void main()
         _cam->update();
 
         _a += dt;
-        _transform.set({0, 0, 0}, arc::Quat::fromAxis({0, 1, 0}, _a));
+        _transform.set({0, 0, 0}, arc::Quat::fromAxis({0.5f, 1, -0.5f}, _a));
 
         _timerChangeAnim -=dt;
         if(_timerChangeAnim <= 0.0f && !_instance->animations.empty())

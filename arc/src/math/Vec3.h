@@ -10,6 +10,7 @@ namespace arc
         float y{};
         float z{};
 
+        Vec3(){}
         Vec3(float x, float y, float z) : x(x), y(y), z(z) {}
 
         bool isZero()
@@ -39,17 +40,16 @@ namespace arc
             return Vec3(y * vector.z - z * vector.y, z * vector.x - x * vector.z, x * vector.y - y * vector.x);
         }
 
-
-
         float len2()
         {
             return x * x + y * y + z * z;
         }
 
+
+
         Vec3 operator-() const {
             return Vec3(-x, -y, -z);
         }
-
 
         Vec3 operator + (const Vec3& v) const
         {

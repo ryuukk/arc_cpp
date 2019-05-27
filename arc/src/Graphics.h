@@ -123,7 +123,6 @@ namespace arc {
 
         bool _initialized = false;
 
-
         void track();
 
         //void onFrameBufferResize(GLFWwindow* window, int width, int height);

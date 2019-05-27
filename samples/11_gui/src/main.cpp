@@ -6,6 +6,7 @@
 #include <utils/FileUtils.h>
 #include <gfx/fonts/BitmapFont.h>
 #include <gfx/SpriteBatch.h>
+#include <utils/HdpiUtils.h>
 
 
 class MyGame : public arc::IApp
@@ -49,6 +50,7 @@ class MyGame : public arc::IApp
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
 
+        arc::hdpi::glViewportt(0,0,1280,720);
 
         _font->getData().scaleX = 2;
         _font->getData().scaleY = 2;
