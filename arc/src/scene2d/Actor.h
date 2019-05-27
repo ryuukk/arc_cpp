@@ -9,6 +9,7 @@
 
 namespace arc
 {
+    class Stage;
     class Actor
     {
     private:

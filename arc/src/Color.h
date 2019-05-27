@@ -32,6 +32,9 @@ namespace arc
             a = (uint8_t)((value & 0x000000ffU));
         }
 
+        Color(uint8_t r, uint8_t g, uint8_t b, uint8_t a): r(r), g(g), b(b), a(a)
+        {}
+
         Color operator * (const Color& v) const
         {
             Color ret{};

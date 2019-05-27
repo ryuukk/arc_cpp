@@ -6,7 +6,7 @@ namespace arc
 {
     class Viewport
     {
-        public
+    public:
 
     private:
         Camera* _camera = nullptr;
