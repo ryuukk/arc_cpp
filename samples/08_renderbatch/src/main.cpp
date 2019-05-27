@@ -60,8 +60,8 @@ class MyGame : public arc::IApp
         _cam = new arc::PerspectiveCamera(67, arc::Core::graphics->getWidth(), arc::Core::graphics->getHeight());
         _cam->position = arc::Vec3(0, 0, 10);
         _cam->update();
-        _camController = new arc::CameraController(_cam);
 
+        _camController = new arc::CameraController(_cam);
         arc::Core::input->setInputProcessor(_camController);
 
         auto modelDataA = arc::ModelData::load("data/models/knight.g3dj");

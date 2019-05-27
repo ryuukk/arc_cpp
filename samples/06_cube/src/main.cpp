@@ -142,8 +142,8 @@ void main()
         _cam->update();
 
         _camController = new arc::CameraController(_cam);
-
         arc::Core::input->setInputProcessor(_camController);
+
         printf("Shader Log: %s\n", _shader->log.c_str());
     }
 
