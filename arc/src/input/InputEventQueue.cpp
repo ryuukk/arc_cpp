@@ -1,3 +1,4 @@
+#include <cstdio>
 #include "InputEventQueue.h"
 #include "../utils/TimeUtils.h"
 
@@ -42,7 +43,7 @@ void arc::InputEventQueue::drain() {
             case arc::input::TOUCH_DRAGGED:
                 localProcessor->touchDragged(q[i++], q[i++], q[i++]);
                 break;
-            case arc::input::MOUSE_MOVED:
+            case arc::input::MMOUSE_MOVED:
                 localProcessor->mouseMoved(q[i++], q[i++]);
                 break;
             case arc::input::SCROLLED:
@@ -107,7 +108,7 @@ bool arc::InputEventQueue::touchDragged(int screenX, int screenY, int pointer) {
 
 bool arc::InputEventQueue::mouseMoved(int screenX, int screenY) {
     queueTime();
-    _queue.emplace_back(arc::input::MOUSE_MOVED);
+    _queue.emplace_back(arc::input::MMOUSE_MOVED);
     _queue.emplace_back(screenX);
     _queue.emplace_back(screenY);
     return false;

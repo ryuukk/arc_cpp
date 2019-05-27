@@ -7,6 +7,7 @@
 #include <gfx/ShaderProgram.h>
 #include <gfx/Mesh.h>
 #include <gfx/Camera.h>
+#include <utils/CameraController.h>
 
 
 class Entity
@@ -67,6 +68,7 @@ void main()
 }
 )";
 
+    arc::CameraController* _camController;
     arc::ShaderProgram *_shader;
     arc::PerspectiveCamera *_cam;
     std::vector<Entity*> _entities{};
@@ -130,19 +132,23 @@ void main()
             }
         }
 
+        printf("Added: %d cubes\n", _entities.size());
 
         _shader = new arc::ShaderProgram(vs, fs);
 
         _cam = new arc::PerspectiveCamera(67, arc::Core::graphics->getWidth(), arc::Core::graphics->getHeight());
-        _cam->position = arc::Vec3(0, 10, 5) * 5.0f;
-        _cam->lookAt(0, 0, 0);
+        //_cam->position = arc::Vec3(0, 10, 5) * 5.0f;
+        //_cam->lookAt(0, 0, 0);
         _cam->update();
 
+        _camController = new arc::CameraController(_cam);
+
+        arc::Core::input->setInputProcessor(_camController);
         printf("Shader Log: %s\n", _shader->log.c_str());
     }
 
     void update(float dt) override {
-
+        _camController->update(dt);
         for (auto& entity : _entities)
             entity->update(dt);
         _cam->update();

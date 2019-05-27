@@ -9,14 +9,14 @@ namespace arc
 {
     namespace input
     {
-        static const int KEY_DOWN      = 0;
-        static const int KEY_UP        = 1;
-        static const int KEY_TYPED     = 2;
-        static const int TOUCH_DOWN    = 3;
-        static const int TOUCH_UP      = 4;
-        static const int TOUCH_DRAGGED = 5;
-        static const int MOUSE_MOVED   = 6;
-        static const int SCROLLED      = 7;
+        const static int KEY_DOWN = 0;
+        const static int KEY_UP = 1;
+        const static int KEY_TYPED = 2;
+        const static int TOUCH_DOWN = 3;
+        const static int TOUCH_UP = 4;
+        const static int TOUCH_DRAGGED = 5;
+        const static int MMOUSE_MOVED = 6;
+        const static int SCROLLED = 7;
     }
 
     class InputEventQueue

@@ -31,11 +31,11 @@ namespace arc
             if (Core::graphics->getWidth() != Core::graphics->getBackBufferWidth()
                 || Core::graphics->getHeight() != Core::graphics->getBackBufferHeight())
             {
-                glScissor(toBackBufferX(x), toBackBufferY(y), (uint)toBackBufferX(width), (uint)toBackBufferY(height));
+                glScissor(toBackBufferX(x), toBackBufferY(y), toBackBufferX(width), toBackBufferY(height));
             }
             else
             {
-                glScissor(x, y, (uint)width, (uint)height);
+                glScissor(x, y, width, height);
             }
         }
 
@@ -44,11 +44,11 @@ namespace arc
             if (Core::graphics->getWidth() != Core::graphics->getBackBufferWidth()
                 || Core::graphics->getHeight() != Core::graphics->getBackBufferHeight())
             {
-                glViewport(toBackBufferX(x), toBackBufferY(y), (uint)toBackBufferX(width), (uint)toBackBufferY(height));
+                glViewport(toBackBufferX(x), toBackBufferY(y), toBackBufferX(width), toBackBufferY(height));
             }
             else
             {
-                glViewport(x, y, (uint)width,(uint) height);
+                glViewport(x, y, width, height);
             }
         }
     }

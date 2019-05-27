@@ -1,5 +1,4 @@
 #include "Core.h"
-#include "utils/HdpiUtils.h"
 
 arc::Graphics* arc::Core::graphics = nullptr;
 arc::Input* arc::Core::input = nullptr;

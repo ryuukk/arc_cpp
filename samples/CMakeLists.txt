@@ -5,9 +5,16 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/../bin)
 function(add_sample sample_name)
     project(${sample_name})
 
-    # set(CMAKE_CXX_FLAGS "-Wall -Wextra")
-    set(CMAKE_CXX_FLAGS_DEBUG "-g")
-    set(CMAKE_CXX_FLAGS_RELEASE "-O3")
+    set(EXE_NAME "${PROJECT_NAME}_${CMAKE_BUILD_TYPE}")
+    string(TOLOWER ${EXE_NAME} EXE_NAME)
+
+
+    # set (CMAKE_CXX_FLAGS "-Wall -Wextra")
+    # set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -march=native -m64 -Ofast -flto")
+    # set (CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -Wl,--allow-multiple-definition")
+
+    set(CMAKE_CXX_FLAGS_DEBUG "-march=native -g -m64 -O0 -flto")
+    set(CMAKE_CXX_FLAGS_RELEASE "-march=native -m64 -0fast -flto")
 
     include_directories(${CMAKE_CURRENT_SOURCE_DIR}/${sample_name}/../../arc/src)
     include_directories(${CMAKE_CURRENT_SOURCE_DIR}/${sample_name}/../../libs/glad/include)
@@ -17,6 +24,7 @@ function(add_sample sample_name)
     file(GLOB SOURCES "${CMAKE_CURRENT_SOURCE_DIR}/${sample_name}/src/*.cpp")
 
     add_executable(${PROJECT_NAME} ${SOURCES})
+    set_target_properties(${PROJECT_NAME} PROPERTIES OUTPUT_NAME "${EXE_NAME}")
 
     if(WIN32)
         # target_link_libraries(${PROJECT_NAME} -mwindows opengl32 glad glfw arc)

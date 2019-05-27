@@ -134,7 +134,7 @@ void arc::Input::keyCallback(GLFWwindow* window, int key, int scancode, int acti
     if(action == GLFW_PRESS)
     {
         auto k = arc::input::getEnumKeyCode(key);
-        //_eventQueue.keyDown(k);
+        _eventQueue.keyDown(k);
         _pressedKeys++;
         _keyJustPressed = true;
         _justPressedKeys[(int)k] = true;
@@ -197,7 +197,22 @@ void arc::Input::cursorPosCallback(GLFWwindow* window, double xpos, double ypos)
 }
 
 void arc::Input::mouseButtonCallback(GLFWwindow* window, int button, int state, int mods) {
+    auto b = arc::input::toEnumButton(button);
+    if (b == Buttons::UKNOWN) return;
 
+    if (state == GLFW_PRESS)
+    {
+        _mousePressed++;
+        _justTouched = true;
+        //window.getGraphics().requestRendering();
+        _eventQueue.touchDown(_mouseX, _mouseY, 0, b);
+    }
+    else
+    {
+        _mousePressed = Mathf::max(0, _mousePressed - 1);
+        //window.getGraphics().requestRendering();
+        _eventQueue.touchUp(_mouseX, _mouseY, 0, b);
+    }
 }
 
 void arc::Input::setInputProcessor(arc::InputProcessor* processor) {

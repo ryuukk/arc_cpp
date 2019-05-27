@@ -1,4 +1,3 @@
-#include <fstream>
 #include <string.h>
 #include <Core.h>
 #include <Configuration.h>
@@ -12,7 +11,6 @@
 #include <utils/FileUtils.h>
 #include <gfx/rendering/RenderableBatch.h>
 #include <gfx/animation/AnimationController.h>
-
 
 class Entity
 {
@@ -55,7 +53,6 @@ class MyGame : public arc::IApp
     arc::RenderableBatch* _batch;
     std::vector<Entity*> _entities{};
 
-
     void create() override {
 
         _cam = new arc::PerspectiveCamera(67, arc::Core::graphics->getWidth(), arc::Core::graphics->getHeight());
@@ -74,13 +71,10 @@ class MyGame : public arc::IApp
 
         _batch = new arc::RenderableBatch(new arc::DefaultShaderProvider(vs, fs));
 
-
         auto one = false;
         auto enableAnim = true;
-        auto size = 8;
-        auto pad = 2;
-
-
+        auto size = 5;
+        auto pad = 3;
         if(one)
         {
             auto* entity = new Entity;
@@ -98,6 +92,7 @@ class MyGame : public arc::IApp
         }
         else
         {
+            printf("Loading entities..\n");
             int id = 0;
             for (int i = -size; i < size; i++)
             {
