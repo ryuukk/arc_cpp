@@ -1,6 +1,7 @@
 #include <chrono>
 #include "Graphics.h"
 #include "utils/TimeUtils.h"
+#include "utils/Format.h"
 
 
 // GLFWwindow*,int,int
@@ -73,12 +74,12 @@ bool arc::Graphics::createContext()
     glfwShowWindow(_window);
 
 
-    Core::logger->info("Created window with size: {}:{}", _config.windowWidth, _config.windowHeight);
+    Core::logger->info(arc::Format("Created window with size: {0}:{1}", _config.windowWidth, _config.windowHeight));
 
-    Core::logger->info("Vendor:    {}", glGetString(GL_VENDOR));
-    Core::logger->info("Renderer:  {}", glGetString(GL_RENDERER));
-    Core::logger->info("Version:   {}", glGetString(GL_VERSION));
-    Core::logger->info("GLSL:      {}", glGetString(GL_SHADING_LANGUAGE_VERSION));
+    Core::logger->info(arc::Format("Vendor:    {0}", glGetString(GL_VENDOR)));
+    Core::logger->info(arc::Format("Renderer:  {0}", glGetString(GL_RENDERER)));
+    Core::logger->info(arc::Format("Version:   {0}", glGetString(GL_VERSION)));
+    Core::logger->info(arc::Format("GLSL:      {0}", glGetString(GL_SHADING_LANGUAGE_VERSION)));
 
 
     glViewport(0, 0, _width, _height);

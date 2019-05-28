@@ -1,6 +1,7 @@
 #pragma once
 
 #include <stdio.h>
+#include <string>
 
 
 namespace arc
@@ -8,19 +9,15 @@ namespace arc
     class Logger
     {
     public:
-        template<typename... Args>
-        void info(const char *txt, const Args &... args)
+        void info(const std::string& txt)
         {
             //fmt::printf("[INFO] %s\n", txt,  args...);
 
-            printf("[INFO] %s\n", txt);
+            printf("[INFO] %s\n", txt.c_str());
         }
-        template<typename... Args>
-        void error(const char *txt, const Args &... args)
+        void error(const std::string& txt)
         {
-            //fmt::printf("[ERROR] %s\n", txt,  args...);
-
-            printf("[ERROR] %s\n", txt);
+            printf("[ERROR] %s\n", txt.c_str());
         }
     };
 }

@@ -1,5 +1,6 @@
 #include "ShaderProgram.h"
 #include "../Core.h"
+#include "../utils/Format.h"
 #include <assert.h>
 #include <glad/glad.h>
 
@@ -162,7 +163,7 @@ int arc::ShaderProgram::fetchAttributeLocation(std::string &name) {
 void arc::ShaderProgram::checkManaged() {
     if (_invalidated)
     {
-        Core::logger->info("Recompile shader: {}", _program);
+        Core::logger->info(arc::Format("Recompile shader: {0}", _program));
 
         compileShaders(_vertexShaderSource, _fragmentShaderSource);
         _invalidated = false;

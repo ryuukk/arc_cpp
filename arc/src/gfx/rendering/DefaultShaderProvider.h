@@ -1,5 +1,6 @@
 #pragma once
 
+#include <utils/Format.h>
 #include "BaseShaderProvider.h"
 #include "DefaultShader.h"
 
@@ -29,7 +30,7 @@ namespace arc
 
             auto* program = new ShaderProgram(vs, fs);
 
-            Core::logger->info("Compile new shader: {} for renderable", program->isCompiled());
+            Core::logger->info(arc::Format("Compile new shader: {0} for renderable", program->isCompiled()));
 
             // todo: create prefix
             return new DefaultShader(renderable, config, program);
