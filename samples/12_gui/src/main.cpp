@@ -83,7 +83,7 @@ class MyGame : public arc::IApp
 
 int main(int argc, char** argv) {
     auto config = arc::Configuration();
-    config.windowTitle = "Sample 11 - GUI";
+    config.windowTitle = "Sample 12 - GUI";
     config.vsync = true;
     auto myGame = new MyGame();
     auto engine = new arc::Engine(myGame, config);
