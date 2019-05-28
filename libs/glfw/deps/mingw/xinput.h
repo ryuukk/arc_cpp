@@ -94,7 +94,7 @@
  * Deadzones are for analogue joystick controls on the joypad
  * which determine when input should be assumed to be in the
  * middle of the pad. This is a threshold to stop a joypad
- * controlling the arc when the player isn't touching the
+ * controlling the game when the player isn't touching the
  * controls.
  */
 
