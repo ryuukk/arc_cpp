@@ -16,10 +16,9 @@ class MyGame : public arc::IApp
     arc::Texture2D* _texture;
     arc::OrthographicCamera* _camera;
 
-
     void create() override {
 
-        _font = new arc::BitmapFont("data/fonts/helveti_pixel_16_o.fnt", false, false);
+        _font = new arc::BitmapFont("data/fonts/m6x11_16_o.fnt", false, false);
         _font->getData().scaleX = 1;
         _font->getData().scaleY = 1;
 
@@ -65,7 +64,7 @@ class MyGame : public arc::IApp
         if (arc::Core::input->isKeyJustPressed(arc::Keys::DOWN)) {
             _font->getData().scaleX -= 1;
             _font->getData().scaleY -= 1;
-            if(_font->getData().scaleX <= 0)
+            if (_font->getData().scaleX <= 0)
             {
                 _font->getData().scaleX = 1;
                 _font->getData().scaleY = 1;
@@ -77,10 +76,11 @@ class MyGame : public arc::IApp
 
         float y = _camera->viewportHeight;
         float lineHeight = _font->getData().lineHeight * _font->getData().scaleY;
-        _font->draw(_spriteBatch, arc::Format("FPS: {0}", arc::Core::graphics->fps()), 0, y);
+        _font->draw(_spriteBatch, arc::Format("FPS:  {0}", arc::Core::graphics->fps()), 0, y);
         _font->draw(_spriteBatch, "Press <SPACE> to toggle Color Markup", 0, y - lineHeight);
         _font->draw(_spriteBatch, "Press <UP> or <DOWN> to scale up or down the font", 0, y - lineHeight * 2);
-        _font->draw(_spriteBatch, "[#FF0000]Hello[] [#00FF00]Colored[] [#0000FF]World[] Yay", 0, y - lineHeight * 3);
+        _font->draw(_spriteBatch, "[#FF5555]Hello[] [#55FF55]Colored[] [#5555FF]World[] Yay", 0, y - lineHeight * 3);
+
 
         _spriteBatch->end();
     }
