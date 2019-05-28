@@ -7,7 +7,7 @@
 #include <gfx/fonts/BitmapFont.h>
 #include <gfx/SpriteBatch.h>
 #include <gfx/Camera.h>
-
+#include <utils/Format.h>
 
 class MyGame : public arc::IApp
 {
@@ -77,9 +77,10 @@ class MyGame : public arc::IApp
 
         float y = _camera->viewportHeight;
         float lineHeight = _font->getData().lineHeight * _font->getData().scaleY;
-        _font->draw(_spriteBatch, "Press <SPACE> to toggle Color Markup", 0, y);
-        _font->draw(_spriteBatch, "Press <UP> or <DOWN> to scale up or down the font", 0, y - lineHeight);
-        auto bounds = _font->draw(_spriteBatch, "[#FF0000]Hello[] [#00FF00]Colored[] [#0000FF]World[] Yay", 0, y - lineHeight * 2);
+        _font->draw(_spriteBatch, arc::Format("FPS: {0}", arc::Core::graphics->fps()), 0, y);
+        _font->draw(_spriteBatch, "Press <SPACE> to toggle Color Markup", 0, y - lineHeight);
+        _font->draw(_spriteBatch, "Press <UP> or <DOWN> to scale up or down the font", 0, y - lineHeight * 2);
+        _font->draw(_spriteBatch, "[#FF0000]Hello[] [#00FF00]Colored[] [#0000FF]World[] Yay", 0, y - lineHeight * 3);
 
         _spriteBatch->end();
     }
