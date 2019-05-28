@@ -163,7 +163,7 @@ int arc::ShaderProgram::fetchAttributeLocation(std::string &name) {
 void arc::ShaderProgram::checkManaged() {
     if (_invalidated)
     {
-        Core::logger->info(arc::Format("Recompile shader: {0}", _program));
+        Core::logger->infof("Recompile shader: {0}", _program);
 
         compileShaders(_vertexShaderSource, _fragmentShaderSource);
         _invalidated = false;

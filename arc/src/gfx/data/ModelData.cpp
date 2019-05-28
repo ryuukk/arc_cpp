@@ -23,7 +23,7 @@ arc::ModelData arc::ModelData::load(const std::string& path) {
     std::string id = json["id"].string_value();
     data.id = id.length() > 0 ? id : path;
 
-    Core::logger->info(arc::Format("Loading Model: {0} version: {1}:{2} id: {3}", path.c_str(), lo, hi, data.id));
+    Core::logger->infof("Loading Model: {0} version: {1}:{2} id: {3}", path.c_str(), lo, hi, data.id);
 
     parseMeshes(data, json);
     parseMaterials(data, json, arc::directory::dirName(path));
@@ -178,7 +178,7 @@ void arc::ModelData::parseMaterials(arc::ModelData& data, json11::Json& json, co
 
                     if(!arc::file::exists(jsonTexture.fileName))
                     {
-                        Core::logger->error(arc::Format("Model: {0} Texture not found in disk: {1}", data.id, jsonTexture.fileName)); // todo: maybe load default texture ?
+                        Core::logger->errorf("Model: {0} Texture not found in disk: {1}", data.id, jsonTexture.fileName); // todo: maybe load default texture ?
                     }
 
                     jsonMaterial.textures[j] = jsonTexture;
