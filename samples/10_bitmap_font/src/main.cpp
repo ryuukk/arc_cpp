@@ -6,6 +6,7 @@
 #include <utils/FileUtils.h>
 #include <gfx/fonts/BitmapFont.h>
 #include <gfx/SpriteBatch.h>
+#include <gfx/Camera.h>
 
 
 class MyGame : public arc::IApp
@@ -13,29 +14,34 @@ class MyGame : public arc::IApp
     arc::BitmapFont* _font;
     arc::SpriteBatch* _spriteBatch;
     arc::Texture2D* _texture;
+    arc::OrthographicCamera* _camera;
 
 
     void create() override {
 
         _font = new arc::BitmapFont("data/fonts/helveti_pixel_16_o.fnt", false, false);
+        _font->getData().scaleX = 1;
+        _font->getData().scaleY = 1;
 
         _spriteBatch = new arc::SpriteBatch();
         _texture = arc::Texture2D::loadFromFile("data/bg_stars.png");
 
+        _camera = new arc::OrthographicCamera();
+        _camera->setToOrtho(arc::Core::graphics->getWidth(), arc::Core::graphics->getHeight(), false);
     }
 
     int fpsAcc = 0;
     int c = 0;
     float timer = 0.0f;
+
     void update(float dt) override {
 
         auto fps = arc::Core::graphics->fps();
-        fpsAcc+=fps;
+        fpsAcc += fps;
         timer += dt;
         c++;
 
-        if (timer > 1.0f)
-        {
+        if (timer > 1.0f) {
             int f = fpsAcc / c;
             printf("FPS: %d  AVG: %d\n", fps, f);
 
@@ -49,23 +55,31 @@ class MyGame : public arc::IApp
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
 
+        if (arc::Core::input->isKeyJustPressed(arc::Keys::SPACE)) {
+            _font->enableColorMarkup = !_font->enableColorMarkup;
+        }
+        if (arc::Core::input->isKeyJustPressed(arc::Keys::UP)) {
+            _font->getData().scaleX += 1;
+            _font->getData().scaleY += 1;
+        }
+        if (arc::Core::input->isKeyJustPressed(arc::Keys::DOWN)) {
+            _font->getData().scaleX -= 1;
+            _font->getData().scaleY -= 1;
+            if(_font->getData().scaleX <= 0)
+            {
+                _font->getData().scaleX = 1;
+                _font->getData().scaleY = 1;
+            }
+        }
 
-        _font->getData().scaleX = 2;
-        _font->getData().scaleY = 2;
-        _font->enableColorMarkup = true;
-        float y = arc::Core::graphics->getHeight();
-
+        _spriteBatch->setProjectionMatrix(_camera->combined);
         _spriteBatch->begin();
 
-        //_spriteBatch->draw(_texture, {0,y - 720}, {1280,720});
-
-        //auto bounds = _font->draw(_spriteBatch, "Hello", 0, y);
-        //auto bounds = _font->draw(_spriteBatch, "[#FF0000]reeeeeeeeeeeeeeeeeeeeeeed[]white[#00FF00]gr[#0000FF]ee[]n[]", 0, y);
-        //auto bounds = _font->draw(_spriteBatch, "[#FF0000]Hello[]", 50, 50);
-        auto bounds = _font->draw(_spriteBatch, "[#FF0000]Hello[] [#00FF00]Colored[] [#0000FF]World[] Yay", 50, 50);
-
-
-        //printf("Bounds: %f:%f:%f:%f\n", bounds.x, bounds.y, bounds.width, bounds.height);
+        float y = _camera->viewportHeight;
+        float lineHeight = _font->getData().lineHeight * _font->getData().scaleY;
+        _font->draw(_spriteBatch, "Press <SPACE> to toggle Color Markup", 0, y);
+        _font->draw(_spriteBatch, "Press <UP> or <DOWN> to scale up or down the font", 0, y - lineHeight);
+        auto bounds = _font->draw(_spriteBatch, "[#FF0000]Hello[] [#00FF00]Colored[] [#0000FF]World[] Yay", 0, y - lineHeight*2);
 
         _spriteBatch->end();
     }
