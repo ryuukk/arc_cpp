@@ -23,5 +23,11 @@ namespace arc
             std::ifstream file(name.c_str());
             return file.good();
         }
+
+        inline std::string parent(const std::string& path)
+        {
+            // todo: figure this out
+            return "";
+        }
     }
 }

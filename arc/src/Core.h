@@ -31,4 +31,5 @@ namespace arc
 
         virtual void dispose() = 0;
     };
+
 }
