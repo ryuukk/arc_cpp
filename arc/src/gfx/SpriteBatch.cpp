@@ -209,3 +209,7 @@ void arc::SpriteBatch::switchTexture(arc::Texture2D* texture) {
     _invTexWidth = 1.0f / texture->getWidth();
     _invTexHeight = 1.0f / texture->getHeight();
 }
+
+const arc::Mat4& arc::SpriteBatch::getTransformationMatrix() {
+    return _transformMatrix;
+}

@@ -79,7 +79,7 @@ class MyGame : public arc::IApp
         float lineHeight = _font->getData().lineHeight * _font->getData().scaleY;
         _font->draw(_spriteBatch, "Press <SPACE> to toggle Color Markup", 0, y);
         _font->draw(_spriteBatch, "Press <UP> or <DOWN> to scale up or down the font", 0, y - lineHeight);
-        auto bounds = _font->draw(_spriteBatch, "[#FF0000]Hello[] [#00FF00]Colored[] [#0000FF]World[] Yay", 0, y - lineHeight*2);
+        auto bounds = _font->draw(_spriteBatch, "[#FF0000]Hello[] [#00FF00]Colored[] [#0000FF]World[] Yay", 0, y - lineHeight * 2);
 
         _spriteBatch->end();
     }

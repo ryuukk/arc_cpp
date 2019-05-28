@@ -130,6 +130,8 @@ namespace arc
         static Vec3 rotate(Vec3 lhs, Vec3 axis, float angle);
 
         static Vec3 transform(Vec3 lhs, Mat4 matrix);
+
+        static Vec3 project(Vec3 lhs, Mat4 matrix);
     };
 
 }

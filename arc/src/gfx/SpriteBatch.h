@@ -27,6 +27,8 @@ namespace arc
         void draw(Texture2D* texture, std::vector<float>& v, uint32_t offset, uint32_t count);
         bool isBlendingEnabled();
 
+        const Mat4& getTransformationMatrix();
+
         uint32_t renderCalls = 0;
         uint32_t totalRenderCalls = 0;
         uint32_t maxSpritesInBatch = 0;

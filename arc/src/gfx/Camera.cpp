@@ -1,5 +1,6 @@
 #include <cmath>
 #include "Camera.h"
+#include "../Core.h"
 
 void arc::Camera::lookAt(float x, float y, float z) {
     Vec3 a(x, y, z);
@@ -24,7 +25,37 @@ void arc::Camera::normalizeUp() {
 }
 
 void arc::Camera::rotate(Vec3 axis, float angle) {
+    // todo: test
+    direction = Vec3::rotate(direction, axis, angle);
+    up = Vec3::rotate(up, axis, angle);
+}
 
+arc::Vec3 arc::Camera::project(arc::Vec3 worldCoords, float viewportX, float viewportY, float viewportWidth,
+                               float viewportHeight) {
+    // todo: test
+    Vec3 ret = Vec3::project(worldCoords, combined);
+    ret.x = viewportWidth * (ret.x + 1) / 2 + viewportX;
+    ret.y = viewportHeight * (ret.y + 1) / 2 + viewportY;
+    ret.z = (ret.z + 1) / 2;
+    return ret;
+}
+
+arc::Vec3 arc::Camera::unproject(arc::Vec3 screenCoords, float viewportX, float viewportY, float viewportWidth,
+                                 float viewportHeight) {
+    // todo: test
+    float x = screenCoords.x;
+    float y = screenCoords.y;
+    x = x - viewportX;
+    y = arc::Core::graphics->getHeight() - y - 1;
+    y = y - viewportY;
+
+    Vec3 ret;
+    ret.x = (2 * x) / viewportWidth - 1;
+    ret.y = (2 * y) / viewportHeight - 1;
+    ret.z = 2 * screenCoords.z - 1;
+
+    ret = Vec3::project(ret, invProjectionView);
+    return ret;
 }
 
 void arc::PerspectiveCamera::update(bool updateFrustrum) {

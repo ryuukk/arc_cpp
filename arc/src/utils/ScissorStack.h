@@ -10,13 +10,15 @@ namespace arc
     class ScissorStack
     {
     public:
-        bool pushScissors(const Rect& scissor);
-        Rect calculateScissors(Camera* camera, float viewportX, float viewportY, float viewportWidth, float viewportHeight, const Mat4& batchTransform, const Rect& area);
+        static bool pushScissors(const Rect& scissor);
+        static Rect calculateScissors(Camera* camera, const Mat4& batchTransform, const Rect& area);
+        static Rect calculateScissors(Camera* camera, float viewportX, float viewportY, float viewportWidth, float viewportHeight, const Mat4& batchTransform, const Rect& area);
+        static Rect popScissors();
     private:
-        void fix(Rect& rect);
+        static void fix(Rect& rect);
     private:
-        Rect _viewport;
-        std::vector<Rect> _scissors;
+        static Rect _viewport;
+        static std::vector<Rect> _scissors;
     };
 }
 

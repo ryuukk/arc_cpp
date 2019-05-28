@@ -30,6 +30,9 @@ namespace arc
         void normalizeUp();
 
         void rotate(Vec3 axis, float angle);
+
+        Vec3 project(Vec3 worldCoords, float viewportX, float viewportY, float viewportWidth, float viewportHeight);
+        Vec3 unproject(Vec3 screenCoords, float viewportX, float viewportY, float viewportWidth, float viewportHeight);
     };
 
     class PerspectiveCamera : public Camera

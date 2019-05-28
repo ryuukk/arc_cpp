@@ -1,6 +1,9 @@
 #include "ScissorStack.h"
 #include "HdpiUtils.h"
 
+arc::Rect arc::ScissorStack::_viewport;
+std::vector<arc::Rect> arc::ScissorStack::_scissors;
+
 bool arc::ScissorStack::pushScissors(const arc::Rect& scissor) {
     auto fixed = scissor;
     fix(fixed);
@@ -31,16 +34,32 @@ bool arc::ScissorStack::pushScissors(const arc::Rect& scissor) {
     return true;
 }
 
+arc::Rect arc::ScissorStack::calculateScissors(arc::Camera* camera, const arc::Mat4& batchTransform, const arc::Rect& area) {
+    return calculateScissors(camera, 0, 0, arc::Core::graphics->getWidth(), arc::Core::graphics->getHeight(), batchTransform, area);
+}
+
 arc::Rect arc::ScissorStack::calculateScissors(arc::Camera* camera, float viewportX, float viewportY, float viewportWidth,
                                        float viewportHeight, const arc::Mat4& batchTransform, const arc::Rect& area) {
 
+    // todo: test
     Vec3 tmp {area.x, area.y, 0.0f};
 
-    // todo: finish
-    //    - vec3 stuff
-    //    - camera stuff
+    tmp = Vec3::transform(tmp, batchTransform);
 
-    return arc::Rect();
+    tmp = camera->project(tmp, viewportX, viewportY, viewportWidth, viewportHeight);
+
+    Rect scissor;
+    scissor.x = tmp.x;
+    scissor.y = tmp.y;
+
+    tmp = {area.x + area.width, area.y + area.height, 0};
+    tmp = Vec3::transform(tmp, batchTransform);
+
+    tmp = camera->project(tmp, viewportX, viewportY, viewportWidth, viewportHeight);
+    scissor.width = tmp.x - scissor.x;
+    scissor.height = tmp.y - scissor.y;
+
+    return scissor;
 }
 
 void arc::ScissorStack::fix(arc::Rect& rect) {
@@ -56,4 +75,17 @@ void arc::ScissorStack::fix(arc::Rect& rect) {
         rect.height = -rect.height;
         rect.y -= rect.height;
     }
+}
+
+arc::Rect arc::ScissorStack::popScissors() {
+    auto old = _scissors[_scissors.size() - 1];
+    _scissors.pop_back();
+    if(_scissors.empty())
+        glDisable(GL_SCISSOR_TEST);
+    else
+    {
+        auto scissor = _scissors[_scissors.size() - 1];
+        arc::hdpi::glScissorr((int)scissor.x, (int)scissor.y, (int)scissor.width, (int)scissor.height);
+    }
+    return old;
 }

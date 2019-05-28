@@ -100,6 +100,9 @@ namespace arc {
         }
 
     private:
+        void track();
+
+    private:
         GLFWwindow *_window;
         int _width = 1280;
         int _height = 720;
@@ -123,7 +126,6 @@ namespace arc {
 
         bool _initialized = false;
 
-        void track();
 
         //void onFrameBufferResize(GLFWwindow* window, int width, int height);
     };
