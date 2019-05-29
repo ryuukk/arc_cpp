@@ -2,7 +2,6 @@
 
 #include <string>
 #include <vector>
-#include "AtlasRegion.h"
 #include "../TextureRegion.h"
 #include "../NinePatch.h"
 
@@ -26,7 +25,7 @@ namespace arc
         std::vector<int> splits;
         std::vector<int> pads;
     };
-    
+
     class TextureAtlas
     {
     public:

@@ -33,7 +33,7 @@ void arc::TextureAtlas::load(const std::string& file, const std::string& imagesD
             // todo: apply filters
         }
 
-        textures.emplace_back(page.texture);
+        textures.emplace_back(texture);
     }
 
     for (int j = 0; j < data.regions.size(); ++j) {
@@ -41,10 +41,11 @@ void arc::TextureAtlas::load(const std::string& file, const std::string& imagesD
         int width = region.width;
         int height = region.height;
 
-        auto page = data.pages[region.pageIndex];
+        //auto page = data.pages[region.pageIndex];
+        auto texture = textures[region.pageIndex];
         //auto texRegion = new TextureRegion(page.texture);
         //texRegion->setRegion(region.left, region.top, region.rotate ? height:width, region.rotate ? width:height);
-        auto atlasRegion = AtlasRegion(page.texture, region.left, region.top, region.rotate ? height:width, region.rotate ? width:height);
+        auto atlasRegion = AtlasRegion(texture, region.left, region.top, region.rotate ? height:width, region.rotate ? width:height);
         if(region.flip) atlasRegion.flip(false, true);
         regions.emplace_back(atlasRegion);
     }

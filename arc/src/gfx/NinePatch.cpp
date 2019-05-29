@@ -2,29 +2,28 @@
 
 void arc::NinePatch::draw(SpriteBatch* batch, float x, float y, float width, float height) {
     prepareVertices(batch, x, y, width, height);
-    batch->draw(_texture, vertices, 0, idx);
+    batch->draw(_texture, *vertices, 0, idx);
 }
 
 void arc::NinePatch::draw(SpriteBatch* batch, float x, float y, float originX, float originY, float width, float height,
                           float scaleX, float scaleY, float rotation) {
     prepareVertices(batch, x, y, width, height);
-    float worldOriginX = x + originX, worldOriginY = y + originY;
-    int n = this.idx;
-
-    if (rotation != 0) {
-        for (int i = 0; i < n; i += 5) {
-            float vx = (vertices[i] - worldOriginX) * scaleX, vy = (vertices[i + 1] - worldOriginY) * scaleY;
-            float cos = MathUtils.cosDeg(rotation), sin = MathUtils.sinDeg(rotation);
-            vertices[i] = cos * vx - sin * vy + worldOriginX;
-            vertices[i + 1] = sin * vx + cos * vy + worldOriginY;
-        }
-    } else if (scaleX != 1 || scaleY != 1) {
-        for (int i = 0; i < n; i += 5) {
-            vertices[i] = (vertices[i] - worldOriginX) * scaleX + worldOriginX;
-            vertices[i + 1] = (vertices[i + 1] - worldOriginY) * scaleY + worldOriginY;
-        }
-    }
-    batch.draw(texture, vertices, 0, n);
+    //float worldOriginX = x + originX, worldOriginY = y + originY;
+    //int n = this.idx;
+    //if (rotation != 0) {
+    //    for (int i = 0; i < n; i += 5) {
+    //        float vx = (vertices[i] - worldOriginX) * scaleX, vy = (vertices[i + 1] - worldOriginY) * scaleY;
+    //        float cos = MathUtils.cosDeg(rotation), sin = MathUtils.sinDeg(rotation);
+    //        vertices[i] = cos * vx - sin * vy + worldOriginX;
+    //        vertices[i + 1] = sin * vx + cos * vy + worldOriginY;
+    //    }
+    //} else if (scaleX != 1 || scaleY != 1) {
+    //    for (int i = 0; i < n; i += 5) {
+    //        vertices[i] = (vertices[i] - worldOriginX) * scaleX + worldOriginX;
+    //        vertices[i + 1] = (vertices[i + 1] - worldOriginY) * scaleY + worldOriginY;
+    //    }
+    //}
+    //batch.draw(texture, vertices, 0, n);
 }
 
 int arc::NinePatch::add(TextureRegion* region, float color, bool isStretchW, bool isStretchH) {
