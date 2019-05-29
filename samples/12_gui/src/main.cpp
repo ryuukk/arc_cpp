@@ -22,7 +22,6 @@ class MyGame : public arc::IApp
 
         _spriteBatch = new arc::SpriteBatch();
         _texture = arc::Texture2D::loadFromFile("data/bg_stars.png");
-
     }
 
     int fpsAcc = 0;

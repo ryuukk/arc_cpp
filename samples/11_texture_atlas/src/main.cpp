@@ -85,6 +85,8 @@ class MyGame : public arc::IApp
         _font->draw(_spriteBatch, "Press <UP> or <DOWN> to scale up or down the font", 0, y - lineHeight * 2);
         _font->draw(_spriteBatch, "[#FF5555]Hello[] [#55FF55]Colored[] [#5555FF]World[] Yay", 0, y - lineHeight * 3);
 
+        //for (int i = 0; i < _atlas->regions.size(); ++i) {
+        //}
 
         _spriteBatch->end();
     }

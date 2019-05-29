@@ -8,13 +8,16 @@ namespace arc
     class TextureRegion
     {
     public:
-        Texture2D* texture;
+        Texture2D* texture = nullptr;
         float u{};
         float v{};
         float u2{};
         float v2{};
         int regionWidth{};
         int regionHeight{};
+
+        TextureRegion()
+        {}
 
         TextureRegion(Texture2D* texture)
         {
@@ -53,6 +56,20 @@ namespace arc
             v = v;
             u2 = u2;
             v2 = v2;
+        }
+
+        void flip(bool x, bool y)
+        {
+            if (x) {
+                float temp = u;
+                u = u2;
+                u2 = temp;
+            }
+            if (y) {
+                float temp = v;
+                v = v2;
+                v2 = temp;
+            }
         }
     };
 }
