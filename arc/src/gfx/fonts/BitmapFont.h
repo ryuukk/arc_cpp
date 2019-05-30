@@ -30,7 +30,12 @@ namespace arc
         {
             delete _cache;
             for(auto* region : regions)
+            {
+                // todo: i don't like this
+                if(_ownsTexture)
+                    delete region->texture;
                 delete region;
+            }
         }
 
         Rect draw(SpriteBatch* batch, const std::string& str, float x, float y);

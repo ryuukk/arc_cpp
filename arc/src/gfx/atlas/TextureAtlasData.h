@@ -44,8 +44,8 @@ namespace arc
         // optionals
         bool hasSplits{};
         bool hasPads{};
-        int splits[4];
-        int pads[4];
+        std::vector<int> splits;
+        std::vector<int> pads;
     };
 
     class TextureAtlasData

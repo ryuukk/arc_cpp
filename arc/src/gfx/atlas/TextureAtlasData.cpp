@@ -107,6 +107,7 @@ void arc::TextureAtlasData::load(const std::string& packFile, const std::string&
             if(readTuple(stream) == 4)
             {
                 region.hasSplits = true;
+                region.splits.resize(4);
                 region.splits[0] = _tuple[0];
                 region.splits[1] = _tuple[1];
                 region.splits[2] = _tuple[2];
@@ -114,6 +115,7 @@ void arc::TextureAtlasData::load(const std::string& packFile, const std::string&
                 if(readTuple(stream) == 4)
                 {
                     region.hasPads = true;
+                    region.pads.resize(4);
                     region.pads[0] = _tuple[0];
                     region.pads[1] = _tuple[1];
                     region.pads[2] = _tuple[2];

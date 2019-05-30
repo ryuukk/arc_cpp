@@ -88,6 +88,11 @@ class MyGame : public arc::IApp
         //for (int i = 0; i < _atlas->regions.size(); ++i) {
         //}
 
+        // todo: fixme: can't access that shit wtf
+        auto region = _atlas->findRegion("cursor");
+        if(region != nullptr)
+            _spriteBatch->draw(static_cast<arc::TextureRegion*>(region), 0, 0, 200, 200);
+
         _spriteBatch->end();
     }
 

@@ -23,9 +23,13 @@ namespace arc
     class NinePatch
     {
     public:
+        NinePatch(TextureRegion* region, int left, int right, int top, int bottom);
+
         void draw(SpriteBatch* batch, float x, float y, float width, float height);
         void draw(SpriteBatch* batch, float x, float y, float originX, float originY, float width, float height, float scaleX,
                    float scaleY, float rotation);
+        void setPadding(float left, float right, float top, float bottom);
+
     private:
         Texture2D* _texture = nullptr;
         int bottomLeft = -1, bottomCenter = -1, bottomRight = -1;
@@ -40,7 +44,6 @@ namespace arc
         int add(TextureRegion* region, float color, bool isStretchW, bool isStretchH);
         void set(int idx, float x, float y, float width, float height, float color);
         void prepareVertices(SpriteBatch* batch, float x, float y, float width, float height);
-        void setPadding(float left, float right, float top, float bottom);
 
     };
 }

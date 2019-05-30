@@ -24,6 +24,8 @@ namespace arc
         int degrees{};
         std::vector<int> splits;
         std::vector<int> pads;
+
+        void flip(bool x, bool y);
     };
 
     class TextureAtlas
@@ -34,9 +36,12 @@ namespace arc
 
         void load(const std::string& file, const std::string& imagesDir, bool flip);
 
+        AtlasRegion* findRegion(const std::string& name);
+        NinePatch* createPatch(const std::string& name);
+
     public:
         std::vector<Texture2D*> textures;
-        std::vector<AtlasRegion> regions;
+        std::vector<AtlasRegion*> regions;
         std::vector<NinePatch*> ninepatches;
     };
 }

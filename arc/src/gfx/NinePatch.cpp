@@ -41,3 +41,9 @@ void arc::NinePatch::prepareVertices(SpriteBatch* batch, float x, float y, float
 void arc::NinePatch::setPadding(float left, float right, float top, float bottom) {
 
 }
+
+arc::NinePatch::NinePatch(arc::TextureRegion* region, int left, int right, int top, int bottom) {
+   int middleWidth = region->regionWidth - left - right;
+   int middleHeight = region->regionHeight - top - bottom;
+   // todo: finish
+}
