@@ -31,7 +31,9 @@ namespace arc
 
         void rotate(Vec3 axis, float angle);
 
+        Vec3 project(Vec3 worldCoords);
         Vec3 project(Vec3 worldCoords, float viewportX, float viewportY, float viewportWidth, float viewportHeight);
+        Vec3 unproject(Vec3 screenCoords);
         Vec3 unproject(Vec3 screenCoords, float viewportX, float viewportY, float viewportWidth, float viewportHeight);
     };
 

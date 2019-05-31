@@ -3,7 +3,7 @@
 #include <Configuration.h>
 #include <Engine.h>
 
-#include <utils/FileUtils.h>
+#include <utils/IO.h>
 #include <gfx/fonts/BitmapFont.h>
 #include <gfx/atlas/TextureAtlas.h>
 #include <gfx/SpriteBatch.h>
@@ -78,21 +78,28 @@ class MyGame : public arc::IApp
         _spriteBatch->setProjectionMatrix(_camera->combined);
         _spriteBatch->begin();
 
+
+        float mouseX = arc::Core::input->getX();
+        float mouseY = arc::Core::input->getY();
+
         float y = _camera->viewportHeight;
+
         float lineHeight = _font->getData().lineHeight * _font->getData().scaleY;
         _font->draw(_spriteBatch, arc::Format("FPS:  {0}", arc::Core::graphics->fps()), 0, y);
-        _font->draw(_spriteBatch, "Press <SPACE> to toggle Color Markup", 0, y - lineHeight);
-        _font->draw(_spriteBatch, "Press <UP> or <DOWN> to scale up or down the font", 0, y - lineHeight * 2);
-        _font->draw(_spriteBatch, "[#FF5555]Hello[] [#55FF55]Colored[] [#5555FF]World[] Yay", 0, y - lineHeight * 3);
+        _font->draw(_spriteBatch, arc::Format("MOUSE:  {0}:{1}", mouseX, mouseY), 0, y - lineHeight);
+        _font->draw(_spriteBatch, "Press <SPACE> to toggle Color Markup", 0, y - lineHeight * 2);
+        _font->draw(_spriteBatch, "Press <UP> or <DOWN> to scale up or down the font", 0, y - lineHeight * 3);
+        _font->draw(_spriteBatch, "[#FF5555]Hello[] [#55FF55]Colored[] [#5555FF]World[] Yay", 0, y - lineHeight * 4);
 
-        //for (int i = 0; i < _atlas->regions.size(); ++i) {
-        //}
 
-        // todo: fixme: can't access that shit wtf
-        auto region = _atlas->findRegion("cursor");
-        if(region != nullptr)
-            _spriteBatch->draw(static_cast<arc::TextureRegion*>(region), 0, 0, 200, 200);
+        float accW = 0;
+        float accH = 0;
+        int maxH = 0;
+        for (int i = 0; i < _atlas->regions.size(); ++i) {
+            auto& region = _atlas->regions[i];
 
+            _font->draw(_spriteBatch, arc::Format("Region: ", region->name), mouseX + 5, (_camera->viewportHeight - mouseY) + 5);
+        }
         _spriteBatch->end();
     }
 

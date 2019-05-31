@@ -52,10 +52,10 @@ namespace arc
                 v2 -= adjustY;
             }
 
-            u = u;
-            v = v;
-            u2 = u2;
-            v2 = v2;
+            this->u = u;
+            this->v = v;
+            this->u2 = u2;
+            this->v2 = v2;
         }
 
         void flip(bool x, bool y)

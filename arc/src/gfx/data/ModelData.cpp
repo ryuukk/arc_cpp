@@ -2,8 +2,7 @@
 #include <glad/glad.h>
 #include "ModelData.h"
 #include "../../utils/json11.hpp"
-#include "../../utils/DirUtils.h"
-#include "../../utils/FileUtils.h"
+#include "../../utils/IO.h"
 #include "../../Core.h"
 #include "../../utils/Format.h"
 

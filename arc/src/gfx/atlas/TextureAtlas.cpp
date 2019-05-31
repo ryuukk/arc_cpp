@@ -1,7 +1,7 @@
 #include "TextureAtlas.h"
 #include <unordered_map>
 #include "TextureAtlasData.h"
-#include "../../utils/DirUtils.h"
+#include "../../utils/IO.h"
 
 arc::TextureAtlas::TextureAtlas(const std::string& file)
 {
@@ -20,14 +20,13 @@ void arc::TextureAtlas::load(const std::string& file, const std::string& imagesD
     TextureAtlasData data;
     data.load(file, imagesDir, flip);
 
-    for (int i = 0; i < data.pages.size(); ++i) {
-        auto page = data.pages[i];
-
+    for (const auto& page : data.pages) {
         Texture2D* texture = nullptr;
         if(page.texture == nullptr)
         {
             // todo: apply filters
-            texture = Texture2D::loadFromFile(page.file);
+            auto dir = arc::directory::pathAppend(imagesDir, page.file);
+            texture = Texture2D::loadFromFile(dir);
         }
         else
         {
@@ -38,8 +37,7 @@ void arc::TextureAtlas::load(const std::string& file, const std::string& imagesD
         textures.emplace_back(texture);
     }
 
-    for (int j = 0; j < data.regions.size(); ++j) {
-        auto region = data.regions[j];
+    for (const auto& region : data.regions) {
         int width = region.width;
         int height = region.height;
 

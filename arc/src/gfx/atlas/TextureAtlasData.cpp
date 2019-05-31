@@ -87,7 +87,7 @@ void arc::TextureAtlasData::load(const std::string& packFile, const std::string&
 
             Region region{};
             region.pageIndex = 0; // todo: support multiple pages
-            region.name = buffer.substr(0,buffer.size() - 1);
+            region.name = buffer;
 
             // rotate
             if(!std::getline(stream, buffer)) break;

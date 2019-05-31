@@ -4,7 +4,7 @@
 #include "BitmapFontData.h"
 #include "BitmapFont.h"
 #include "../../utils/StringUtils.h"
-#include "../../utils/DirUtils.h"
+#include "../../utils/IO.h"
 
 arc::BitmapFontData::BitmapFontData(const std::string& fontFile, bool flip)
 {

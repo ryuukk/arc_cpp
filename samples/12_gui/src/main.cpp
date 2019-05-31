@@ -3,7 +3,7 @@
 #include <Configuration.h>
 #include <Engine.h>
 
-#include <utils/FileUtils.h>
+#include <utils/IO.h>
 #include <gfx/fonts/BitmapFont.h>
 #include <gfx/SpriteBatch.h>
 #include <utils/HdpiUtils.h>

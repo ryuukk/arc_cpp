@@ -30,6 +30,11 @@ void arc::Camera::rotate(Vec3 axis, float angle) {
     up = Vec3::rotate(up, axis, angle);
 }
 
+arc::Vec3 arc::Camera::project(arc::Vec3 worldCoords)
+{
+    return project(worldCoords, 0, 0, Core::graphics->getWidth(), Core::graphics->getHeight());
+}
+
 arc::Vec3 arc::Camera::project(arc::Vec3 worldCoords, float viewportX, float viewportY, float viewportWidth,
                                float viewportHeight) {
     // todo: test
@@ -38,6 +43,11 @@ arc::Vec3 arc::Camera::project(arc::Vec3 worldCoords, float viewportX, float vie
     ret.y = viewportHeight * (ret.y + 1) / 2 + viewportY;
     ret.z = (ret.z + 1) / 2;
     return ret;
+}
+
+arc::Vec3 arc::Camera::unproject(arc::Vec3 screenCoords)
+{
+    return unproject(screenCoords, 0, 0, Core::graphics->getWidth(), Core::graphics->getHeight());
 }
 
 arc::Vec3 arc::Camera::unproject(arc::Vec3 screenCoords, float viewportX, float viewportY, float viewportWidth,
