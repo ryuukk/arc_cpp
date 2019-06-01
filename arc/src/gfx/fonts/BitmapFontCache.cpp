@@ -1,4 +1,5 @@
 #include "BitmapFontCache.h"
+#include "BitmapFont.h"
 
 arc::BitmapFontCache::BitmapFontCache(arc::BitmapFont* font, bool integer) :
         _font(font), _integer(integer) {

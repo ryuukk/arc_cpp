@@ -5,6 +5,7 @@
 #include "../SpriteBatch.h"
 #include "../TextureRegion.h"
 #include "BitmapFontData.h"
+#include "BitmapFontCache.h"
 #include "../Align.h"
 
 namespace arc
@@ -16,8 +17,6 @@ namespace arc
         static const int PAGES = 0x10000 / PAGE_SIZE;
     }
 
-
-    class BitmapFontCache;
     class BitmapFont
     {
     public:

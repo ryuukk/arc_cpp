@@ -1,7 +1,6 @@
 #pragma once
 
 #include <vector>
-#include "BitmapFont.h"
 #include "TextMarkup.h"
 #include "../../Color.h"
 #include "../SpriteBatch.h"
@@ -11,6 +10,7 @@
 namespace arc
 {
     class BitmapFont;
+    class Glyph;
     class BitmapFontCache
     {
     public:

@@ -7,6 +7,7 @@
 #include <gfx/fonts/BitmapFont.h>
 #include <gfx/SpriteBatch.h>
 #include <utils/HdpiUtils.h>
+#include <scene2d/Stage.h>
 
 
 class MyGame : public arc::IApp
@@ -14,14 +15,16 @@ class MyGame : public arc::IApp
     arc::BitmapFont* _font;
     arc::SpriteBatch* _spriteBatch;
     arc::Texture2D* _texture;
-
+    arc::Stage* _stage;
 
     void create() override {
 
-        _font = new arc::BitmapFont("data/fonts/helveti_pixel_16_o.fnt", false, false);
+        _font = new arc::BitmapFont("data/fonts/m6x11_16_o.fnt", false, false);
 
         _spriteBatch = new arc::SpriteBatch();
         _texture = arc::Texture2D::loadFromFile("data/bg_stars.png");
+
+        _stage = new arc::Stage();
     }   
 
     int fpsAcc = 0;
@@ -63,7 +66,7 @@ class MyGame : public arc::IApp
         //auto bounds = _font->draw(_spriteBatch, "Hello", 0, y);
         //auto bounds = _font->draw(_spriteBatch, "[#FF0000]reeeeeeeeeeeeeeeeeeeeeeed[]white[#00FF00]gr[#0000FF]ee[]n[]", 0, y);
         //auto bounds = _font->draw(_spriteBatch, "[#FF0000]Hello[]", 50, 50);
-        auto bounds = _font->draw(_spriteBatch, "[#FF0000]Hello[] [#00FF00]Colored[] [#0000FF]World[] Yay", 50, 50);
+        auto bounds = _font->draw(_spriteBatch, "[#FF5555]Hello[] [#55FF55]Colored[] [#5555FF]World[] Yay", 50, 50);
 
 
         //printf("Bounds: %f:%f:%f:%f\n", bounds.x, bounds.y, bounds.width, bounds.height);
