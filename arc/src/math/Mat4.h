@@ -81,6 +81,9 @@ namespace arc
             );
         }
 
+        void rotate(const Vec3& axis, float degree);
+        void scale(const Vec3& scale);
+
         void setToTranslation(Vec3 position);
 
         void idt();

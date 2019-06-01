@@ -15,7 +15,6 @@ add_subdirectory(libs/glad)
 add_subdirectory(libs/glfw)
 add_subdirectory(arc)
 
-
 if (ARC_SAMPLES)
     add_subdirectory(samples)
 endif ()

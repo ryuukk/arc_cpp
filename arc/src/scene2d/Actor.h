@@ -1,14 +1,14 @@
 #pragma once
 
 #include <string>
-#include "Stage.h"
-#include "Group.h"
 #include "Touchable.h"
 #include "../Color.h"
 #include "../gfx/SpriteBatch.h"
+#include "../gfx/ShapeRenderer.h"
 
 namespace arc
 {
+    class Group;
     class Stage;
     class Actor
     {
@@ -36,6 +36,8 @@ namespace arc
         virtual Actor* hit(float x, float y, bool touchable);
         virtual bool remove();
         virtual void clear();
+
+        virtual void drawDebug(ShapeRenderer* shapes);
 
         Stage* getStage();
         void setStage(Stage* stage);
@@ -75,6 +77,7 @@ namespace arc
         void positionChanged();
         void sizeChanged();
         void rotationChanged();
+        void drawDebugBounds(ShapeRenderer* shapes);
     };
 }
 

@@ -22,7 +22,7 @@ class MyGame : public arc::IApp
 
         _spriteBatch = new arc::SpriteBatch();
         _texture = arc::Texture2D::loadFromFile("data/bg_stars.png");
-    }
+    }   
 
     int fpsAcc = 0;
     int c = 0;
@@ -82,7 +82,7 @@ class MyGame : public arc::IApp
 
 int main(int argc, char** argv) {
     auto config = arc::Configuration();
-    config.windowTitle = "Sample 12 - GUI";
+    config.windowTitle = "Sample 13 - GUI";
     config.vsync = true;
     auto myGame = new MyGame();
     auto engine = new arc::Engine(myGame, config);

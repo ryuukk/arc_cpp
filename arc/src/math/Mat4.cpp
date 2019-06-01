@@ -338,3 +338,76 @@ void arc::Mat4::setToTranslation(arc::Vec3 position)
     m13 = position.y;
     m23 = position.z;
 }
+
+// todo: redo this shit
+void arc::Mat4::rotate(const Vec3& axis, float degree) {
+    float c = cosf(degree * Mathf::DEG2RAD());  // cosine
+    float s = sinf(degree * Mathf::DEG2RAD());  // sine
+    float c1 = 1.0f - c;                            // 1 - c
+
+    float m0 = this->m00;
+    float m1 = this->m10;
+    float m2 = this->m20;
+    //         this->m30;
+    float m4 = this->m01;
+    float m5 = this->m11;
+    float m6 = this->m21;
+    //         this->m31;
+    float m8 = this->m02;
+    float m9 = this->m12;
+    float m10= this->m22;
+    //         this->m32;
+    float m12= this->m03;
+    float m13= this->m13;
+    float m14= this->m23;
+    //         this->m33;
+
+    // build rotation matrix
+    float r0 = axis.x * axis.x * c1 + c;
+    float r1 = axis.x * axis.y * c1 + axis.z * s;
+    float r2 = axis.x * axis.z * c1 - axis.y * s;
+    float r4 = axis.x * axis.y * c1 - axis.z * s;
+    float r5 = axis.y * axis.y * c1 + c;
+    float r6 = axis.y * axis.z * c1 + axis.x * s;
+    float r8 = axis.x * axis.z * c1 + axis.y * s;
+    float r9 = axis.y * axis.z * c1 - axis.x * s;
+    float r10= axis.z * axis.z * c1 + c;
+
+    // mult
+    this->m00 = r0 * m0 + r4 * m1 + r8 * m2;;
+    this->m10 = r1 * m0 + r5 * m1 + r9 * m2;;
+    this->m20 = r2 * m0 + r6 * m1 + r10* m2;;
+    this->m30 = 0.0f;
+    this->m01 = r0 * m4 + r4 * m5 + r8 * m6;
+    this->m11 = r1 * m4 + r5 * m5 + r9 * m6;
+    this->m21 = r2 * m4 + r6 * m5 + r10* m6;
+    this->m31 = 0.0f;
+    this->m02 = r0 * m8 + r4 * m9 + r8 * m10;
+    this->m12 = r1 * m8 + r5 * m9 + r9 * m10;
+    this->m22 = r2 * m8 + r6 * m9 + r10* m10;
+    this->m32 = 0.0f;
+    this->m03 = r0 * m12+ r4 * m13+ r8 * m14;
+    this->m13 = r1 * m12+ r5 * m13+ r9 * m14;
+    this->m23 = r2 * m12+ r6 * m13+ r10* m14;
+    this->m33 = 0.0f;
+}
+
+void arc::Mat4::scale(const arc::Vec3& scale) {
+    m00 *= scale.x;
+    m10 *= scale.y;
+    m20 *= scale.z;
+//  m30
+    m01 *= scale.x;
+    m11 *= scale.y;
+    m21 *= scale.z;
+//  m31
+    m02 *= scale.x;
+    m12 *= scale.y;
+    m22  *= scale.z;
+//  m32
+    m03  *= scale.x;
+    m13  *= scale.y;
+    m23  *= scale.z;
+//  m33
+
+}

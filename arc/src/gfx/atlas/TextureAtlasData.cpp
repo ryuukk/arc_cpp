@@ -57,7 +57,7 @@ void arc::TextureAtlasData::load(const std::string& packFile, const std::string&
         std::getline(stream, buffer);
         page.file = buffer;
 
-        arc::log::infof("Page file: {0}", page.file);
+        //arc::log::infof("Page file: {0}", page.file);
 
         // size
         readTuple(stream);
@@ -65,7 +65,7 @@ void arc::TextureAtlasData::load(const std::string& packFile, const std::string&
         page.height = _tuple[1];
 
 
-        arc::log::infof("Page size: {0}:{1}", page.width, page.height);
+        //arc::log::infof("Page size: {0}:{1}", page.width, page.height);
 
         // format
         std::getline(stream, buffer);

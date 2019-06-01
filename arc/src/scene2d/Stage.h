@@ -3,8 +3,8 @@
 #include "../input/InputAdapter.h"
 #include "../gfx/Viewport.h"
 #include "../gfx/SpriteBatch.h"
+#include "../gfx/ShapeRenderer.h"
 #include "Group.h"
-#include "Actor.h"
 
 namespace arc
 {
@@ -12,9 +12,9 @@ namespace arc
     {
         none
     };
-    class ShapeRenderer {};
 
     class Actor;
+    class Group;
     class Stage : public InputAdapter
     {
     private:
@@ -22,10 +22,10 @@ namespace arc
         SpriteBatch* _batch = nullptr;
         bool _ownsBatch{};
         Group* _root = nullptr;
-        Actor* _pointerOverActors[20];
-        bool _pointerTouched[20];
-        int _pointerScreenX[20];
-        int _pointerScreenY[20];
+        Actor* _pointerOverActors[20]{};
+        bool _pointerTouched[20]{};
+        int _pointerScreenX[20]{};
+        int _pointerScreenY[20]{};
 
         int _mouseScreenX{};
         int _mouseScreenY{};
@@ -38,7 +38,7 @@ namespace arc
 
         ShapeRenderer _debugShapes{};
 
-        bool debugInvisible, debugAll, debugUnderMouse, debugParentUnderMouse;
+        bool debugInvisible{}, debugAll{}, debugUnderMouse{}, debugParentUnderMouse{};
         Debug debugTableUnderMouse = Debug::none;
         Color debugColor = Color(0,255,0,200);
 
