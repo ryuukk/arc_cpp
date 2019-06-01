@@ -73,6 +73,11 @@ namespace arc
         bool clipBegin(float x, float y, float width, float height);
         void clipEnd();
 
+        Color& getColor();
+        Touchable getTouchable();
+
+        Vec2 parentToLocalCoordinates(const Vec2& parentCoords);
+
     protected:
         void positionChanged();
         void sizeChanged();

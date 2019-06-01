@@ -139,3 +139,15 @@ void arc::Actor::sizeChanged() {
 void arc::Actor::rotationChanged() {
 
 }
+
+arc::Touchable arc::Actor::getTouchable() {
+    return _touchable;
+}
+
+arc::Vec2 arc::Actor::parentToLocalCoordinates(const arc::Vec2& parentCoords) {
+    return arc::Vec2();
+}
+
+arc::Color& arc::Actor::getColor() {
+    return _color;
+}

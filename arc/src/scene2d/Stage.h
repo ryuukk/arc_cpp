@@ -17,6 +17,8 @@ namespace arc
     class Group;
     class Stage : public InputAdapter
     {
+    public:
+        void unfocus(Actor* actor);
     private:
         Viewport* _viewport = nullptr;
         SpriteBatch* _batch = nullptr;
@@ -40,7 +42,7 @@ namespace arc
 
         bool debugInvisible{}, debugAll{}, debugUnderMouse{}, debugParentUnderMouse{};
         Debug debugTableUnderMouse = Debug::none;
-        Color debugColor = Color(0,255,0,200);
+        Color debugColor = Color(0,1.0f,0,1.0f);
 
     };
 }
