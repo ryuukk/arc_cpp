@@ -411,3 +411,23 @@ void arc::Mat4::scale(const arc::Vec3& scale) {
 //  m33
 
 }
+
+arc::Mat4& arc::Mat4::set(const arc::Affine2& affine) {
+    m00 = affine.m00;
+    m10 = affine.m10;
+    m20 = 0;
+    m30 = 0;
+    m01 = affine.m01;
+    m11 = affine.m11;
+    m21 = 0;
+    m31 = 0;
+    m02 = 0;
+    m12 = 0;
+    m22 = 1;
+    m32 = 0;
+    m03 = affine.m02;
+    m13 = affine.m12;
+    m23 = 0;
+    m33 = 1;
+    return *this;
+}

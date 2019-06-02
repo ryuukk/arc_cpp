@@ -29,7 +29,7 @@ namespace arc
         Actor* findActor(const std::string& name);
         Vec2 localToDescendantCoordinates(Actor* descendant);
         void setDebug(bool enabled, bool recursively);
-
+        bool isTransform();
     protected:
         void drawChildren(SpriteBatch* batch, float parentAlpha);
         void drawDebugChildren(ShapeRenderer* shapes);

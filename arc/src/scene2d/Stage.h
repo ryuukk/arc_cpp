@@ -1,16 +1,26 @@
 #pragma once
 
+#include <array>
 #include "../input/InputAdapter.h"
 #include "../gfx/Viewport.h"
 #include "../gfx/SpriteBatch.h"
 #include "../gfx/ShapeRenderer.h"
 #include "Group.h"
-
 namespace arc
 {
     enum class Debug
     {
         none
+    };
+
+    struct TouchFocus
+    {
+    public:
+        // listener
+        Actor* listenerActor;
+        Actor* target;
+        int pointer;
+        int button;
     };
 
     class Actor;
@@ -19,12 +29,16 @@ namespace arc
     {
     public:
         void unfocus(Actor* actor);
+        Actor* getKeyboardFocus();
+        Actor* getScrollFocus();
+        std::vector<TouchFocus>& getTouchFocuses();
+        Rect calculateScissors(const Rect& local);
     private:
         Viewport* _viewport = nullptr;
         SpriteBatch* _batch = nullptr;
         bool _ownsBatch{};
         Group* _root = nullptr;
-        Actor* _pointerOverActors[20]{};
+        std::array<Actor*, 20> _pointerOverActors{};
         bool _pointerTouched[20]{};
         int _pointerScreenX[20]{};
         int _pointerScreenY[20]{};
@@ -35,6 +49,8 @@ namespace arc
         Actor* _mouseOverActor = nullptr;
         Actor* _keyboardFocus = nullptr;
         Actor* _scrollFocus = nullptr;
+
+        std::vector<TouchFocus> _touchFocuses;
 
         bool _actionsRequestRendering = true;
 

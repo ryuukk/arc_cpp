@@ -62,14 +62,27 @@ namespace arc
         void setX(float x);
         void setX(float x, int align);
         float getY();
-        void setY(float Y);
-        void setY(float Y, int align);
+        void setY(float y);
+        void setY(float y, int align);
+
+        float getWidth();
+        float getHeight();
+
+        float getOriginX();
+        float getOriginY();
+
+        float getRotation();
+        float getScaleX();
+        float getScaleY();
+
+        bool getDebug();
 
         void toFront();
         void toBack();
         bool setZIndex(int index);
         int getZIndex();
 
+        bool clipBegin();
         bool clipBegin(float x, float y, float width, float height);
         void clipEnd();
 

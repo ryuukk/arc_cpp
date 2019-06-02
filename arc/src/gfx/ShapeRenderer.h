@@ -26,8 +26,8 @@ namespace arc
         void updateMatrices();
         void setProjectionMatrix(const Mat4& matrix);
         const Mat4& getProjectionMatrix();
-        void setTransformationMatrix(const Mat4& matrix);
-        const Mat4& getTransformationMatrix();
+        void setTransformMatrix(const Mat4& matrix);
+        const Mat4& getTransformMatrix();
         void identity();
         void translate(const Vec3& pos);
         void rotate(const Vec3& axis, float degrees);
@@ -49,6 +49,8 @@ namespace arc
         void check(ShapeType preferred, ShapeType other, int newVertices);
         void end();
         void flush();
+
+        bool isDrawing();
     private:
         ImmediateModeRenderer* _renderer = nullptr;
         bool _matrixDirty = false;

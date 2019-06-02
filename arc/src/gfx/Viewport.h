@@ -2,6 +2,7 @@
 
 #include "Camera.h"
 #include "Scaling.h"
+#include "../math/Rect.h"
 
 namespace arc
 {
@@ -17,6 +18,7 @@ namespace arc
         void setCamera(Camera* camera);
         float getWorldWidth();
         float getWorldHeight();
+        Rect calculateScissors(const Mat4& batchTransform, const Rect& area);
 
     private:
         Camera* _camera = nullptr;

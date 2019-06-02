@@ -31,7 +31,8 @@ namespace arc
 
         bool isBlendingEnabled();
 
-        const Mat4& getTransformationMatrix();
+        const Mat4& getTransformMatrix();
+        void setTransformMatrix(const Mat4& transform);
 
         uint32_t renderCalls = 0;
         uint32_t totalRenderCalls = 0;

@@ -28,12 +28,12 @@ const arc::Mat4& arc::ShapeRenderer::getProjectionMatrix() {
     return _projectionMatrix;
 }
 
-void arc::ShapeRenderer::setTransformationMatrix(const arc::Mat4& matrix) {
+void arc::ShapeRenderer::setTransformMatrix(const arc::Mat4& matrix) {
     _transformMatrix = matrix;
     _matrixDirty = true;
 }
 
-const arc::Mat4& arc::ShapeRenderer::getTransformationMatrix() {
+const arc::Mat4& arc::ShapeRenderer::getTransformMatrix() {
     return _transformMatrix;
 }
 
@@ -313,4 +313,8 @@ void arc::ShapeRenderer::flush() {
     if(type == ShapeType::None) return;
     end();
     begin(type);
+}
+
+bool arc::ShapeRenderer::isDrawing() {
+    return _shapeType != ShapeType::None;
 }

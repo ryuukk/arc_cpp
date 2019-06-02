@@ -1,5 +1,6 @@
 #include "Viewport.h"
 #include "../utils/HdpiUtils.h"
+#include "../utils/ScissorStack.h"
 
 void arc::Viewport::apply(bool centerCamera) {
     arc::hdpi::glViewportt(_screenX, _screenY, _screenWidth, _screenHeight);
@@ -46,6 +47,11 @@ float arc::Viewport::getWorldWidth() {
 float arc::Viewport::getWorldHeight() {
     return _worldHeight;
 }
+
+arc::Rect arc::Viewport::calculateScissors(const arc::Mat4& batchTransform, const arc::Rect& area) {
+    return arc::ScissorStack::calculateScissors(_camera, _screenX, _screenY, _screenWidth, _screenHeight, batchTransform, area);
+}
+
 
 void arc::ScreenViewport::update(int screenWidth, int screenHeight, bool centerCamera) {
 

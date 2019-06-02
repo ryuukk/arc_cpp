@@ -1,5 +1,6 @@
 #pragma once
 
+#include <cmath>
 namespace arc
 {
     // todo: use const instead of inline static methods
@@ -67,5 +68,26 @@ namespace arc
         {
             return v > 0 ? 1 : (v < 0 ? -1 : 0);
         }
+
+        inline static float sinDeg(float deg)
+        {
+            return std::sin(DEG2RAD() * deg);
+        }
+
+        inline static float cosDeg(float deg)
+        {
+            return std::cos(DEG2RAD() * deg);
+        }
+
+        inline static float sin(float rad)
+        {
+            return std::sin(rad);
+        }
+
+        inline static float cos(float rad)
+        {
+            return std::cos(rad);
+        }
+
     };
 }

@@ -254,6 +254,12 @@ void arc::SpriteBatch::switchTexture(arc::Texture2D* texture) {
     _invTexHeight = 1.0f / texture->getHeight();
 }
 
-const arc::Mat4& arc::SpriteBatch::getTransformationMatrix() {
+const arc::Mat4& arc::SpriteBatch::getTransformMatrix() {
     return _transformMatrix;
+}
+
+void arc::SpriteBatch::setTransformMatrix(const arc::Mat4& transform) {
+    if (_drawing) flush();
+    _transformMatrix = transform;
+    if (_drawing) setupMatrices();
 }
