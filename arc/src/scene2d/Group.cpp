@@ -256,3 +256,12 @@ void arc::Group::setStage(arc::Stage* stage) {
 bool arc::Group::isTransform() {
     return _transform;
 }
+
+void arc::Group::setTransform(bool transform)
+{
+    _transform = transform;
+}
+
+std::vector<arc::Actor*>& arc::Group::getChildren() {
+    return _children;
+}

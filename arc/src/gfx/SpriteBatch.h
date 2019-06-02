@@ -29,6 +29,8 @@ namespace arc
 
         void draw(TextureRegion* region, float x, float y, float width, float height);
 
+        void setColor(const Color& color);
+
         bool isBlendingEnabled();
 
         const Mat4& getTransformMatrix();

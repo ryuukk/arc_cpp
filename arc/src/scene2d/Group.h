@@ -30,6 +30,8 @@ namespace arc
         Vec2 localToDescendantCoordinates(Actor* descendant);
         void setDebug(bool enabled, bool recursively);
         bool isTransform();
+        void setTransform(bool transform);
+        std::vector<Actor*>& getChildren();
     protected:
         void drawChildren(SpriteBatch* batch, float parentAlpha);
         void drawDebugChildren(ShapeRenderer* shapes);

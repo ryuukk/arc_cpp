@@ -263,3 +263,7 @@ void arc::SpriteBatch::setTransformMatrix(const arc::Mat4& transform) {
     _transformMatrix = transform;
     if (_drawing) setupMatrices();
 }
+
+void arc::SpriteBatch::setColor(const arc::Color& color) {
+    _color = color;
+}

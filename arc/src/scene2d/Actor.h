@@ -12,6 +12,9 @@ namespace arc
     class Stage;
     class Actor
     {
+    public:
+        Actor();
+        ~Actor();
     private:
         Stage* _stage = nullptr;
         Group* _parent = nullptr;
@@ -57,6 +60,8 @@ namespace arc
         bool hasKeyboardFocus();
         bool hasScrollFocus();
         bool isTouchFocusTarget();
+
+        void setSize(float width, float height);
 
         float getX();
         void setX(float x);

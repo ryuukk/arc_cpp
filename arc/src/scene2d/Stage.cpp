@@ -20,3 +20,14 @@ arc::Rect arc::Stage::calculateScissors(const arc::Rect& local) {
         transformMatrix = _batch->getTransformMatrix();
     return _viewport->calculateScissors(transformMatrix, local);
 }
+
+arc::Group* arc::Stage::getRoot() {
+    return _root;
+}
+
+float arc::Stage::getWidth() {
+    return _viewport->getWorldWidth();
+}
+float arc::Stage::getHeight(){
+    return _viewport->getWorldHeight();
+}

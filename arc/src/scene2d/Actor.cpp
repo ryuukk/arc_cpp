@@ -4,6 +4,14 @@
 #include "../gfx/Align.h"
 #include "../utils/ScissorStack.h"
 
+arc::Actor::Actor() {
+
+}
+
+arc::Actor::~Actor() {
+
+}
+
 void arc::Actor::draw(arc::SpriteBatch* batch, float parentAlpha) {
 
 }
@@ -111,6 +119,14 @@ bool arc::Actor::isTouchFocusTarget() {
     return false;
 }
 
+void arc::Actor::setSize(float width, float height) {
+    if (this->_width != width || this->_height != height) {
+        this->_width = width;
+        this->_height = height;
+        sizeChanged();
+    }
+}
+
 float arc::Actor::getX() {
     return _x;
 }
@@ -173,10 +189,10 @@ bool arc::Actor::setZIndex(int index) {
 int arc::Actor::getZIndex() {
     return 0;
 }
-
 bool arc::Actor::clipBegin() {
     return clipBegin(_x, _y, _width, _height);
 }
+
 bool arc::Actor::clipBegin(float x, float y, float width, float height) {
     if (width <= 0 || height <= 0) return false;
     Rect tableBounds;
@@ -217,10 +233,10 @@ arc::Vec2 arc::Actor::parentToLocalCoordinates(const arc::Vec2& parentCoords) {
 arc::Color& arc::Actor::getColor() {
     return _color;
 }
-
 float arc::Actor::getWidth() {
     return _width;
 }
+
 float arc::Actor::getHeight(){
     return _height;
 }

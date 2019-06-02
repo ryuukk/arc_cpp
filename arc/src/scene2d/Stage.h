@@ -33,6 +33,9 @@ namespace arc
         Actor* getScrollFocus();
         std::vector<TouchFocus>& getTouchFocuses();
         Rect calculateScissors(const Rect& local);
+        Group* getRoot();
+        float getWidth();
+        float getHeight();
     private:
         Viewport* _viewport = nullptr;
         SpriteBatch* _batch = nullptr;
