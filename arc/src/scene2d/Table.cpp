@@ -142,12 +142,13 @@ arc::Cell& arc::Table::add(arc::Actor* actor) {
         cells.back()->endRow = false;
     }
 
+    // todo: inside it's using std::optional, check if it is safe to call .value()
     int cellCount = cells.size();
     if (cellCount > 0) {
         // Set cell column and row.
         auto* lastCell = cells.back();
         if (!lastCell->endRow) {
-            cell->column = lastCell->column + lastCell->colspan;
+            cell->column = lastCell->column + lastCell->colspan.value();
             cell->row = lastCell->row;
         } else {
             cell->column = 0;
@@ -158,7 +159,7 @@ arc::Cell& arc::Table::add(arc::Actor* actor) {
             outer:
             for (int i = cellCount - 1; i >= 0; i--) {
                 auto* other = cells[i];
-                for (int column = other->column, nn = column + other->colspan; column < nn; column++) {
+                for (int column = other->column, nn = column + other->colspan.value(); column < nn; column++) {
                     if (column == cell->column) {
                         cell->cellAboveIndex = i;
                         //break outer;
@@ -173,12 +174,12 @@ arc::Cell& arc::Table::add(arc::Actor* actor) {
     }
     cells.emplace_back(cell);
 
-    cell->set(cellDefaults);
+    cell->set(&cellDefaults);
     if (cell->column < columnDefaults.size()) {
         auto columnCell = columnDefaults[cell->column];
         if (columnCell != nullptr) cell->merge(columnCell);
     }
-    cell->merge(rowDefaults);
+    cell->merge(&rowDefaults);
 
     if (actor != nullptr) addActor(actor);
 
