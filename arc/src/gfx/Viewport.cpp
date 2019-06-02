@@ -5,7 +5,7 @@
 void arc::Viewport::apply(bool centerCamera) {
     arc::hdpi::glViewportt(_screenX, _screenY, _screenWidth, _screenHeight);
     _camera->viewportWidth = _worldWidth;
-    _camera->viewportHeight = _worldWidth;
+    _camera->viewportHeight = _worldHeight;
     if(centerCamera)
         _camera->position = {_worldWidth / 2, _worldHeight / 2, 0};
     _camera->update();
@@ -39,6 +39,9 @@ void arc::Viewport::setWorldSize(float worldWidth, float worldHeight) {
 
 void arc::Viewport::setCamera(arc::Camera* camera) {
     _camera = camera;
+}
+arc::Camera* arc::Viewport::getCamera() {
+    return _camera;
 }
 
 float arc::Viewport::getWorldWidth() {

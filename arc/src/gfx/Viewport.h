@@ -16,6 +16,7 @@ namespace arc
         void setScreenPosition(int screenX, int screenY);
         void setWorldSize (float worldWidth, float worldHeight);
         void setCamera(Camera* camera);
+        Camera* getCamera();
         float getWorldWidth();
         float getWorldHeight();
         Rect calculateScissors(const Mat4& batchTransform, const Rect& area);
