@@ -8,6 +8,8 @@
 #include <gfx/SpriteBatch.h>
 #include <utils/HdpiUtils.h>
 #include <scene2d/Stage.h>
+#include <scene2d/Table.h>
+#include <scene2d/PrimitiveDrawable.h>
 
 
 class MyGame : public arc::IApp
@@ -25,6 +27,14 @@ class MyGame : public arc::IApp
         _texture = arc::Texture2D::loadFromFile("data/bg_stars.png");
 
         _stage = new arc::Stage();
+
+        auto* root = new arc::Table();
+        root->setFillParent(true);
+
+        auto* d = new arc::PrimitiveDrawable(arc::Color::RED, 200,200);
+        root->setBackground(d);
+
+        _stage->addActor(root);
     }   
 
     int fpsAcc = 0;
@@ -46,13 +56,20 @@ class MyGame : public arc::IApp
             fpsAcc = 0;
             timer = 0;
         }
+
+        if(arc::Core::input->isKeyJustPressed(arc::Keys::SPACE))
+        {
+        }
+
+
+        _stage->act(dt);
     }
 
     void render(float dt) override {
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
 
-
+        _stage->render(dt);
 
         _font->getData().scaleX = 2;
         _font->getData().scaleY = 2;
@@ -70,6 +87,8 @@ class MyGame : public arc::IApp
 
 
         //printf("Bounds: %f:%f:%f:%f\n", bounds.x, bounds.y, bounds.width, bounds.height);
+
+        _spriteBatch->draw(_spriteBatch->getWhitePixel(), {0,0}, {200,200});
 
         _spriteBatch->end();
     }

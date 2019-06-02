@@ -9,12 +9,16 @@ namespace arc
     class Table;
     class Cell
     {
+    private:
+        static Cell* _defaults;
     public:
         Actor* actor = nullptr;
 
         void setLayout(Table* table);
         void set(Cell* cell);
         void merge(Cell* cell);
+        void reset();
+        Cell* defaults();
 
         // todo: switch to private
     public:

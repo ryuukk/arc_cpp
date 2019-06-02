@@ -28,6 +28,16 @@ namespace arc
     class Stage : public InputAdapter
     {
     public:
+        static bool debug;
+
+    public:
+        Stage(Viewport* viewport = nullptr);
+        ~Stage();
+        void render(float dt);
+        void act(float dt);
+
+        void addActor(Actor* actor);
+
         void unfocus(Actor* actor);
         Actor* getKeyboardFocus();
         Actor* getScrollFocus();

@@ -38,6 +38,14 @@ arc::SpriteBatch::SpriteBatch(uint32_t size, arc::ShaderProgram* defaultShader) 
         _ownsShader = true;
     } else
         _shader = defaultShader;
+
+    // create white pixel
+    {
+
+        unsigned char data[4] = {255,255,255,255};
+        _whitePixel = new Texture2D();
+        _whitePixel->setData(data, 1, 1);
+    }
 }
 
 void arc::SpriteBatch::setProjectionMatrix(const arc::Mat4& projection) {
@@ -266,4 +274,8 @@ void arc::SpriteBatch::setTransformMatrix(const arc::Mat4& transform) {
 
 void arc::SpriteBatch::setColor(const arc::Color& color) {
     _color = color;
+}
+
+arc::Texture2D* arc::SpriteBatch::getWhitePixel() {
+    return _whitePixel;
 }

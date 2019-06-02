@@ -90,6 +90,20 @@ namespace arc
     class Table : public WidgetGroup
     {
     public:
+        static FixedValue* zero;
+        static Value* minWidth;
+        static Value* maxWidth;
+        static Value* prefWidth;
+        static Value* minHeight;
+        static Value* maxHeight;
+        static Value* prefHeight;
+
+        static Value* backgroundTop;
+        static Value* backgroundLeft;
+        static Value* backgroundBottom;
+        static Value* backgroundRight;
+
+    public:
         Table(Skin* skin = nullptr);
         ~Table();
 
@@ -100,16 +114,29 @@ namespace arc
         bool getClip();
         void invalidate();
         Cell& add(Actor* actor);
+        void setBackground(IDrawable* background);
         IDrawable* getBackground();
+        void clearChildren();
+        void reset();
+        Table& debug(TableDebug debug);
+
+        float getPadTop();
+        float getPadLeft();
+        float getPadBottom();
+        float getPadRight();
+
+    private:
+        void clearDebugRects();
+
     private:
         int columns{};
         int rows{};
         bool implicitEndRow{};
 
         std::vector<Cell*> cells;
-        Cell cellDefaults{};
+        Cell* cellDefaults = nullptr;
         std::vector<Cell*> columnDefaults;
-        Cell rowDefaults{};
+        Cell* rowDefaults = nullptr;
 
         bool sizeInvalid = true;
         std::vector<float> columnMinWidth;
@@ -125,13 +152,14 @@ namespace arc
         std::vector<float> expandWidth;
         std::vector<float> expandHeight;
 
-        Value* padTop;
-        Value* padLeft;
-        Value* padBottom;
-        Value* padRight;
+        Value& padTop = *backgroundTop;
+        Value& padLeft = *backgroundLeft;
+        Value& padBottom = *backgroundBottom;
+        Value& padRight = *backgroundRight;
+
         int align = (int)Align::center;
 
-        TableDebug debug = TableDebug::none;
+        TableDebug _debug = TableDebug::none;
         std::vector<DebugRect> debugRects;
 
         IDrawable* background = nullptr;

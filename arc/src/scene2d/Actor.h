@@ -61,6 +61,9 @@ namespace arc
         bool hasScrollFocus();
         bool isTouchFocusTarget();
 
+        void setDebug(bool enabled);
+        bool getDebug();
+
         void setSize(float width, float height);
 
         float getX();
@@ -79,8 +82,6 @@ namespace arc
         float getRotation();
         float getScaleX();
         float getScaleY();
-
-        bool getDebug();
 
         void toFront();
         void toBack();

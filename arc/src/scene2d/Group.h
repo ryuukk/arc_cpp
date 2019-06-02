@@ -32,6 +32,7 @@ namespace arc
         bool isTransform();
         void setTransform(bool transform);
         std::vector<Actor*>& getChildren();
+        void setStage(Stage* stage);
     protected:
         void drawChildren(SpriteBatch* batch, float parentAlpha);
         void drawDebugChildren(ShapeRenderer* shapes);
@@ -41,7 +42,6 @@ namespace arc
         void applyTransform(ShapeRenderer* shapes, const Mat4& transform);
         void resetTransform(ShapeRenderer* shapes);
         void childrenChanged();
-        void setStage(Stage* stage);
 
     private:
         std::vector<Actor*> _children;

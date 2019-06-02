@@ -1,4 +1,7 @@
 #include "Cell.h"
+#include "Table.h"
+
+arc::Cell* arc::Cell::_defaults = nullptr;
 
 void arc::Cell::setLayout(arc::Table* table) {
 
@@ -54,4 +57,42 @@ void arc::Cell::merge(arc::Cell* cell) {
     if (cell->colspan.has_value()) colspan = cell->colspan;
     if (cell->uniformX.has_value()) uniformX = cell->uniformX;
     if (cell->uniformY.has_value()) uniformY = cell->uniformY;
+}
+
+void arc::Cell::reset() {
+    actor = nullptr;
+    table = nullptr;
+    endRow = false;
+    cellAboveIndex = -1;
+    auto* d = defaults();
+    if(d != nullptr) set(d);
+}
+
+arc::Cell* arc::Cell::defaults() {
+    if(_defaults == nullptr) _defaults = new Cell();
+
+    _defaults->minWidth = Table::minWidth;
+    _defaults->minHeight = Table::minHeight;
+    _defaults->prefWidth = Table::prefWidth;
+    _defaults->prefHeight = Table::prefHeight;
+    _defaults->maxWidth = Table::maxWidth;
+    _defaults->maxHeight = Table::maxHeight;
+    _defaults->spaceTop = Table::zero;
+    _defaults->spaceLeft = Table::zero;
+    _defaults->spaceBottom = Table::zero;
+    _defaults->spaceRight = Table::zero;
+    _defaults->padTop = Table::zero;
+    _defaults->padLeft = Table::zero;
+    _defaults->padBottom = Table::zero;
+    _defaults->padRight = Table::zero;
+    _defaults->fillX = 0.0f;
+    _defaults->fillY = 0.0f;
+    _defaults->align = 1;
+    _defaults->expandX = 0;
+    _defaults->expandY = 0;
+    _defaults->colspan = 1;
+    _defaults->uniformX = nullptr;
+    _defaults->uniformY = nullptr;
+
+    return nullptr;
 }

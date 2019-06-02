@@ -264,3 +264,16 @@ float arc::Actor::getScaleX() {
 float arc::Actor::getScaleY() {
     return _scaleY;
 }
+
+void arc::Actor::drawDebug(arc::ShapeRenderer* shapes) {
+
+}
+
+void arc::Actor::drawDebugBounds(arc::ShapeRenderer* shapes) {
+
+}
+
+void arc::Actor::setDebug(bool enabled) {
+    _debug = enabled;
+    if(enabled) arc::Stage::debug = true;
+}

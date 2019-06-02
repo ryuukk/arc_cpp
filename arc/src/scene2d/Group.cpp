@@ -1,6 +1,6 @@
+#include <algorithm>
 #include "Group.h"
 #include "Stage.h"
-#include <algorithm>
 
 void arc::Group::act(float dt) {
     Actor::act(dt);
@@ -15,7 +15,7 @@ void arc::Group::draw(arc::SpriteBatch* batch, float parentAlpha) {
 }
 
 void arc::Group::drawDebug(arc::ShapeRenderer* shapes) {
-    drawDebugBounds(shapes);
+    arc::Actor::drawDebugBounds(shapes);
     if (_transform) applyTransform(shapes, computeTransform());
     drawDebugChildren(shapes);
     if (_transform) resetTransform(shapes);
@@ -68,7 +68,8 @@ bool arc::Group::removeActor(arc::Actor* actor, bool unfocus) {
     if (_children.erase(std::find(_children.begin(), _children.end(), actor)) == _children.end()) return false;
     if (unfocus) {
         auto* stage = getStage();
-        if (stage != nullptr) stage->unfocus(actor);
+        if (stage != nullptr)
+            stage->unfocus(actor);
     }
     actor->setParent(nullptr);
     actor->setStage(nullptr);

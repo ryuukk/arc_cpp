@@ -1,5 +1,19 @@
 #include "Table.h"
 
+arc::FixedValue* arc::Table::zero = new arc::FixedValue(0.0f);
+arc::Value* arc::Table::minWidth = new arc::MinWidthValue();
+arc::Value* arc::Table::maxWidth = new arc::MaxWidthValue();
+arc::Value* arc::Table::prefWidth = new arc::PrefWidthValue();
+arc::Value* arc::Table::minHeight = new arc::MinHeightValue();
+arc::Value* arc::Table::maxHeight = new arc::MaxHeightValue();
+arc::Value* arc::Table::prefHeight = new arc::PrefHeightValue();
+
+arc::Value* arc::Table::backgroundTop = new arc::BackgroundTopValue();
+arc::Value* arc::Table::backgroundLeft = new arc::BackgroundLeftValue();
+arc::Value* arc::Table::backgroundBottom = new arc::BackgroundBottomValue();
+arc::Value* arc::Table::backgroundRight = new arc::BackgroundRightValue();
+
+
 arc::FixedValue::FixedValue(float value) : _value(value) {
 
 }
@@ -58,21 +72,16 @@ arc::IDrawable* arc::Table::getBackground() {
 }
 
 arc::Table::Table(arc::Skin* skin) : skin(skin) {
-    padTop = new BackgroundTopValue();
-    padLeft = new BackgroundLeftValue();
-    padBottom = new BackgroundBottomValue();
-    padRight = new BackgroundRightValue();
-
-    cellDefaults.setLayout(this);
+    cellDefaults->setLayout(this);
     setTransform(false);
     setTouchable(Touchable::childrenOnly);
 }
 
 arc::Table::~Table() {
-    delete padTop;
-    delete padLeft;
-    delete padBottom;
-    delete padRight;
+    //delete padTop;
+    //delete padLeft;
+    //delete padBottom;
+    //delete padRight;
 }
 
 void arc::Table::draw(arc::SpriteBatch* batch, float parentAlpha) {
@@ -82,10 +91,10 @@ void arc::Table::draw(arc::SpriteBatch* batch, float parentAlpha) {
         drawBackground(batch, parentAlpha, 0, 0);
         if (clip) {
             batch->flush();
-            float padLeft = this->padLeft->get(this);
-            float padBottom = this->padBottom->get(this);
-            if (clipBegin(padLeft, padBottom, getWidth() - padLeft - padRight->get(this),
-                          getHeight() - padBottom - padTop->get(this))) {
+            float padLeft = this->padLeft.get(this);
+            float padBottom = this->padBottom.get(this);
+            if (clipBegin(padLeft, padBottom, getWidth() - padLeft - padRight.get(this),
+                          getHeight() - padBottom - padTop.get(this))) {
                 drawChildren(batch, parentAlpha);
                 batch->flush();
                 clipEnd();
@@ -105,6 +114,17 @@ void arc::Table::drawBackground(arc::SpriteBatch* batch, float parentAlpha, floa
     auto color = getColor();
     batch->setColor({color.r, color.g, color.b, color.a * parentAlpha});
     background->draw(batch, x, y, getWidth(), getHeight());
+}
+
+void arc::Table::setBackground(arc::IDrawable* background) {
+    if(this->background == background) return;
+    float padTopOld = getPadTop(), padLeftOld = getPadLeft(), padBottomOld = getPadBottom(), padRightOld = getPadRight();
+    this->background = background; // The default pad values use the background's padding.
+    float padTopNew = getPadTop(), padLeftNew = getPadLeft(), padBottomNew = getPadBottom(), padRightNew = getPadRight();
+    if (padTopOld + padBottomOld != padTopNew + padBottomNew || padLeftOld + padRightOld != padLeftNew + padRightNew)
+        invalidateHierarchy();
+    else if (padTopOld != padTopNew || padLeftOld != padLeftNew || padBottomOld != padBottomNew || padRightOld != padRightNew)
+        invalidate();
 }
 
 arc::Actor* arc::Table::hit(float x, float y, bool touchable) {
@@ -174,14 +194,82 @@ arc::Cell& arc::Table::add(arc::Actor* actor) {
     }
     cells.emplace_back(cell);
 
-    cell->set(&cellDefaults);
+    cell->set(cellDefaults);
     if (cell->column < columnDefaults.size()) {
         auto columnCell = columnDefaults[cell->column];
         if (columnCell != nullptr) cell->merge(columnCell);
     }
-    cell->merge(&rowDefaults);
+    cell->merge(rowDefaults);
 
     if (actor != nullptr) addActor(actor);
 
     return *cell;
+}
+
+void arc::Table::clearChildren() {
+
+    for (int i = cells.size() - 1; i >= 0; i--) {
+        auto* cell = cells[i];
+        auto* actor = cell->actor;
+        if (actor != nullptr) actor->remove();
+    }
+    pool.delete_all();
+    cells.clear();
+    rows = 0;
+    columns = 0;
+    rowDefaults = nullptr;
+    implicitEndRow = false;
+
+    Group::clearChildren();
+}
+
+void arc::Table::reset() {
+    clearChildren();
+    padTop = *backgroundTop;
+    padLeft = *backgroundLeft;
+    padBottom = *backgroundBottom;
+    padRight = *backgroundRight;
+    align = (int)Align::center;
+    debug(TableDebug::none);
+    cellDefaults->reset();
+    for (int i = 0, n = columnDefaults.size(); i < n; i++) {
+        auto* columnCell = columnDefaults[i];
+        if (columnCell != nullptr) pool.delete_object(columnCell);
+    }
+    columnDefaults.clear();
+}
+
+arc::Table& arc::Table::debug(arc::TableDebug debug) {
+    arc::Actor::setDebug(debug != TableDebug::none);
+    if(_debug != debug)
+    {
+        _debug = debug;
+        if(debug == TableDebug::none)
+            clearDebugRects();
+        else
+            invalidate();
+    }
+    return *this;
+}
+
+void arc::Table::clearDebugRects() {
+    if(debugRects.empty()) return;
+    debugRects.clear();
+    // todo: maybe pool ?
+}
+
+float arc::Table::getPadTop() {
+    return padTop.get(this);
+}
+
+float arc::Table::getPadLeft() {
+    return padLeft.get(this);
+}
+
+float arc::Table::getPadBottom() {
+    return padBottom.get(this);
+}
+
+float arc::Table::getPadRight() {
+    return padRight.get(this);
 }

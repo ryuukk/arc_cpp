@@ -36,6 +36,8 @@ namespace arc
         const Mat4& getTransformMatrix();
         void setTransformMatrix(const Mat4& transform);
 
+        Texture2D* getWhitePixel();
+
         uint32_t renderCalls = 0;
         uint32_t totalRenderCalls = 0;
         uint32_t maxSpritesInBatch = 0;
@@ -43,6 +45,7 @@ namespace arc
         void setupMatrices();
         void switchTexture(Texture2D* texture);
 
+        Texture2D* _whitePixel = nullptr;
         Mesh* _mesh;
         std::vector<float> _vertices;
         uint32_t _idx{};
