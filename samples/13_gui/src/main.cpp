@@ -28,11 +28,22 @@ class MyGame : public arc::IApp
 
         _stage = new arc::Stage();
 
+        auto* a = new arc::Table();
+        a->setBackground(new arc::PrimitiveDrawable(arc::Color::BLUE, 50,50));
+
         auto* root = new arc::Table();
         root->setFillParent(true);
+        root->setBackground(new arc::PrimitiveDrawable(arc::Color::RED, 200,200));
+        root->row();
+        root->add(a);
+        root->row();
+        root->add(a);
+        root->row();
+        root->add(a);
+        root->row();
+        root->add(a);
+        root->row();
 
-        auto* d = new arc::PrimitiveDrawable(arc::Color::RED, 200,200);
-        root->setBackground(d);
 
         _stage->addActor(root);
     }   
@@ -88,7 +99,6 @@ class MyGame : public arc::IApp
 
         //printf("Bounds: %f:%f:%f:%f\n", bounds.x, bounds.y, bounds.width, bounds.height);
 
-        _spriteBatch->draw(_spriteBatch->getWhitePixel(), {0,0}, {200,200});
 
         _spriteBatch->end();
     }

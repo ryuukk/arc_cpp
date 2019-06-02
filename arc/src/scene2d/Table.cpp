@@ -72,6 +72,8 @@ arc::IDrawable* arc::Table::getBackground() {
 }
 
 arc::Table::Table(arc::Skin* skin) : skin(skin) {
+
+    cellDefaults = pool.new_object();
     cellDefaults->setLayout(this);
     setTransform(false);
     setTouchable(Touchable::childrenOnly);
@@ -272,4 +274,34 @@ float arc::Table::getPadBottom() {
 
 float arc::Table::getPadRight() {
     return padRight.get(this);
+}
+
+arc::Cell& arc::Table::row() {
+    if (cells.size() > 0) {
+        if (!implicitEndRow)
+        {
+            if (cells.back()->endRow) return *rowDefaults; // Row was already ended.
+            endRow();
+        }
+        invalidate();
+    }
+    implicitEndRow = false;
+    if (rowDefaults != nullptr) pool.delete_object(rowDefaults);
+    rowDefaults = pool.new_object();
+    rowDefaults->setLayout(this);
+    rowDefaults->clear();
+    return *rowDefaults;
+}
+
+void arc::Table::endRow() {
+    int rowColumns = 0;
+    for (int i = cells.size() - 1; i >= 0; i--) {
+        auto* cell = cells[i];
+        if (cell->endRow) break;
+        rowColumns += cell->colspan.value();
+    }
+    columns = Mathf::max(columns, rowColumns);
+    rows++;
+    cells.back()->endRow = true;
+
 }

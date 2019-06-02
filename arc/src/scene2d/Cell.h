@@ -18,7 +18,11 @@ namespace arc
         void set(Cell* cell);
         void merge(Cell* cell);
         void reset();
+        void clear();
         Cell* defaults();
+
+        Cell& minSize(Value* value);
+        Cell& minSize(float size);
 
         // todo: switch to private
     public:
@@ -36,14 +40,14 @@ namespace arc
         Value* padLeft = nullptr;
         Value* padBottom = nullptr;
         Value* padRight = nullptr;
-        std::optional<float> fillX;
-        std::optional<float> fillY;
-        std::optional<int> align;
-        std::optional<int> expandX;
-        std::optional<int> expandY;
-        std::optional<int> colspan;
-        std::optional<bool> uniformX;
-        std::optional<bool> uniformY;
+        std::optional<float> fillX{};
+        std::optional<float> fillY{};
+        std::optional<int> align{};
+        std::optional<int> expandX{};
+        std::optional<int> expandY{};
+        std::optional<int> colspan{};
+        std::optional<bool> uniformX{};
+        std::optional<bool> uniformY{};
 
         float actorX{};
         float actorY{};

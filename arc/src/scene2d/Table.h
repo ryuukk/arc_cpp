@@ -114,6 +114,7 @@ namespace arc
         bool getClip();
         void invalidate();
         Cell& add(Actor* actor);
+        Cell& row();
         void setBackground(IDrawable* background);
         IDrawable* getBackground();
         void clearChildren();
@@ -127,7 +128,7 @@ namespace arc
 
     private:
         void clearDebugRects();
-
+        void endRow();
     private:
         int columns{};
         int rows{};

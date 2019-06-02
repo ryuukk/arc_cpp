@@ -96,3 +96,42 @@ arc::Cell* arc::Cell::defaults() {
 
     return nullptr;
 }
+
+void arc::Cell::clear()
+{
+
+    minWidth = nullptr;
+    minHeight = nullptr;
+    prefWidth = nullptr;
+    prefHeight = nullptr;
+    maxWidth = nullptr;
+    maxHeight = nullptr;
+    spaceTop = nullptr;
+    spaceLeft = nullptr;
+    spaceBottom = nullptr;
+    spaceRight = nullptr;
+    padTop = nullptr;
+    padLeft = nullptr;
+    padBottom = nullptr;
+    padRight = nullptr;
+    fillX = {};
+    fillY = {};
+    align = {};
+    expandX = {};
+    expandY = {};
+    colspan = {};
+    uniformX = nullptr;
+    uniformY = nullptr;
+}
+
+arc::Cell& arc::Cell::minSize(arc::Value* value) {
+    if(minWidth) delete minWidth;
+    if(minHeight) delete minHeight;
+    minWidth = value;
+    minHeight = value;
+    return *this;
+}
+
+arc::Cell& arc::Cell::minSize(float size) {
+    return minSize(new FixedValue(size));
+}
