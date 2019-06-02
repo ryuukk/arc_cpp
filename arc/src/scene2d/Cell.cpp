@@ -65,41 +65,45 @@ void arc::Cell::reset() {
     endRow = false;
     cellAboveIndex = -1;
     auto* d = defaults();
-    if(d != nullptr) set(d);
+    if(d != nullptr)
+        set(d);
 }
 
 arc::Cell* arc::Cell::defaults() {
-    if(_defaults == nullptr) _defaults = new Cell();
+    if(arc::Cell::_defaults == nullptr)
+    {
+        arc::Cell::_defaults = new Cell();
+        arc::Cell::_defaults->reset();
+    }
 
-    _defaults->minWidth = Table::minWidth;
-    _defaults->minHeight = Table::minHeight;
-    _defaults->prefWidth = Table::prefWidth;
-    _defaults->prefHeight = Table::prefHeight;
-    _defaults->maxWidth = Table::maxWidth;
-    _defaults->maxHeight = Table::maxHeight;
-    _defaults->spaceTop = Table::zero;
-    _defaults->spaceLeft = Table::zero;
-    _defaults->spaceBottom = Table::zero;
-    _defaults->spaceRight = Table::zero;
-    _defaults->padTop = Table::zero;
-    _defaults->padLeft = Table::zero;
-    _defaults->padBottom = Table::zero;
-    _defaults->padRight = Table::zero;
-    _defaults->fillX = 0.0f;
-    _defaults->fillY = 0.0f;
-    _defaults->align = 1;
-    _defaults->expandX = 0;
-    _defaults->expandY = 0;
-    _defaults->colspan = 1;
-    _defaults->uniformX = nullptr;
-    _defaults->uniformY = nullptr;
+    arc::Cell::_defaults->minWidth = Table::minWidth;
+    arc::Cell::_defaults->minHeight = Table::minHeight;
+    arc::Cell::_defaults->prefWidth = Table::prefWidth;
+    arc::Cell::_defaults->prefHeight = Table::prefHeight;
+    arc::Cell::_defaults->maxWidth = Table::maxWidth;
+    arc::Cell::_defaults->maxHeight = Table::maxHeight;
+    arc::Cell::_defaults->spaceTop = Table::zero;
+    arc::Cell::_defaults->spaceLeft = Table::zero;
+    arc::Cell::_defaults->spaceBottom = Table::zero;
+    arc::Cell::_defaults->spaceRight = Table::zero;
+    arc::Cell::_defaults->padTop = Table::zero;
+    arc::Cell::_defaults->padLeft = Table::zero;
+    arc::Cell::_defaults->padBottom = Table::zero;
+    arc::Cell::_defaults->padRight = Table::zero;
+    arc::Cell::_defaults->fillX = 0.0f;
+    arc::Cell::_defaults->fillY = 0.0f;
+    arc::Cell::_defaults->align = 1;
+    arc::Cell::_defaults->expandX = 0;
+    arc::Cell::_defaults->expandY = 0;
+    arc::Cell::_defaults->colspan = 1;
+    arc::Cell::_defaults->uniformX = nullptr;
+    arc::Cell::_defaults->uniformY = nullptr;
 
-    return nullptr;
+    return arc::Cell::_defaults;
 }
 
 void arc::Cell::clear()
 {
-
     minWidth = nullptr;
     minHeight = nullptr;
     prefWidth = nullptr;
@@ -134,4 +138,7 @@ arc::Cell& arc::Cell::minSize(arc::Value* value) {
 
 arc::Cell& arc::Cell::minSize(float size) {
     return minSize(new FixedValue(size));
+}
+
+arc::Cell::Cell() {
 }

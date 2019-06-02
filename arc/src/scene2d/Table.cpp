@@ -74,6 +74,7 @@ arc::IDrawable* arc::Table::getBackground() {
 arc::Table::Table(arc::Skin* skin) : skin(skin) {
 
     cellDefaults = pool.new_object();
+    cellDefaults->reset();
     cellDefaults->setLayout(this);
     setTransform(false);
     setTouchable(Touchable::childrenOnly);
@@ -154,6 +155,7 @@ void arc::Table::invalidate() {
 
 arc::Cell& arc::Table::add(arc::Actor* actor) {
     auto* cell = pool.new_object();
+    cell->reset();
     cell->setLayout(this);
     cell->actor = actor;
 
@@ -280,7 +282,8 @@ arc::Cell& arc::Table::row() {
     if (cells.size() > 0) {
         if (!implicitEndRow)
         {
-            if (cells.back()->endRow) return *rowDefaults; // Row was already ended.
+            if (cells.back()->endRow)
+                return *rowDefaults; // Row was already ended.
             endRow();
         }
         invalidate();
@@ -288,6 +291,7 @@ arc::Cell& arc::Table::row() {
     implicitEndRow = false;
     if (rowDefaults != nullptr) pool.delete_object(rowDefaults);
     rowDefaults = pool.new_object();
+    rowDefaults->reset();
     rowDefaults->setLayout(this);
     rowDefaults->clear();
     return *rowDefaults;

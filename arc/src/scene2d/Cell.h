@@ -14,6 +14,7 @@ namespace arc
     public:
         Actor* actor = nullptr;
 
+        Cell();
         void setLayout(Table* table);
         void set(Cell* cell);
         void merge(Cell* cell);
