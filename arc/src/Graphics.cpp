@@ -33,8 +33,8 @@ bool arc::Graphics::createContext()
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 #else
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-    glfwWindowHint(GLFW_RESIZABLE, GL_TRUE);
 #endif
+    glfwWindowHint(GLFW_RESIZABLE, GL_TRUE);
     // delay window opening to avoid positioning glitch and white window
     glfwWindowHint(GLFW_VISIBLE, GL_FALSE);
 
