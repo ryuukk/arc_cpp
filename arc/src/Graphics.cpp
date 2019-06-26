@@ -27,9 +27,14 @@ bool arc::Graphics::createContext()
 
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, _config.glMajVersion);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, _config.glMinVersion);
+
+#ifdef __APPLE__
+    glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GLFW_TRUE);
+    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+#else
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
     glfwWindowHint(GLFW_RESIZABLE, GL_TRUE);
-
+#endif
     // delay window opening to avoid positioning glitch and white window
     glfwWindowHint(GLFW_VISIBLE, GL_FALSE);
 

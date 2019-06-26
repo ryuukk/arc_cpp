@@ -50,7 +50,7 @@ out vec4 f_color;
 
 void main()
 {
-    vec3 color = texture2D(u_texture, v_texCoord).rgb;
+    vec3 color = u_texture, v_texCoord).rgb;
     f_color = vec4(color, 1.0) * v_color;
     //f_color = v_color;
 }
