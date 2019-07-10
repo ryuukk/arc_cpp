@@ -266,3 +266,12 @@ void arc::Group::setTransform(bool transform)
 std::vector<arc::Actor*>& arc::Group::getChildren() {
     return _children;
 }
+
+arc::Group::Group() {
+
+}
+
+arc::Group::~Group() {
+    for(auto* child : _children)
+        delete child;
+}

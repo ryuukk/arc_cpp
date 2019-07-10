@@ -18,6 +18,7 @@ class MyGame : public arc::IApp
     arc::SpriteBatch* _spriteBatch;
     arc::Texture2D* _texture;
     arc::Stage* _stage;
+    arc::Table*_root;
 
     void create() override {
 
@@ -28,25 +29,30 @@ class MyGame : public arc::IApp
 
         _stage = new arc::Stage();
 
+        _root = new arc::Table();
+        _root->setFillParent(true);
+        _root->setBackground(new arc::PrimitiveDrawable({0.5f,0.2f,0.2f,1.0f}, 200,200));
+
+
         auto* a = new arc::Table();
         a->setBackground(new arc::PrimitiveDrawable(arc::Color::BLUE, 50,50));
 
-        auto* root = new arc::Table();
-        root->setFillParent(true);
-        root->setBackground(new arc::PrimitiveDrawable(arc::Color::RED, 200,200));
-        root->row();
-        root->add(a);
-        root->row();
-        root->add(a);
-        root->row();
-        root->add(a);
-        root->row();
-        root->add(a);
-        root->row();
+        auto* b = new arc::Table();
+        b->setBackground(new arc::PrimitiveDrawable(arc::Color::BLUE, 50,50));
 
+        auto* c = new arc::Table();
+        c->setBackground(new arc::PrimitiveDrawable(arc::Color::BLUE, 50,50));
 
-        _stage->addActor(root);
-    }   
+        _root->add(a).minSize(50.0f).pad(20.0f);
+        _root->row();
+        _root->add(b).minSize(50.0f).pad(20.0f);
+        _root->row();
+        _root->add(c).minSize(50.0f).pad(20.0f);
+
+        _stage->addActor(_root);
+
+        printf("pass\n");
+    }
 
     int fpsAcc = 0;
     int c = 0;
@@ -70,6 +76,7 @@ class MyGame : public arc::IApp
 
         if(arc::Core::input->isKeyJustPressed(arc::Keys::SPACE))
         {
+            _root->invalidateHierarchy();
         }
 
 
@@ -79,6 +86,7 @@ class MyGame : public arc::IApp
     void render(float dt) override {
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
+
 
         _stage->render(dt);
 

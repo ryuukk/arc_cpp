@@ -16,6 +16,9 @@ namespace arc
     class Group : public Actor, ICullable
     {
     public:
+        Group();
+        virtual ~Group();
+
         void act(float dt);
         void draw(SpriteBatch* batch, float parentAlpha);
         void drawDebug(ShapeRenderer* shapes);
@@ -24,7 +27,7 @@ namespace arc
         void addActor(Actor* actor);
         void addActorAt(int index, Actor* actor);
         bool removeActor(Actor* actor, bool unfocus = true);
-        void clearChildren();
+        virtual void clearChildren();
         void clear();
         Actor* findActor(const std::string& name);
         Vec2 localToDescendantCoordinates(Actor* descendant);

@@ -277,3 +277,17 @@ void arc::Actor::setDebug(bool enabled) {
     _debug = enabled;
     if(enabled) arc::Stage::debug = true;
 }
+
+void arc::Actor::setBounds(float x, float y, float width, float height)
+{
+    if (this->_x != x || this->_y != y) {
+        this->_x = x;
+        this->_y = y;
+        positionChanged();
+    }
+    if (this->_width != width || this->_height != height) {
+        this->_width = width;
+        this->_height = height;
+        sizeChanged();
+    }
+}

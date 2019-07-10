@@ -14,7 +14,7 @@ namespace arc
     {
     public:
         Actor();
-        ~Actor();
+        virtual ~Actor();
     private:
         Stage* _stage = nullptr;
         Group* _parent = nullptr;
@@ -39,6 +39,8 @@ namespace arc
         virtual Actor* hit(float x, float y, bool touchable);
         virtual bool remove();
         virtual void clear();
+
+        virtual void setBounds(float x, float y, float width, float height);
 
         virtual void drawDebug(ShapeRenderer* shapes);
 
