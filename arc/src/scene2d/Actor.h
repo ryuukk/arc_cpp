@@ -1,17 +1,20 @@
 #pragma once
 
 #include <string>
-#include "Stage.h"
-#include "Group.h"
 #include "Touchable.h"
 #include "../Color.h"
 #include "../gfx/SpriteBatch.h"
+#include "../gfx/ShapeRenderer.h"
 
 namespace arc
 {
+    class Group;
     class Stage;
     class Actor
     {
+    public:
+        Actor();
+        virtual ~Actor();
     private:
         Stage* _stage = nullptr;
         Group* _parent = nullptr;
@@ -37,6 +40,10 @@ namespace arc
         virtual bool remove();
         virtual void clear();
 
+        virtual void setBounds(float x, float y, float width, float height);
+
+        virtual void drawDebug(ShapeRenderer* shapes);
+
         Stage* getStage();
         void setStage(Stage* stage);
 
@@ -56,25 +63,47 @@ namespace arc
         bool hasScrollFocus();
         bool isTouchFocusTarget();
 
+        void setDebug(bool enabled);
+        bool getDebug();
+
+        void setSize(float width, float height);
+
         float getX();
         void setX(float x);
         void setX(float x, int align);
         float getY();
-        void setY(float Y);
-        void setY(float Y, int align);
+        void setY(float y);
+        void setY(float y, int align);
+
+        float getWidth();
+        float getHeight();
+
+        float getOriginX();
+        float getOriginY();
+
+        float getRotation();
+        float getScaleX();
+        float getScaleY();
 
         void toFront();
         void toBack();
         bool setZIndex(int index);
         int getZIndex();
 
+        bool clipBegin();
         bool clipBegin(float x, float y, float width, float height);
         void clipEnd();
+
+        Color& getColor();
+        Touchable getTouchable();
+
+        Vec2 parentToLocalCoordinates(const Vec2& parentCoords);
 
     protected:
         void positionChanged();
         void sizeChanged();
         void rotationChanged();
+        void drawDebugBounds(ShapeRenderer* shapes);
     };
 }
 

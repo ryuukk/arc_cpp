@@ -3,10 +3,13 @@
 #include <Configuration.h>
 #include <Engine.h>
 
-#include <utils/FileUtils.h>
+#include <utils/IO.h>
 #include <gfx/fonts/BitmapFont.h>
 #include <gfx/SpriteBatch.h>
 #include <utils/HdpiUtils.h>
+#include <scene2d/Stage.h>
+#include <scene2d/Table.h>
+#include <scene2d/PrimitiveDrawable.h>
 
 
 class MyGame : public arc::IApp
@@ -14,15 +17,41 @@ class MyGame : public arc::IApp
     arc::BitmapFont* _font;
     arc::SpriteBatch* _spriteBatch;
     arc::Texture2D* _texture;
-
+    arc::Stage* _stage;
+    arc::Table*_root;
 
     void create() override {
 
-        _font = new arc::BitmapFont("data/fonts/helveti_pixel_16_o.fnt", false, false);
+        _font = new arc::BitmapFont("data/fonts/m6x11_16_o.fnt", false, false);
 
         _spriteBatch = new arc::SpriteBatch();
         _texture = arc::Texture2D::loadFromFile("data/bg_stars.png");
 
+        _stage = new arc::Stage();
+
+        _root = new arc::Table();
+        _root->setFillParent(true);
+        _root->setBackground(new arc::PrimitiveDrawable({0.5f,0.2f,0.2f,1.0f}, 200,200));
+
+
+        auto* a = new arc::Table();
+        a->setBackground(new arc::PrimitiveDrawable(arc::Color::BLUE, 50,50));
+
+        auto* b = new arc::Table();
+        b->setBackground(new arc::PrimitiveDrawable(arc::Color::BLUE, 50,50));
+
+        auto* c = new arc::Table();
+        c->setBackground(new arc::PrimitiveDrawable(arc::Color::BLUE, 50,50));
+
+        _root->add(a).minSize(50.0f).pad(20.0f);
+        _root->row();
+        _root->add(b).minSize(50.0f).pad(20.0f);
+        _root->row();
+        _root->add(c).minSize(50.0f).pad(20.0f);
+
+        _stage->addActor(_root);
+
+        printf("pass\n");
     }
 
     int fpsAcc = 0;
@@ -44,13 +73,22 @@ class MyGame : public arc::IApp
             fpsAcc = 0;
             timer = 0;
         }
+
+        if(arc::Core::input->isKeyJustPressed(arc::Keys::SPACE))
+        {
+            _root->invalidateHierarchy();
+        }
+
+
+        _stage->act(dt);
     }
 
     void render(float dt) override {
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
 
-        arc::hdpi::glViewportt(0,0,1280,720);
+
+        _stage->render(dt);
 
         _font->getData().scaleX = 2;
         _font->getData().scaleY = 2;
@@ -64,10 +102,11 @@ class MyGame : public arc::IApp
         //auto bounds = _font->draw(_spriteBatch, "Hello", 0, y);
         //auto bounds = _font->draw(_spriteBatch, "[#FF0000]reeeeeeeeeeeeeeeeeeeeeeed[]white[#00FF00]gr[#0000FF]ee[]n[]", 0, y);
         //auto bounds = _font->draw(_spriteBatch, "[#FF0000]Hello[]", 50, 50);
-        auto bounds = _font->draw(_spriteBatch, "[#FF0000]Hello[] [#00FF00]Colored[] [#0000FF]World[] Yay", 50, 50);
+        auto bounds = _font->draw(_spriteBatch, "[#FF5555]Hello[] [#55FF55]Colored[] [#5555FF]World[] Yay", 50, 50);
 
 
         //printf("Bounds: %f:%f:%f:%f\n", bounds.x, bounds.y, bounds.width, bounds.height);
+
 
         _spriteBatch->end();
     }
@@ -83,7 +122,7 @@ class MyGame : public arc::IApp
 
 int main(int argc, char** argv) {
     auto config = arc::Configuration();
-    config.windowTitle = "Sample 12 - GUI";
+    config.windowTitle = "Sample 13 - GUI";
     config.vsync = true;
     auto myGame = new MyGame();
     auto engine = new arc::Engine(myGame, config);

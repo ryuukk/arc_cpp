@@ -38,6 +38,14 @@ arc::SpriteBatch::SpriteBatch(uint32_t size, arc::ShaderProgram* defaultShader) 
         _ownsShader = true;
     } else
         _shader = defaultShader;
+
+    // create white pixel
+    {
+
+        unsigned char data[4] = {255,255,255,255};
+        _whitePixel = new Texture2D();
+        _whitePixel->setData(data, 1, 1);
+    }
 }
 
 void arc::SpriteBatch::setProjectionMatrix(const arc::Mat4& projection) {
@@ -187,6 +195,50 @@ void arc::SpriteBatch::draw(arc::Texture2D* texture, std::vector<float>& v, uint
     }
 }
 
+void arc::SpriteBatch::draw(arc::TextureRegion* region, float x, float y, float width, float height) {
+    assert(_drawing && "must call begin");
+
+    auto texture = region->texture;
+    if (texture != _lastTexture) {
+        switchTexture(texture);
+    } else if (_idx == _vertices.size())
+        flush();
+
+    float fx2 = x + width;
+    float fy2 = y + height;
+    float u = region->u;
+    float v = region->v2;
+    float u2 = region->u2;
+    float v2 = region->v;
+
+    float color = _color.toFloatBits();
+    int idx = _idx;
+    _vertices[idx] = x;
+    _vertices[idx + 1] = y;
+    _vertices[idx + 2] = color;
+    _vertices[idx + 3] = u;
+    _vertices[idx + 4] = v;
+
+    _vertices[idx + 5] = x;
+    _vertices[idx + 6] = fy2;
+    _vertices[idx + 7] = color;
+    _vertices[idx + 8] = u;
+    _vertices[idx + 9] = v2;
+
+    _vertices[idx + 10] = fx2;
+    _vertices[idx + 11] = fy2;
+    _vertices[idx + 12] = color;
+    _vertices[idx + 13] = u2;
+    _vertices[idx + 14] = v2;
+
+    _vertices[idx + 15] = fx2;
+    _vertices[idx + 16] = y;
+    _vertices[idx + 17] = color;
+    _vertices[idx + 18] = u2;
+    _vertices[idx + 19] = v;
+    _idx = idx + 20;
+}
+
 bool arc::SpriteBatch::isBlendingEnabled() {
     return !_blendingDisabled;
 }
@@ -210,6 +262,20 @@ void arc::SpriteBatch::switchTexture(arc::Texture2D* texture) {
     _invTexHeight = 1.0f / texture->getHeight();
 }
 
-const arc::Mat4& arc::SpriteBatch::getTransformationMatrix() {
+const arc::Mat4& arc::SpriteBatch::getTransformMatrix() {
     return _transformMatrix;
+}
+
+void arc::SpriteBatch::setTransformMatrix(const arc::Mat4& transform) {
+    if (_drawing) flush();
+    _transformMatrix = transform;
+    if (_drawing) setupMatrices();
+}
+
+void arc::SpriteBatch::setColor(const arc::Color& color) {
+    _color = color;
+}
+
+arc::Texture2D* arc::SpriteBatch::getWhitePixel() {
+    return _whitePixel;
 }

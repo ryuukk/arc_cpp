@@ -5,6 +5,7 @@
 #include "Mathf.h"
 #include "Vec3.h"
 #include "Quat.h"
+#include "Affine2.h"
 
 namespace arc
 {
@@ -81,6 +82,9 @@ namespace arc
             );
         }
 
+        void rotate(const Vec3& axis, float degree);
+        void scale(const Vec3& scale);
+
         void setToTranslation(Vec3 position);
 
         void idt();
@@ -92,6 +96,7 @@ namespace arc
         void set(Vec3 translation, Quat quat);
 
         Mat4& set(Vec3 translation, Quat rotation, Vec3 scale);
+        Mat4& set(const Affine2& affine);
 
         static Mat4 identity();
 

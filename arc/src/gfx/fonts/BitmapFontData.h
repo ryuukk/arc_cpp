@@ -58,9 +58,14 @@ namespace arc
         ~BitmapFontData()
         {
             for(auto& row : glyphs)
+            {
                 for(auto* glyph : row)
+                {
                     if(glyph != nullptr)
                         delete glyph;
+                }
+            }
+            if(missingGlyph != nullptr)
             delete missingGlyph;
         }
 

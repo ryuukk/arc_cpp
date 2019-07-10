@@ -26,22 +26,26 @@ namespace arc
     class Region
     {
     public:
-        Page* page;
-        int index;
+        int pageIndex{};
+        int index{};
         std::string name;
-        float offsetX;
-        float offsetY;
-        int originalWidth;
-        int originalHeight;
-        bool rotate;
-        int degrees;
-        int left;
-        int top;
-        int width;
-        int height;
-        bool flip;
-        int splits[4];
-        int pads[4];
+        float offsetX{};
+        float offsetY{};
+        int originalWidth{};
+        int originalHeight{};
+        bool rotate{};
+        int degrees{};
+        int left{};
+        int top{};
+        int width{};
+        int height{};
+        bool flip{};
+
+        // optionals
+        bool hasSplits{};
+        bool hasPads{};
+        std::vector<int> splits;
+        std::vector<int> pads;
     };
 
     class TextureAtlasData
@@ -51,6 +55,10 @@ namespace arc
         std::vector<Region> regions;
 
         void load(const std::string& packFile, const std::string& imagesDir, bool flip);
+
+    private:
+        int readTuple(std::ifstream& stream);
+        int _tuple[4];
     };
 }
 

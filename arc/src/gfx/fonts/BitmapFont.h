@@ -5,6 +5,7 @@
 #include "../SpriteBatch.h"
 #include "../TextureRegion.h"
 #include "BitmapFontData.h"
+#include "BitmapFontCache.h"
 #include "../Align.h"
 
 namespace arc
@@ -16,8 +17,6 @@ namespace arc
         static const int PAGES = 0x10000 / PAGE_SIZE;
     }
 
-
-    class BitmapFontCache;
     class BitmapFont
     {
     public:
@@ -30,7 +29,12 @@ namespace arc
         {
             delete _cache;
             for(auto* region : regions)
+            {
+                // todo: i don't like this
+                if(_ownsTexture)
+                    delete region->texture;
                 delete region;
+            }
         }
 
         Rect draw(SpriteBatch* batch, const std::string& str, float x, float y);

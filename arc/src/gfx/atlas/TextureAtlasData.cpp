@@ -22,6 +22,30 @@ std::tuple<int, int, int, int> readT4(const std::string& line)
     return {a, b, c, d};
 }
 
+std::vector<int> readToken(const std::string& line)
+{
+    auto s = arc::string::split(line, ",");
+    std::vector<int> ret;
+    ret.resize(s.size());
+    for (int i = 0; i < s.size(); ++i) {
+        ret[i] = std::stoi(s[i]);
+    }
+    return ret;
+}
+
+int arc::TextureAtlasData::readTuple(std::ifstream& stream) {
+
+    std::string buffer;
+    std::getline(stream, buffer);
+    buffer = buffer.substr(buffer.find(':') + 1);
+
+    auto vec = readToken(buffer);
+    for (int i = 0; i < vec.size(); ++i) {
+        _tuple[i] = vec[i];
+    }
+    return vec.size();
+}
+
 void arc::TextureAtlasData::load(const std::string& packFile, const std::string& imagesDir, bool flip)
 {
     std::ifstream stream (packFile, std::ifstream::binary);
@@ -33,18 +57,15 @@ void arc::TextureAtlasData::load(const std::string& packFile, const std::string&
         std::getline(stream, buffer);
         page.file = buffer;
 
-        arc::Core::logger->infof("Page file: {0}", page.file);
+        //arc::log::infof("Page file: {0}", page.file);
 
         // size
-        std::getline(stream, buffer);
-        auto size = readT2(buffer.substr(6));
-        page.width = std::get<0>(size);
-        page.height = std::get<1>(size);
+        readTuple(stream);
+        page.width = _tuple[0];
+        page.height = _tuple[1];
 
 
-        arc::Core::logger->infof("Page size: {0}:{1}", page.width, page.height);
-
-
+        //arc::log::infof("Page size: {0}:{1}", page.width, page.height);
 
         // format
         std::getline(stream, buffer);
@@ -57,15 +78,86 @@ void arc::TextureAtlasData::load(const std::string& packFile, const std::string&
         // repeat
         std::getline(stream, buffer);
         auto repeat = buffer.substr(8);
+        pages.emplace_back(page);
 
         while (true)
         {
             if(!std::getline(stream, buffer)) break;
+            if(buffer.empty()) break;
 
-            Region region;
+            Region region{};
+            region.pageIndex = 0; // todo: support multiple pages
             region.name = buffer;
 
+            // rotate
+            if(!std::getline(stream, buffer)) break;
+            region.rotate = buffer.substr(10) == "true";
 
+            // xy
+            readTuple(stream);
+            region.left = _tuple[0];
+            region.top = _tuple[1];
+
+            // size
+            readTuple(stream);
+            region.width = _tuple[0];
+            region.height = _tuple[1];
+
+
+            if(readTuple(stream) == 4)
+            {
+                region.hasSplits = true;
+                region.splits.resize(4);
+                region.splits[0] = _tuple[0];
+                region.splits[1] = _tuple[1];
+                region.splits[2] = _tuple[2];
+                region.splits[3] = _tuple[3];
+                if(readTuple(stream) == 4)
+                {
+                    region.hasPads = true;
+                    region.pads.resize(4);
+                    region.pads[0] = _tuple[0];
+                    region.pads[1] = _tuple[1];
+                    region.pads[2] = _tuple[2];
+                    region.pads[3] = _tuple[3];
+                    readTuple(stream);
+                }
+            }
+
+            // orig
+            region.originalWidth = _tuple[0];
+            region.originalHeight = _tuple[1];
+
+            // offset
+            readTuple(stream);
+            region.offsetX = _tuple[0];
+            region.offsetY = _tuple[1];
+
+
+            // index
+            readTuple(stream);
+            region.index = _tuple[0];
+
+            if(flip) region.flip = true;
+            regions.emplace_back(region);
+
+            // todo: figure out why printf can't print super long lines when there is std::string
+            //printf("Region: %s xy: %d:%d size: %d:%d orig: %d:%d offset: %d:%d index: %d\n",
+            //       region.name.c_str(),
+            //       region.top,
+            //       region.left,
+            //       region.width,
+            //       region.height,
+            //       region.originalWidth,
+            //       region.originalHeight,
+            //       region.offsetX,
+            //       region.offsetY,
+            //       region.index
+            //       );
+
+            //printf("Region: %s\n",
+            //        region.name.c_str()
+            //        );
         }
     }
 }

@@ -1,70 +1,93 @@
 #pragma once
 
+#include <cmath>
 namespace arc
 {
+    // todo: use const instead of inline static methods
     class Mathf
     {
     public:
-        static float FLOAT_ROUNDING_ERROR() { return 0.000001f; }
+        inline static float FLOAT_ROUNDING_ERROR() { return 0.000001f; }
 
-        static float PI() { return 3.1415927f; }
+        inline static float PI() { return 3.1415927f; }
 
-        static float PI2() { return PI() * 2; }
+        inline static float PI2() { return PI() * 2; }
 
-        static float DEG2RAD() { return PI() / 180.0f; }
+        inline static float DEG2RAD() { return PI() / 180.0f; }
 
-        static float RAD2DEG() { return 180.0f / PI(); }
+        inline static float RAD2DEG() { return 180.0f / PI(); }
 
-        static bool isEqual(float a, float b) {
+        inline static bool isEqual(float a, float b) {
             return abs(a - b) <= FLOAT_ROUNDING_ERROR();
         }
 
-        static int round(float data)
+        inline static int round(float data)
         {
             return data >= 0.0f ? (int) (data + 0.5f) : (int) (data - 0.5f);
         }
-        int floor(float data)
+        inline static int floor(float data)
         {
             return data >= 0.0f ? (int) data : (int) data - 1;
         }
-        static int abs(int v)
+        inline static int abs(int v)
         {
             return v >= 0 ? v : -v;
         }
-        static float abs(float v)
+        inline static float abs(float v)
         {
             return v >= 0.0f ? v : -v;
         }
-        static int max(int a, int b)
+        inline static int max(int a, int b)
         {
             return a >= b ? a : b;
         }
-        static int min(int a, int b)
+        inline static int min(int a, int b)
         {
             return a >= b ? b : a;
         }
 
-        static float max(float a, float b)
+        inline static float max(float a, float b)
         {
             return a >= b ? a : b;
         }
 
-        static float min(float a, float b)
+        inline static float min(float a, float b)
         {
             return a >= b ? b : a;
         }
-        static int sign(float v)
+        inline static int sign(float v)
         {
             return v > 0.0f ? 1 : (v < 0.0f ? -1 : 0);
         }
-        static int sign(double v)
+        inline static int sign(double v)
         {
             return v > 0.0 ? 1 : (v < 0.0 ? -1 : 0);
         }
 
-        static int sign(int v)
+        inline static int sign(int v)
         {
             return v > 0 ? 1 : (v < 0 ? -1 : 0);
         }
+
+        inline static float sinDeg(float deg)
+        {
+            return std::sin(DEG2RAD() * deg);
+        }
+
+        inline static float cosDeg(float deg)
+        {
+            return std::cos(DEG2RAD() * deg);
+        }
+
+        inline static float sin(float rad)
+        {
+            return std::sin(rad);
+        }
+
+        inline static float cos(float rad)
+        {
+            return std::cos(rad);
+        }
+
     };
 }

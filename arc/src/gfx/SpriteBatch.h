@@ -5,6 +5,7 @@
 #include "Texture2D.h"
 #include "../Color.h"
 #include "../math/Vec2.h"
+#include "TextureRegion.h"
 
 namespace arc
 {
@@ -25,9 +26,17 @@ namespace arc
 
         void draw(Texture2D* texture, Vec2 position, Vec2 size);
         void draw(Texture2D* texture, std::vector<float>& v, uint32_t offset, uint32_t count);
+
+        void draw(TextureRegion* region, float x, float y, float width, float height);
+
+        void setColor(const Color& color);
+
         bool isBlendingEnabled();
 
-        const Mat4& getTransformationMatrix();
+        const Mat4& getTransformMatrix();
+        void setTransformMatrix(const Mat4& transform);
+
+        Texture2D* getWhitePixel();
 
         uint32_t renderCalls = 0;
         uint32_t totalRenderCalls = 0;
@@ -36,6 +45,7 @@ namespace arc
         void setupMatrices();
         void switchTexture(Texture2D* texture);
 
+        Texture2D* _whitePixel = nullptr;
         Mesh* _mesh;
         std::vector<float> _vertices;
         uint32_t _idx{};

@@ -7,7 +7,7 @@
 #include <gfx/Model.h>
 #include <gfx/ModelInstance.h>
 #include <gfx/data/ModelData.h>
-#include <utils/FileUtils.h>
+#include <utils/IO.h>
 
 #include <net/tcp/Client.hpp>
 #include <net/tcp/utils/Messages.hpp>

@@ -18,21 +18,21 @@ namespace arc
         static Color GREEN;
         static Color BLUE;
 
-        uint8_t r = 255;
-        uint8_t g = 255;
-        uint8_t b = 255;
-        uint8_t a = 255;
+        float r = 1.0f;
+        float g = 1.0f;
+        float b = 1.0f;
+        float a = 1.0f;
 
         Color() = default;
         Color(uint32_t value)
         {
-            r = (uint8_t)((value & 0xff000000U) >> 24U);
-            g = (uint8_t)((value & 0x00ff0000U) >> 16U);
-            b = (uint8_t)((value & 0x0000ff00U) >> 8U);
-            a = (uint8_t)((value & 0x000000ffU));
+            r = ((value & 0xff000000U) >> 24U) / 255.0f;
+            g = ((value & 0x00ff0000U) >> 16U) / 255.0f;
+            b = ((value & 0x0000ff00U) >> 8U) / 255.0f;
+            a = ((value & 0x000000ffU)) / 255.0f;
         }
 
-        Color(uint8_t r, uint8_t g, uint8_t b, uint8_t a): r(r), g(g), b(b), a(a)
+        Color(float r, float g, float b, float a): r(r), g(g), b(b), a(a)
         {}
 
         Color operator * (const Color& v) const
@@ -57,19 +57,19 @@ namespace arc
         static Color fromRGB888(uint32_t value)
         {
             Color color{};
-            color.r = ((value & 0x00ff0000u) >> 16u);
-            color.g = ((value & 0x0000ff00u) >> 8u);
-            color.b = ((value & 0x000000ffu));
-            color.a = 255;
+            color.r = ((value & 0x00ff0000u) >> 16u) / 255.0f;
+            color.g = ((value & 0x0000ff00u) >> 8u) / 255.0f;
+            color.b = ((value & 0x000000ffu)) / 255.0f;
+            color.a = 1.0f;
             return color;
         }
 
         float toFloatBits()
         {
-            uint32_t color = ((uint32_t) (a) << 24u) |
-                    ((uint32_t) (b) << 16u) |
-                    ((uint32_t) (g) << 8u) |
-                    ((uint32_t) (r));
+            uint32_t color = ((uint32_t) (a * 255) << 24u) |
+                    ((uint32_t) (b * 255) << 16u) |
+                    ((uint32_t) (g * 255) << 8u) |
+                    ((uint32_t) (r * 255));
 
             Stuff s{};
             s.packed = color;

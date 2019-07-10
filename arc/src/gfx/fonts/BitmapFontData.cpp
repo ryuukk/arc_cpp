@@ -4,7 +4,7 @@
 #include "BitmapFontData.h"
 #include "BitmapFont.h"
 #include "../../utils/StringUtils.h"
-#include "../../utils/DirUtils.h"
+#include "../../utils/IO.h"
 
 arc::BitmapFontData::BitmapFontData(const std::string& fontFile, bool flip)
 {
@@ -137,7 +137,7 @@ void arc::BitmapFontData::load(const std::string& fontFile, bool flip)
         bold = std::stoi(infoTokens[3].substr(5)) == 1;
         italic = std::stoi(infoTokens[4].substr(7)) == 1;
 
-        printf("Font: %s\n%s\nFontSize:%d\nBold:%d\nItalic:%d\n", fontFile.c_str(), buffer.c_str(), fontSize, bold, italic);
+        // printf("Font: %s\n%s\nFontSize:%d\nBold:%d\nItalic:%d\n", fontFile.c_str(), buffer.c_str(), fontSize, bold, italic);
         // --
 
         buffer = buffer.substr(buffer.find("padding=")+8);
@@ -166,7 +166,7 @@ void arc::BitmapFontData::load(const std::string& fontFile, bool flip)
         if(common.size() >= 6 && common[5].find("pages") != -1)
             pageCount = Mathf::max(1, std::stoi(common[5].substr(6)));
 
-        printf("Line Height: %f Base: %f PageCount: %d \n", lineHeight, baseLine, pageCount);
+        // printf("Line Height: %f Base: %f PageCount: %d \n", lineHeight, baseLine, pageCount);
 
         for (int p = 0; p < pageCount; p++)
         {

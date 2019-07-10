@@ -1,36 +1,13 @@
 #pragma once
 
 #include "../Camera.h"
-#include "../../Pool.h"
 #include "Renderable.h"
 #include "IShaderProvider.h"
 #include "../ModelInstance.h"
+#include "../../utils/object_pool.hpp"
 
 namespace arc
 {
-    class RenderablePool : public Pool<Renderable>
-    {
-    public:
-        Renderable* obtain() override
-        {
-            auto* ret = Pool::obtain();
-            ret->environement = nullptr;
-            ret->material = nullptr;
-            ret->meshPart.set("", nullptr, 0, 0, 0);
-            ret->shader = nullptr;
-            ret->bones = nullptr;
-            ret->worldTransform = Mat4::identity();
-            return ret;
-        }
-
-    protected:
-        Renderable* newObject() override
-        {
-            return new Renderable;
-        }
-
-    };
-
     class RenderableBatch
     {
     public:
@@ -45,12 +22,9 @@ namespace arc
             delete shaderProvider;
         }
 
-        std::queue<Renderable*> queue;
         std::vector<Renderable*> renderables;
         RenderContext context{};
-
-
-        //RenderablePool pool{};
+        DynamicObjectPool<Renderable> pool{64};
 
         IShaderProvider* shaderProvider = nullptr;
 
@@ -91,7 +65,8 @@ namespace arc
            //pool.freeAll(renderables);
 
             for (int i = 0; i < renderables.size(); ++i) {
-                queue.push(renderables[i]);
+                //queue.push(renderables[i]);
+                pool.delete_object(renderables[i]);
             }
            renderables.clear();
         }
@@ -104,23 +79,16 @@ namespace arc
             {
                 for(auto& part : node->parts)
                 {
-                    Renderable* renderable = nullptr;
+                    Renderable* renderable = pool.new_object();
+                    // clean it here, remove when pool is fixed
+                    renderable->environement = nullptr;
+                    renderable->material = nullptr;
+                    renderable->meshPart.set("", nullptr, 0, 0, 0);
+                    renderable->shader = nullptr;
+                    renderable->bones = nullptr;
+                    renderable->worldTransform = Mat4::identity();
+                    // --
 
-                    if(queue.empty())
-                        renderable = new Renderable();
-                    else
-                    {
-                        renderable = queue.front();
-                        // clean it here, remove when pool is fixed
-                        renderable->environement = nullptr;
-                        renderable->material = nullptr;
-                        renderable->meshPart.set("", nullptr, 0, 0, 0);
-                        renderable->shader = nullptr;
-                        renderable->bones = nullptr;
-                        renderable->worldTransform = Mat4::identity();
-                        // --
-                        queue.pop();
-                    }
                     renderable->environement = environement;
                     renderable->material = part->material;
                     renderable->bones = &part->bones;

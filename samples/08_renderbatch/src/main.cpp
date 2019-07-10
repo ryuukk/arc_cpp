@@ -8,7 +8,7 @@
 #include <gfx/Model.h>
 #include <gfx/ModelInstance.h>
 #include <gfx/data/ModelData.h>
-#include <utils/FileUtils.h>
+#include <utils/IO.h>
 #include <gfx/rendering/RenderableBatch.h>
 #include <gfx/animation/AnimationController.h>
 #include <utils/CameraController.h>
@@ -77,7 +77,7 @@ class MyGame : public arc::IApp
 
         auto one = false;
         auto enableAnim = true;
-        auto size = 5;
+        auto size = 12;
         auto pad = 3;
         if(one)
         {
@@ -104,48 +104,41 @@ class MyGame : public arc::IApp
                 {
                     auto a = id % 3;
 
-                    if(a == 0)
+                    //if(a == 0)
                     {
                         auto* entity = new Entity;
                         entity->id = ++id;
                         entity->position = {(float) i * 2, 0, (float) j * 2};
                         entity->scale = {0.2f, 0.2f, 0.2f};
-
                         entity->instance = new arc::ModelInstance(*_modelA);
-
                         if(!entity->instance->animations.empty())
                         {
                             entity->controller = new arc::AnimationController(*entity->instance);
                             entity->controller->animate("Attack");
                         }
-
                         _entities.emplace_back(entity);
                     }
-                    else if (a == 1)
-                    {
-                        auto* entity = new Entity;
-                        entity->id = ++id;
-                        entity->position = {(float) i * 2, 0, (float) j * 2};
-
-                        entity->instance = new arc::ModelInstance(*_modelB);
-
-                        if(!entity->instance->animations.empty())
-                        {
-                            entity->controller = new arc::AnimationController(*entity->instance);
-                            entity->controller->animate("run_1h");
-                        }
-
-                        _entities.emplace_back(entity);
-                    }
-                    else
-                    {
-                        auto* entity = new Entity;
-                        entity->id = ++id;
-                        entity->position = {(float) i * 2, 0, (float) j * 2};
-                        entity->instance = new arc::ModelInstance(*_modelC);
-
-                        _entities.emplace_back(entity);
-                    }
+                    //else if (a == 1)
+                   //{
+                   //    auto* entity = new Entity;
+                   //    entity->id = ++id;
+                   //    entity->position = {(float) i * 2, 0, (float) j * 2};
+                   //    entity->instance = new arc::ModelInstance(*_modelB);
+                   //    if(!entity->instance->animations.empty())
+                   //    {
+                   //        entity->controller = new arc::AnimationController(*entity->instance);
+                   //        entity->controller->animate("run_1h");
+                   //    }
+                   //    _entities.emplace_back(entity);
+                   //}
+                     //else
+                     //{
+                     //    auto* entity = new Entity;
+                     //    entity->id = ++id;
+                     //    entity->position = {(float) i * 2, 0, (float) j * 2};
+                     //    entity->instance = new arc::ModelInstance(*_modelC);
+                     //    _entities.emplace_back(entity);
+                     //}
                 }
             }
         }
