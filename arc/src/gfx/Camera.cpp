@@ -88,6 +88,7 @@ void arc::OrthographicCamera::update(bool updateFrustrum) {
     if (updateFrustrum)
     {
         // todo: finish
+
     }
 }
 

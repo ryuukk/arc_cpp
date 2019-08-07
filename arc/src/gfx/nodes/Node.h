@@ -152,8 +152,7 @@ namespace arc
                 parts[i] = copy;
             }
 
-            for (auto i = 0; i < other->children.size(); ++i) {
-                Node* child = other->children[i];
+            for (auto child : other->children) {
                 addChild(child->copy());
             }
         }

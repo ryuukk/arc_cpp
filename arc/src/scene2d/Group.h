@@ -17,25 +17,25 @@ namespace arc
     {
     public:
         Group();
-        virtual ~Group();
+        ~Group() override;
 
-        void act(float dt);
-        void draw(SpriteBatch* batch, float parentAlpha);
-        void drawDebug(ShapeRenderer* shapes);
+        void act(float dt) override;
+        void draw(SpriteBatch* batch, float parentAlpha) override;
+        void drawDebug(ShapeRenderer* shapes) override;
         void setCullingArea(const Rect& area) override;
-        Actor* hit(float x, float y, bool touchable);
+        Actor* hit(float x, float y, bool touchable) override;
         void addActor(Actor* actor);
         void addActorAt(int index, Actor* actor);
         bool removeActor(Actor* actor, bool unfocus = true);
         virtual void clearChildren();
-        void clear();
+        void clear() override;
         Actor* findActor(const std::string& name);
         Vec2 localToDescendantCoordinates(Actor* descendant);
         void setDebug(bool enabled, bool recursively);
         bool isTransform();
         void setTransform(bool transform);
         std::vector<Actor*>& getChildren();
-        void setStage(Stage* stage);
+        void setStage(Stage* stage) override;
     protected:
         void drawChildren(SpriteBatch* batch, float parentAlpha);
         void drawDebugChildren(ShapeRenderer* shapes);

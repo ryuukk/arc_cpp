@@ -1,6 +1,7 @@
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/../bin)
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/../bin)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/../bin)
+set(EXECUTABLE_OUTPUT_PATH  ${CMAKE_BINARY_DIR}/../bin)
 
 function(add_sample sample_name)
     project(${sample_name})
@@ -14,8 +15,11 @@ function(add_sample sample_name)
     # set (CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -Wl,--allow-multiple-definition")
 
     if (WIN32)
-        set(CMAKE_CXX_FLAGS_DEBUG "-march=native -g -m64 -O0 -flto")
-        set(CMAKE_CXX_FLAGS_RELEASE "-march=native -m64 -03 -flto -Wl,-subsystem,windows")
+        if (MSVC)
+        else ()
+            set(CMAKE_CXX_FLAGS_DEBUG "-march=native -g -m64 -O0 -flto")
+            set(CMAKE_CXX_FLAGS_RELEASE "-march=native -m64 -03 -flto -Wl,-subsystem,windows")
+        endif ()
     else ()
 
         set(CMAKE_CXX_FLAGS_DEBUG "-march=native -g -m64 -O0 -flto")
@@ -30,13 +34,19 @@ function(add_sample sample_name)
     file(GLOB SOURCES "${CMAKE_CURRENT_SOURCE_DIR}/${sample_name}/src/*.cpp")
 
     add_executable(${PROJECT_NAME} ${SOURCES})
+
+    if (MSVC)
+        set(CMAKE_SHARED_LINKER_FLAGS_DEBUG "${CMAKE_SHARED_LINKER_FLAGS_DEBUG} /debug:fastlink")
+        set(CMAKE_SHARED_LINKER_FLAGS_RELWITHDEBINFO "${CMAKE_SHARED_LINKER_FLAGS_RELWITHDEBINFO} /debug:fastlink")
+    endif ()
+
     set_target_properties(${PROJECT_NAME} PROPERTIES OUTPUT_NAME "${EXE_NAME}")
-    if(WIN32)
+    if (WIN32)
         # target_link_libraries(${PROJECT_NAME} -mwindows opengl32 glad glfw arc)
         target_link_libraries(${PROJECT_NAME} opengl32 glad glfw arc ws2_32)
-    else()
+    else ()
         target_link_libraries(${PROJECT_NAME} glad glfw arc)
-    endif()
+    endif ()
 
 endfunction()
 

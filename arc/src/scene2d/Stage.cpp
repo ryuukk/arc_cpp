@@ -12,8 +12,7 @@ arc::Stage::Stage(arc::Viewport* viewport) {
     _batch = new arc::SpriteBatch();
     _ownsBatch = true;
 
-    _root = new arc::Group();
-    _root->setStage(this);
+    _root.setStage(this);
 
     _viewport->update(arc::Core::graphics->getWidth(), arc::Core::graphics->getHeight(), true);
 }
@@ -43,7 +42,7 @@ arc::Rect arc::Stage::calculateScissors(const arc::Rect& local) {
         transformMatrix = _batch->getTransformMatrix();
     return _viewport->calculateScissors(transformMatrix, local);
 }
-arc::Group* arc::Stage::getRoot() {
+arc::Group& arc::Stage::getRoot() {
     return _root;
 }
 
@@ -59,16 +58,16 @@ void arc::Stage::render(float dt) {
     auto* camera = _viewport->getCamera();
     camera->update();
 
-    if(!_root->isVisible()) return;
+    if(!_root.isVisible()) return;
 
     _batch->setProjectionMatrix(camera->combined);
     _batch->begin();
-    _root->draw(_batch, 1.0f);
+    _root.draw(_batch, 1.0f);
     _batch->end();
 }
 
 void arc::Stage::act(float dt) {
-    _root->act(dt);
+    _root.act(dt);
 }
 
 void arc::Stage::unfocus(arc::Actor* actor) {
@@ -76,5 +75,5 @@ void arc::Stage::unfocus(arc::Actor* actor) {
 }
 
 void arc::Stage::addActor(arc::Actor* actor) {
-    _root->addActor(actor);
+    _root.addActor(actor);
 }

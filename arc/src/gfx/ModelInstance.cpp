@@ -2,6 +2,7 @@
 #include "ModelInstance.h"
 
 
+
 arc::ModelInstance::ModelInstance(Model& model) : model(model) {
     copyNodes(model.nodes);
     invalidate();
@@ -137,5 +138,36 @@ void arc::ModelInstance::invalidate(arc::Node* node) {
 
     for (int k = 0; k < node->children.size(); ++k) {
         invalidate(node->children[k]);
+    }
+}
+
+void arc::ModelInstance::getRenderables(DynamicObjectPool<Renderable>& pool, std::vector<Renderable*>& renderables) {
+    for(auto& node : nodes)
+    {
+        for(auto& part : node->parts)
+        {
+            if(part->enabled == false) continue;
+
+            Renderable* renderable = pool.new_object();
+            // clean it here, remove when pool is fixed
+            renderable->environement = nullptr;
+            renderable->material = nullptr;
+            renderable->meshPart.set("", nullptr, 0, 0, 0);
+            renderable->shader = nullptr;
+            renderable->bones = nullptr;
+            renderable->worldTransform = Mat4::identity();
+            // --
+
+            renderable->material = part->material;
+            renderable->bones = &part->bones;
+            renderable->meshPart.set(part->meshPart);
+
+            if(part->bones.empty())
+                renderable->worldTransform = transform * node->globalTransform;
+            else
+                renderable->worldTransform = transform;
+
+            renderables.emplace_back(renderable);
+        }
     }
 }

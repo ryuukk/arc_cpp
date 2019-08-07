@@ -1,5 +1,3 @@
-#include <fstream>
-#include <string.h>
 #include <Core.h>
 #include <Configuration.h>
 #include <Engine.h>
@@ -66,7 +64,7 @@ out vec4 f_color;
 
 void main()
 {
-    vec3 color = u_texture, v_texCoord).rgb;
+    vec3 color = texture(u_texture, v_texCoord).rgb;
     f_color = vec4(color, 1.0) * v_color;
     //f_color = v_color;
 }
@@ -86,7 +84,9 @@ void main()
 
     void create() override {
 
+        printf("Compiling shader..\n");
         _shader = new arc::ShaderProgram(vs, fs);
+        printf("Shader Log : %s\n", _shader->log.c_str());
 
         _cam = new arc::PerspectiveCamera(67, arc::Core::graphics->getWidth(), arc::Core::graphics->getHeight());
         _cam->position = arc::Vec3(0, 0, 10);
@@ -95,7 +95,6 @@ void main()
         _camController = new arc::CameraController(_cam);
         arc::Core::input->setInputProcessor(_camController);
 
-        printf("Shader Log  : %s\n", _shader->log.c_str());
 
 
         auto modelData = arc::ModelData::load("data/models/knight.g3dj");

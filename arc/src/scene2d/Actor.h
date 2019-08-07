@@ -45,7 +45,7 @@ namespace arc
         virtual void drawDebug(ShapeRenderer* shapes);
 
         Stage* getStage();
-        void setStage(Stage* stage);
+        virtual void setStage(Stage* stage);
 
         bool isDescendantOf(Actor* actor);
         bool isAscendantOf(Actor* actor);

@@ -160,7 +160,7 @@ void arc::SpriteBatch::draw(arc::Texture2D* texture, arc::Vec2 position, arc::Ve
 }
 
 void arc::SpriteBatch::draw(arc::Texture2D* texture, std::vector<float>& v, uint32_t offset, uint32_t count) {
-    int verticesLength = v.size();
+    int verticesLength = _vertices.size();
     int remainingVertices = verticesLength;
     if (texture != _lastTexture)
         switchTexture(texture);

@@ -1,15 +1,16 @@
 #pragma once
 
 #include "Model.h"
+#include "rendering/Renderable.h"
 
 namespace arc
 {
-    class ModelInstance
+    class ModelInstance : public IRenderableProvider
     {
     public:
         static bool defaultShareKeyframes;
     public:
-        ModelInstance(Model& model);
+        explicit ModelInstance(Model& model);
         ~ModelInstance()
         {
             for (auto* mat : materials)
@@ -35,6 +36,8 @@ namespace arc
 
         void invalidate();
         void invalidate(Node* node);
+
+        void getRenderables(DynamicObjectPool<Renderable>& pool, std::vector<Renderable*>& renderables) override;
     };
 }
 

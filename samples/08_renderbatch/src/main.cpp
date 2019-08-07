@@ -75,9 +75,10 @@ class MyGame : public arc::IApp
 
         _batch = new arc::RenderableBatch(new arc::DefaultShaderProvider(vs, fs));
 
+
         auto one = false;
         auto enableAnim = true;
-        auto size = 12;
+        auto size = 10;
         auto pad = 3;
         if(one)
         {
@@ -143,7 +144,7 @@ class MyGame : public arc::IApp
             }
         }
 
-        printf("Loaded %d entities\n", _entities.size());
+        printf("Loaded %llu entities\n", _entities.size());
 
     }
 
@@ -207,7 +208,7 @@ class MyGame : public arc::IApp
 int main(int argc, char** argv) {
     auto config = arc::Configuration();
     config.windowTitle = "Sample 08 - Render Batch";
-    config.vsync = true;
+    config.vsync = false;
     auto myGame = new MyGame();
     auto engine = new arc::Engine(myGame, config);
     engine->run();

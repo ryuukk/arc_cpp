@@ -5,6 +5,7 @@
 #include "../MeshPart.h"
 #include "../Material.h"
 #include "../Environement.h"
+#include "../../utils/object_pool.hpp"
 
 namespace arc
 {
@@ -24,6 +25,6 @@ namespace arc
     class IRenderableProvider
     {
     public:
-        virtual void getRenderables(std::vector<Renderable*> renderables) = 0;
+        virtual void getRenderables(DynamicObjectPool<Renderable>& pool, std::vector<Renderable*>& renderables) = 0;
     };
 }

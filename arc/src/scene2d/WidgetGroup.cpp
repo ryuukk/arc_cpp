@@ -18,11 +18,11 @@ void arc::WidgetGroup::invalidateHierarchy() {
 void arc::WidgetGroup::validate() {
     if (!_layoutEnabled) return;
 
-    auto* parent = getParent();
+    auto parent = getParent();
     if (_fillParent && parent != nullptr) {
         float parentWidth, parentHeight;
         auto* stage = getStage();
-        if (stage != nullptr && parent == stage->getRoot()) {
+        if (stage != nullptr && parent == &stage->getRoot()) {
             parentWidth = stage->getWidth();
             parentHeight = stage->getHeight();
         } else {

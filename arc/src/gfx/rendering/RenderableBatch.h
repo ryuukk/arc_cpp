@@ -70,7 +70,7 @@ namespace arc
             }
            renderables.clear();
         }
-
+/*
         void render(ModelInstance* model, Environement* environement = nullptr)
         {
             auto offset = renderables.size();
@@ -89,7 +89,6 @@ namespace arc
                     renderable->worldTransform = Mat4::identity();
                     // --
 
-                    renderable->environement = environement;
                     renderable->material = part->material;
                     renderable->bones = &part->bones;
                     renderable->meshPart.set(part->meshPart);
@@ -105,6 +104,21 @@ namespace arc
 
             for (int i = offset; i < renderables.size(); i++) {
                 auto& renderable = renderables[i];
+                renderable->environement = environement;
+                renderable->shader = shaderProvider->getShader(renderable);
+            }
+        }
+*/
+
+        void render(IRenderableProvider* provider, Environement* environement = nullptr)
+        {
+            auto offset = renderables.size();
+
+            provider->getRenderables(pool, renderables);
+
+            for (int i = offset; i < renderables.size(); i++) {
+                auto& renderable = renderables[i];
+                renderable->environement = environement;
                 renderable->shader = shaderProvider->getShader(renderable);
             }
         }

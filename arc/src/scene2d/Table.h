@@ -49,7 +49,7 @@ namespace arc
 
         void draw(SpriteBatch* batch, float parentAlpha) override;
         void drawBackground(SpriteBatch* batch, float parentAlpha, float x, float y);
-        Actor* hit(float x, float y, bool touchable);
+        Actor* hit(float x, float y, bool touchable) override;
         void setClip(bool enabled);
         bool getClip();
         void invalidate() override;
