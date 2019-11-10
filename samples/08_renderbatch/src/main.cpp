@@ -55,8 +55,8 @@ class MyGame : public arc::IApp
     arc::RenderableBatch* _batch;
     std::vector<Entity*> _entities{};
 
-    void create() override {
 
+    void create() override {
         _cam = new arc::PerspectiveCamera(67, arc::Core::graphics->getWidth(), arc::Core::graphics->getHeight());
         _cam->position = arc::Vec3(0, 0, 10);
         _cam->update();
@@ -78,7 +78,7 @@ class MyGame : public arc::IApp
 
         auto one = false;
         auto enableAnim = true;
-        auto size = 10;
+        auto size = 4;
         auto pad = 3;
         if(one)
         {
@@ -208,7 +208,7 @@ class MyGame : public arc::IApp
 int main(int argc, char** argv) {
     auto config = arc::Configuration();
     config.windowTitle = "Sample 08 - Render Batch";
-    config.vsync = false;
+    config.vsync = true;
     auto myGame = new MyGame();
     auto engine = new arc::Engine(myGame, config);
     engine->run();

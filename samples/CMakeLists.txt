@@ -18,7 +18,7 @@ function(add_sample sample_name)
         if (MSVC)
         else ()
             set(CMAKE_CXX_FLAGS_DEBUG "-march=native -g -m64 -O0 -flto")
-            set(CMAKE_CXX_FLAGS_RELEASE "-march=native -m64 -03 -flto -Wl,-subsystem,windows")
+            set(CMAKE_CXX_FLAGS_RELEASE "-march=native -m64 -03 -Wl,-subsystem,windows")
         endif ()
     else ()
 

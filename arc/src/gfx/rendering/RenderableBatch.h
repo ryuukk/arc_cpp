@@ -5,6 +5,7 @@
 #include "IShaderProvider.h"
 #include "../ModelInstance.h"
 #include "../../utils/object_pool.hpp"
+#include "../../Core.h"
 
 namespace arc
 {
@@ -22,54 +23,16 @@ namespace arc
             delete shaderProvider;
         }
 
-        std::vector<Renderable*> renderables;
-        RenderContext context{};
-        DynamicObjectPool<Renderable> pool{64};
 
         IShaderProvider* shaderProvider = nullptr;
 
         Camera* camera = nullptr;
 
-        void begin(Camera* cam)
-        {
-            camera = cam;
-            context.begin();
-        }
+        void begin(Camera* cam);
 
-        void end()
-        {
-            flush();
-            context.end();
-        }
+        void end();
 
-        void flush()
-        {
-            // todo: sort
-
-            IShader* currentShader = nullptr;
-            for (int i = 0; i < renderables.size(); i++) {
-                auto& renderable = renderables[i];
-                if (currentShader != renderable->shader) {
-                    if (currentShader != nullptr) currentShader->end();
-                    currentShader = renderable->shader;
-                    currentShader->begin(camera, &context);
-                }
-                currentShader->render(renderable);
-            }
-            if (currentShader != nullptr) currentShader->end();
-
-
-            // FIXME: pool causes a mem leak !!!
-            // for the moment i'll manually handle a queue
-            // i need to find a better way to handle this shit
-           //pool.freeAll(renderables);
-
-            for (int i = 0; i < renderables.size(); ++i) {
-                //queue.push(renderables[i]);
-                pool.delete_object(renderables[i]);
-            }
-           renderables.clear();
-        }
+        void flush();
 /*
         void render(ModelInstance* model, Environement* environement = nullptr)
         {
@@ -110,19 +73,12 @@ namespace arc
         }
 */
 
-        void render(IRenderableProvider* provider, Environement* environement = nullptr)
-        {
-            auto offset = renderables.size();
-
-            provider->getRenderables(pool, renderables);
-
-            for (int i = offset; i < renderables.size(); i++) {
-                auto& renderable = renderables[i];
-                renderable->environement = environement;
-                renderable->shader = shaderProvider->getShader(renderable);
-            }
-        }
+        void render(IRenderableProvider* provider, Environement* environement = nullptr);
 
     private:
+        std::vector<Renderable*> renderables;
+        RenderContext context{};
+        DynamicObjectPool<Renderable> pool{64};
+
     };
 }
