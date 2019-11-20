@@ -22,7 +22,7 @@ namespace arc
         };
 
     public:
-        DefaultShader(Renderable* renderable, const Config& config, ShaderProgram* program);
+        DefaultShader(Renderable* renderable, Config  config, ShaderProgram* program);
 
         void init() override;
 

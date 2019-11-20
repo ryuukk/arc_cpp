@@ -1,7 +1,9 @@
 #include "DefaultShader.h"
+
+#include <utility>
 #include "../../Core.h"
 
-arc::DefaultShader::DefaultShader(arc::Renderable* renderable, const arc::DefaultShader::Config& config, ShaderProgram* program) : _renderable(renderable), _config(config)
+arc::DefaultShader::DefaultShader(arc::Renderable* renderable, arc::DefaultShader::Config  config, ShaderProgram* program) : _renderable(renderable), _config(std::move(config))
 {
     auto combinedMask = arc::DefaultShader::combineAttributeMasks(renderable);
     this->program = program;
@@ -9,6 +11,8 @@ arc::DefaultShader::DefaultShader(arc::Renderable* renderable, const arc::Defaul
 
     _attributesMask = renderable->material->getMask() | _optionalAttributes;
     _vertexMask = renderable->meshPart.mesh->getVertexAttributes()->getMaskWithSizePacked();
+
+    arc::Core::logger->info("fuck DS ctor");
 }
 
 void arc::DefaultShader::init() {
@@ -105,9 +109,12 @@ void arc::DefaultShader::bind(arc::Renderable* renderable) {
 
     program->setUniformMat4(u_worldTrans, renderable->worldTransform);
 
-    if (_config.numBones > 0 && renderable->bones != nullptr && !renderable->bones->empty())
-        program->setUniformMat4Array(u_bones, _config.numBones, *renderable->bones);
+	if (_config.numBones > 0 && renderable->bones != nullptr && !renderable->bones->empty())
+	{
+		auto count = renderable->bones->size() > _config.numBones ? _config.numBones : renderable->bones->size();
 
+		program->setUniformMat4Array(u_bones, count, *renderable->bones);
+	}
 
     if (!renderable->material->has(arc::BlendingAttribute::stype))
         context->setBlending(false, GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
