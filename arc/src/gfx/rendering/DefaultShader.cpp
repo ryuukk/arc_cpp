@@ -11,8 +11,6 @@ arc::DefaultShader::DefaultShader(arc::Renderable* renderable, arc::DefaultShade
 
     _attributesMask = renderable->material->getMask() | _optionalAttributes;
     _vertexMask = renderable->meshPart.mesh->getVertexAttributes()->getMaskWithSizePacked();
-
-    arc::Core::logger->info("fuck DS ctor");
 }
 
 void arc::DefaultShader::init() {
