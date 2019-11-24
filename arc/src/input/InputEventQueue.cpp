@@ -126,7 +126,7 @@ uint64_t arc::InputEventQueue::getCurrentEventTime() {
 }
 
 void arc::InputEventQueue::queueTime() {
-    auto time = arc::time::nanoseconds();
+    auto time = arc::times::nanoseconds();
     _queue.emplace_back((int) (time >> 32u));
     _queue.emplace_back((int) time);
 }

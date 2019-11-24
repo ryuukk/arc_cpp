@@ -52,17 +52,17 @@ namespace arc {
 
         float getWidth() {
             if (_hdpiMode == arc::HdpiMode::Pixels) {
-                return _backBufferWidth;
+                return (float)_backBufferWidth;
             } else {
-                return _logicalWidth;
+                return (float)_logicalWidth;
             }
         }
 
         float getHeight() {
             if (_hdpiMode == arc::HdpiMode::Pixels) {
-                return _backBufferHeight;
+                return (float) _backBufferHeight;
             } else {
-                return _logicalHeight;
+                return (float) _logicalHeight;
             }
         }
 

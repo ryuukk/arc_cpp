@@ -89,5 +89,22 @@ namespace arc
             return std::cos(rad);
         }
 
+        inline static int clamp(int data, int min, int max)
+        {
+            if (data < min)
+            {
+                return min;
+            }
+            else
+            {
+                if (data > max)
+                {
+                    return max;
+                }
+
+                return data;
+            }
+        }
+
     };
 }

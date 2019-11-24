@@ -22,18 +22,24 @@ namespace arc
 #endif
             if (p1[p1.length()] != sep) { // Need to add a
                 tmp += sep;                // path separator
-                return(tmp + p2);
-            }
-            else
-                return(p1 + p2);
+                return (tmp + p2);
+            } else
+                return (p1 + p2);
         }
 
     }
 
+
     namespace file
     {
-        inline std::string readFile(const std::string& path)
-        {
+        inline std::vector<unsigned char> loadFile(const std::string& path) {
+            std::ifstream infile(path, std::ios_base::binary);
+
+            return {std::istreambuf_iterator<char>(infile),
+                    std::istreambuf_iterator<char>()};
+        }
+
+        inline std::string readFile(const std::string& path) {
             std::ifstream file(path);
             std::string str;
             std::string file_contents;
@@ -44,13 +50,12 @@ namespace arc
             return file_contents;
         }
 
-        inline bool exists (const std::string& name) {
+        inline bool exists(const std::string& name) {
             std::ifstream file(name.c_str());
             return file.good();
         }
 
-        inline std::string parent(const std::string& path)
-        {
+        inline std::string parent(const std::string& path) {
             // todo: figure this out
             return "";
         }
