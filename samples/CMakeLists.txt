@@ -19,7 +19,7 @@ function(add_sample sample_name)
         if (MSVC)
         else ()
             set(CMAKE_CXX_FLAGS_DEBUG "-march=native -g -m64 -O0 -flto")
-            set(CMAKE_CXX_FLAGS_RELEASE "-march=native -m64 -03 -Wl,-subsystem,windows")
+            set(CMAKE_CXX_FLAGS_RELEASE "-march=native -m64 -O3 -Wl,-subsystem,windows")
         endif ()
     else ()
 
@@ -32,13 +32,18 @@ function(add_sample sample_name)
     include_directories(${CMAKE_CURRENT_SOURCE_DIR}/${sample_name}/../../libs/glfw/include)
     include_directories(${CMAKE_CURRENT_SOURCE_DIR}/${sample_name}/src)
 
-    file(GLOB SOURCES "${CMAKE_CURRENT_SOURCE_DIR}/${sample_name}/src/*.cpp")
+    file(GLOB_RECURSE SOURCES
+    ${CMAKE_CURRENT_SOURCE_DIR}/${sample_name}/src/*.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/${sample_name}/src/*.hpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/${sample_name}/src/*.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/${sample_name}/src/*.c
+    )
 
     add_executable(${PROJECT_NAME} ${SOURCES})
 
     if (MSVC)
-        set(CMAKE_SHARED_LINKER_FLAGS_DEBUG "${CMAKE_SHARED_LINKER_FLAGS_DEBUG} /debug:fastlink")
-        set(CMAKE_SHARED_LINKER_FLAGS_RELWITHDEBINFO "${CMAKE_SHARED_LINKER_FLAGS_RELWITHDEBINFO} /debug:fastlink")
+        set(CMAKE_SHARED_LINKER_FLAGS_DEBUG "${CMAKE_SHARED_LINKER_FLAGS_DEBUG} /debug:fastlink /MP /incremental")
+        set(CMAKE_SHARED_LINKER_FLAGS_RELWITHDEBINFO "${CMAKE_SHARED_LINKER_FLAGS_RELWITHDEBINFO} /debug:fastlink /MP /incremental")
 		set_target_properties(${PROJECT_NAME} PROPERTIES VS_DEBUGGER_WORKING_DIRECTORY  ${CMAKE_BINARY_DIR}/../bin)
 		set_target_properties(${PROJECT_NAME} PROPERTIES OUTPUT_NAME "${EXE_NAME}")
 	else ()

@@ -26,7 +26,7 @@ namespace arc
     {
     public:
         GLTexture(GLenum glTarget);
-        ~GLTexture()
+        virtual ~GLTexture()
         {
             deletee();
         }

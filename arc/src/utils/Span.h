@@ -1,5 +1,7 @@
 #pragma once
 
+#include <cassert>
+
 namespace arc
 {
     template <typename T>

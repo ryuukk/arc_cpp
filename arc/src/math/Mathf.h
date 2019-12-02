@@ -1,6 +1,10 @@
 #pragma once
 
 #include <cmath>
+#ifdef WIN32
+#undef min
+#undef max
+#endif
 namespace arc
 {
     // todo: use const instead of inline static methods
